@@ -6,6 +6,7 @@ import Image from "next/image";
 
 import clsx from "clsx";
 import { IconButton } from "@material-tailwind/react";
+import Link from "next/link";
 
 function Contents() {
   return (
@@ -37,13 +38,13 @@ function Contents() {
             "hover:[&>a]:underline"
           )}
         >
-          <a href="#">Home</a>
-          <a href="#">Proposals</a>
-          <a href="#">Jobs</a>
-          <a href="#">Find Emloyers</a>
-          <a href="#">Messages</a>
-          <a href="#">About us</a>
-          <a href="#">Contact us</a>
+          <Link href="/">Home</Link>
+          <Link href="/proposal">Proposals</Link>
+          <Link href="/job-user">Jobs</Link>
+          <Link href="/job-employee">Find Emloyers</Link>
+          <Link href="#">Messages</Link>
+          <Link href="/about">About us</Link>
+          <Link href="/contact">Contact us</Link>
         </div>
       </div>
     </>
