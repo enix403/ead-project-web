@@ -1,7 +1,7 @@
 'use client';
 
-import HeroImg from "./auth-hero.jpg";
-import GoogleIcon from "./google.svg";
+import HeroImg from "~/app/assets/auth-hero.jpg";
+import GoogleIcon from "~/app/assets/google.svg";
 
 import Image from 'next/image';
 

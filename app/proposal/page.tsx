@@ -1,9 +1,9 @@
 'use client';
 
-import PIconBriefcase from "./assets/p-briefcase.svg";
-import PIconPlus from "./assets/p-plus.svg";
-import PIconEye from "./assets/p-eye.svg";
-import PIconPerson from "./assets/p-person.svg";
+import PIconBriefcase from "~/app/assets/p-briefcase.svg";
+import PIconPlus from "~/app/assets/p-plus.svg";
+import PIconEye from "~/app/assets/p-eye.svg";
+import PIconPerson from "~/app/assets/p-person.svg";
 
 import { ReactNode, useState } from "react";
 import clsx from "clsx";

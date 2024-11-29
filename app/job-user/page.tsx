@@ -2,7 +2,7 @@
 
 import { AppLayout } from "~/components/AppLayout/AppLayout";
 
-import HiringIcon from "./assets/hiring.svg";
+import HiringIcon from "~/app/assets/icon-hiring.svg";
 import { IconButton } from "@material-tailwind/react";
 import {
   IconChevronDown,

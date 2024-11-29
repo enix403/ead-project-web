@@ -1,11 +1,12 @@
-import SIconDashboard from "./assets/s-dashboard.svg";
-import SIconCompany from "./assets/s-company.svg";
-import SIconPost from "./assets/s-post.svg";
-import SIconManage from "./assets/s-manage.svg";
-import SIconApplicants from "./assets/s-applicant.svg";
-import SIconShortlisted from "./assets/s-shortlisted.svg";
-import SIconPackages from "./assets/s-package.svg";
-import SIconMessages from "./assets/s-message.svg";
+import SIconDashboard from "~/app/assets/s-dashboard.svg";
+import SIconCompany from "~/app/assets/s-company.svg";
+import SIconPost from "~/app/assets/s-post.svg";
+import SIconManage from "~/app/assets/s-manage.svg";
+import SIconApplicants from "~/app/assets/s-applicant.svg";
+import SIconShortlisted from "~/app/assets/s-shortlisted.svg";
+import SIconPackages from "~/app/assets/s-package.svg";
+import SIconMessages from "~/app/assets/s-message.svg";
+
 import { Button, ButtonProps } from "~/components/Button/Button";
 
 function SidebarButton({

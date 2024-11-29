@@ -1,15 +1,15 @@
 'use client';
 
-import ResumeIcon from "./assets/icon-resumes.svg";
-import JobIcon from "./assets/icon-job.svg";
-import HelpIcon from "./assets/icon-help.svg";
+import ResumeIcon from "~/app/assets/icon-resumes.svg";
+import JobIcon from "~/app/assets/icon-job.svg";
+import HelpIcon from "~/app/assets/icon-help.svg";
 
-import Hero1 from "./assets/p1.jpg";
-import Hero2 from "./assets/p2.jpg";
-import Hero3 from "./assets/p3.jpg";
-import Hero4 from "./assets/p4.jpg";
-import Hero5 from "./assets/p5.jpg";
-import Hero6 from "./assets/p6.jpg";
+import Hero1 from "~/app/assets/about-p1.jpg";
+import Hero2 from "~/app/assets/about-p2.jpg";
+import Hero3 from "~/app/assets/about-p3.jpg";
+import Hero4 from "~/app/assets/about-p4.jpg";
+import Hero5 from "~/app/assets/about-p5.jpg";
+import Hero6 from "~/app/assets/about-p6.jpg";
 
 import Image from 'next/image';
 
