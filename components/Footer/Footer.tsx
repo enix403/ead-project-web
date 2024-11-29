@@ -2,6 +2,8 @@ import IconFacebook from './assets/facebook.svg';
 import IconTwitter from './assets/twitter.svg';
 import IconInstagram from './assets/instagram.svg';
 
+import Link from 'next/link';
+
 import clsx from "clsx";
 import { FooterProps } from "react-html-props";
 import { combineVisualProps } from "../VisualComponent";
@@ -31,12 +33,12 @@ export function Footer(props: FooterProps) {
           "hover:[&>a]:underline"
         )}
       >
-        <a href='#'>Home</a>
-        <a href='#'>Experience</a>
-        <a href='#'>News</a>
-        <a href='#'>About us</a>
-        <a href='#'>Jobs</a>
-        <a href='#'>Contact</a>
+        <Link href='/'>Home</Link>
+        <Link href='/proposal'>Experience</Link>
+        <Link href='#'>News</Link>
+        <Link href='/about'>About us</Link>
+        <Link href='/job-user'>Jobs</Link>
+        <Link href='/contact'>Contact</Link>
       </div>
       <div className='flex gap-x-3 mt-8'>
         <SocialIcon imageSrc={IconFacebook} />

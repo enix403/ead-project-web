@@ -1,8 +1,11 @@
 'use client';
 
-import { AppLayout } from "~/components/AppLayout/AppLayout";
-
 import HiringIcon from "~/app/assets/icon-hiring.svg";
+import JobImage from '~/app/assets/job-1.jpg';
+
+import Image from 'next/image';
+
+import { AppLayout } from "~/components/AppLayout/AppLayout";
 import { IconButton } from "@material-tailwind/react";
 import {
   IconChevronDown,
@@ -19,7 +22,7 @@ function JobListing() {
 
   return (
     <div className='flex gap-x-4 items-start first:border-t-0 border-t border-gray-line-2 py-6'>
-      <img src='/job-1.jpg' className='w-16 rounded shrink-0' />
+      <Image src={JobImage} alt="" className='w-16 rounded shrink-0' />
       <div className='flex-1'>
         <h2 className='font-semibold text-xl'>UX Designer</h2>
         <h3 className='font-semibold text-lg mt-2'>Bionic</h3>

@@ -10,6 +10,7 @@ import { IconEye, IconEyeClosed } from "@tabler/icons-react";
 import { ComponentProps, useState } from "react";
 import { Button } from "~/components/Button/Button";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const AppInput = (props: ComponentProps<typeof Input>) => (
   <Input {...props} color="blue-gray" className="!text-black" />
@@ -43,9 +44,9 @@ function LoginNote() {
   return (
     <p className="mt-4 text-center text-black/60 font-medium">
       Already have an account?{" "}
-      <a className="text-teal underline hover:text-teal-dark tc" href="#">
+      <Link href="#" className="text-teal underline hover:text-teal-dark tc">
         Sign in
-      </a>
+      </Link>
     </p>
   );
 }

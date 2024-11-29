@@ -1,6 +1,7 @@
 import Logo from "./assets/logo-big.png";
 import MessageIcon from "./assets/message.svg";
 import BellIcon from "./assets/notification.svg";
+import ProfileImage from '~/app/assets/profile-1.webp';
 
 import Image from "next/image";
 
@@ -24,8 +25,9 @@ function Contents() {
             </div>
           </IconButton>
           <button>
-            <img
-              src="/profile-1.webp"
+            <Image
+              src={ProfileImage}
+              alt=""
               className="w-11 h-11 rounded-full"
             />
           </button>
