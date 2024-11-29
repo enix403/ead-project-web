@@ -6,13 +6,13 @@ import clsx from "clsx";
 import { FooterProps } from "react-html-props";
 import { combineVisualProps } from "../VisualComponent";
 
-function SocialIcon({ imageSrc, href }: { imageSrc: string; href?: string }) {
+function SocialIcon({ imageSrc: Icon, href }: { imageSrc: any; href?: string }) {
   return (
     <a
       href={href ?? "#"}
       className='p-1.5 tc rounded-lg hover:bg-black/20 active:bg-black/40'
     >
-      <img src={imageSrc} className='w-6' />
+      <Icon className='w-6' />
     </a>
   );
 }
