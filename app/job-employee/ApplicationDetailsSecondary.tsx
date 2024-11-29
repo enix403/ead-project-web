@@ -3,13 +3,12 @@ import { Input } from "~/components/Input/Input";
 import { Select } from "~/components/Select/Select";
 import { FormLabel } from "~/components/FormLabel/FormLabel";
 
-export function ApplicationDetailsSecondary() {
+export function ApplicationDetailsSecondary({ onNext, onCancel }: any) {
   return (
     <>
       <h1 className='font-semibold text-2xl'>Application Details</h1>
 
       <div className='bg-teal/5 p-7 mt-7 rounded-xl space-y-6'>
-
         <FormLabel label='Application Deadline Date'>
           <Input placeholder='06.04.2024' />
         </FormLabel>
@@ -47,8 +46,10 @@ export function ApplicationDetailsSecondary() {
 
         <div className='pt-6'>
           <div className='flex gap-x-3'>
-            <Button fullRounded>Next</Button>
-            <Button variant='outlined' fullRounded>
+            <Button onClick={onNext} fullRounded>
+              Next
+            </Button>
+            <Button onClick={onCancel} variant='outlined' fullRounded>
               Cancel
             </Button>
           </div>

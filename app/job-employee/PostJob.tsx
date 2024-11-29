@@ -4,7 +4,7 @@ import { Input, TextArea } from "~/components/Input/Input";
 import { Select } from "~/components/Select/Select";
 import { FormLabel } from "~/components/FormLabel/FormLabel";
 
-export function PostJob() {
+export function PostJob({ onNext, onCancel }: any) {
   return (
     <>
       <h1 className='font-semibold text-2xl'>Post a New Job !</h1>
@@ -38,8 +38,10 @@ export function PostJob() {
 
         <div className='pt-6'>
           <div className='flex gap-x-3'>
-            <Button fullRounded>Next</Button>
-            <Button variant='outlined' fullRounded>
+            <Button onClick={onNext} fullRounded>
+              Next
+            </Button>
+            <Button onClick={onCancel} variant='outlined' fullRounded>
               Cancel
             </Button>
           </div>

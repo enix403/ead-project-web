@@ -1,9 +1,10 @@
+import clsx from "clsx";
 import { Button } from "~/components/Button/Button";
-import { Input } from "~/components/Input/Input";
+import { Input, TextArea } from "~/components/Input/Input";
 import { Select } from "~/components/Select/Select";
 import { FormLabel } from "~/components/FormLabel/FormLabel";
 
-export function ApplicationDetailsPrimary() {
+export function ApplicationDetailsPrimary({ onNext, onCancel }: any) {
   return (
     <>
       <h1 className='font-semibold text-2xl'>Application Details</h1>
@@ -57,8 +58,10 @@ export function ApplicationDetailsPrimary() {
 
         <div className='pt-8'>
           <div className='flex gap-x-3'>
-            <Button fullRounded>Next</Button>
-            <Button variant='outlined' fullRounded>
+            <Button onClick={onNext} fullRounded>
+              Next
+            </Button>
+            <Button onClick={onCancel} variant='outlined' fullRounded>
               Cancel
             </Button>
           </div>
