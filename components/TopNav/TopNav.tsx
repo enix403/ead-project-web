@@ -21,7 +21,7 @@ function DesktopLinks() {
       <Link href="/">Home</Link>
       <Link href="/proposal">Proposals</Link>
       <Link href="/job-user">Jobs</Link>
-      <Link href="/job-employee">Find Emloyers</Link>
+      <Link href="/job-employee">Find Employers</Link>
       <Link href="#">Messages</Link>
       <Link href="/about">About us</Link>
       <Link href="/contact">Contact us</Link>
