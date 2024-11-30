@@ -7,8 +7,8 @@ import { FormLabel } from "~/components/FormLabel/FormLabel";
 export function PostJob({ onNext, onCancel }: any) {
   return (
     <>
-      <h1 className='font-semibold text-2xl'>Post a New Job !</h1>
-      <h4 className='mt-1 text-black/70'>Ready to jump back in?</h4>
+      <h1 className='font-semibold text-2xl text-center md:text-left'>Post a New Job !</h1>
+      <h4 className='mt-1 text-black/70 text-center md:text-left'>Ready to jump back in?</h4>
 
       <div className='bg-teal/5 p-7 mt-7 rounded-xl space-y-6'>
         <FormLabel label='Job Title'>
@@ -21,7 +21,7 @@ export function PostJob({ onNext, onCancel }: any) {
           />
         </FormLabel>
 
-        <div className='flex gap-x-4'>
+        <div className='flex gap-4 flex-col md:flex-row'>
           <FormLabel label='Specialisms' className='flex-1'>
             <Select variant='light'>
               <option>Specialisms 1</option>

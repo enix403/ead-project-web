@@ -34,7 +34,7 @@ export default function EmployeeJobPanel() {
   }
 
   return (
-    <AppLayout>
+    <AppLayout pageTitle="Jobs">
       <div className="flex-1 flex items-start">
         <Sidebar />
         <div className="flex-1 px-7 py-8">{rendered}</div>

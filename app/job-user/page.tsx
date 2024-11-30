@@ -8,9 +8,11 @@ import Image from 'next/image';
 import { AppLayout } from "~/components/AppLayout/AppLayout";
 import { IconButton } from "@material-tailwind/react";
 import {
+  IconAdjustmentsHorizontal,
   IconChevronDown,
   IconHeartFilled,
-  IconSearch
+  IconSearch,
+  IconX
 } from "@tabler/icons-react";
 import clsx from "clsx";
 import { useState } from "react";
@@ -48,8 +50,8 @@ function JobListing() {
 
 function TopFilterBar() {
   return (
-    <div className='flex border flex-1 border-black/20 rounded-xl overflow-hidden items-stretch divide-x divide-black/20'>
-      <div className='flex p-2.5 gap-x-1.5'>
+    <div className='flex border flex-1 border-black/20 rounded-xl overflow-hidden items-stretch md:divide-x divide-black/20'>
+      <div className='flex p-2.5 gap-x-1.5 max-md:hidden'>
         <select className='appearance-none bg-transparent'>
           <option>Job Type</option>
           <option>Role Type</option>
@@ -67,12 +69,15 @@ function TopFilterBar() {
       />
       <input
         size={1}
-        className='outline-none flex-1 p-2.5'
+        className='outline-none flex-1 p-2.5 max-md:hidden'
         placeholder='Enter'
         defaultValue='United Kingdom'
       />
-      <button className='px-3 hover:bg-teal/5 tc active:bg-teal/10'>
+      <button className='px-3 hover:bg-teal/5 tc active:bg-teal/10 max-md:hidden'>
         <IconSearch size={18} />
+      </button>
+      <button className='px-3 hover:bg-teal/5 tc active:bg-teal/10 md:hidden'>
+        <IconX size={23} />
       </button>
     </div>
   );
@@ -80,12 +85,15 @@ function TopFilterBar() {
 
 export default function UserJobPanel() {
   return (
-    <AppLayout>
+    <AppLayout pageTitle="Jobs">
       <div>
         <div className='app-container py-8'>
-          <div className='flex max-md:flex-col gap-4'>
+          <div className='flex gap-4'>
             <TopFilterBar />
-            <Button variant='outlined'>Employers / Post Job</Button>
+            <Button variant='outlined' className="max-md:!hidden">Employers / Post Job</Button>
+            <Button variant="outlined" className="md:!hidden !px-0 !min-w-0">
+              <IconAdjustmentsHorizontal className="w-12" size={25} />
+            </Button>
           </div>
           <h2 className='text-black/50 mt-6'>
             Show <span className='font-extrabold'>10</span> Jobs

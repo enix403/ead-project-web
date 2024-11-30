@@ -127,12 +127,14 @@ function SignUpFormContent() {
 
   return (
     <>
-      <h1 className="text-4xl font-semibold">Sign up</h1>
-      <p className="text-black/60 font-medium text-lg mt-3.5">
+      <h1 className="text-4xl font-semibold text-center md:text-left">
+        Sign up
+      </h1>
+      <p className="text-black/60 font-medium text-lg mt-3.5 text-center md:text-left">
         Sign up to enjoy the feature of Seasonistas
       </p>
 
-      <div className="flex gap-x-4 max-w-[30rem] mt-5 mb-8">
+      <div className="flex max-md:mx-auto gap-x-4 max-w-[22rem] md:max-w-[30rem] mt-5 mb-8">
         <Button
           className="flex-1"
           variant={getButtonVariant("candidate")}
@@ -158,7 +160,7 @@ export default function SignUp() {
   return (
     <div className="flex min-h-screen">
       <div className="flex-1 md:min-w-[30rem]">
-        <div className="px-6 md:px-12 lg:px-20 xl:px-28 pt-12 md:pt-28 pb-14">
+        <div className="px-8 md:px-12 lg:px-20 xl:px-28 pt-12 md:pt-28 pb-14">
           <SignUpFormContent />
         </div>
       </div>

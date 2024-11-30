@@ -6,14 +6,14 @@ import { FormLabel } from "~/components/FormLabel/FormLabel";
 export function ApplicationDetailsSecondary({ onNext, onCancel }: any) {
   return (
     <>
-      <h1 className='font-semibold text-2xl'>Application Details</h1>
+      <h1 className='font-semibold text-2xl text-center md:text-left'>Application Details</h1>
 
       <div className='bg-teal/5 p-7 mt-7 rounded-xl space-y-6'>
         <FormLabel label='Application Deadline Date'>
           <Input placeholder='06.04.2024' />
         </FormLabel>
 
-        <div className='flex gap-x-4'>
+        <div className='flex gap-4 flex-col md:flex-row'>
           <FormLabel label='Country' className='flex-1'>
             <Select variant='light'>
               <option>Country 1</option>
@@ -32,7 +32,7 @@ export function ApplicationDetailsSecondary({ onNext, onCancel }: any) {
           <Input placeholder='329 Queensberry Street, North Melbourne VIC 3051, Australia' />
         </FormLabel>
 
-        <div className='flex gap-x-4'>
+        <div className='flex gap-4 flex-col md:flex-row'>
           <FormLabel label='Find on Map' className='flex-[2]'>
             <Input placeholder='329 Queensberry Street, North Melbourne VIC 3051, Australia' />
           </FormLabel>

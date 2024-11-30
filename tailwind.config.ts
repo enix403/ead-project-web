@@ -56,6 +56,7 @@ let config = {
     fontSize: {
       us: ["0.625rem", { lineHeight: "normal" }],
       xs: ["0.75rem", { lineHeight: "normal" }],
+      esm: ["0.83rem", { lineHeight: "normal" }], /* esm = Even SMaller */
       sm: ["0.875rem", { lineHeight: "normal" }],
       fine: ["0.9375rem", { lineHeight: "normal" }],
       base: ["1rem", { lineHeight: "normal" }],
