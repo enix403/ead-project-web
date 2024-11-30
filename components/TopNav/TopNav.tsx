@@ -36,11 +36,15 @@ function Contents({ pageTitle, showSearchButton }: TopNavProps) {
         <IconButton className="wl:hidden block" variant="text">
           <IconMenu2 className="w-20" />
         </IconButton>
-        <Image
-          alt=""
-          src={Logo}
-          className="h-7 w-auto lg:h-10 wl:block hidden"
-        />
+        <Link href="/">
+          <Image
+            alt=""
+            src={Logo}
+            
+            className="h-7 w-auto lg:h-10 wl:block hidden"
+          />
+        </Link>
+
         <div className="flex gap-x-3.5 items-center">
           {showSearchButton && (
             <IconButton className="wl:hidden block" variant="text">
