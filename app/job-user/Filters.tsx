@@ -36,7 +36,7 @@ export function FilterList({ children }: PropsWithChildren) {
 
   return (
     <div>
-      <div className="md:bg-teal/5 flex md:flex-col overflow-auto gap-3 md:px-2 md:py-4 pb-2 rounded-xl">
+      <div className="md:bg-teal/5 flex md:flex-col overflow-auto gap-3 md:px-2 md:py-4 pb-2 md:rounded-xl">
         {filterConfigs.map((filter, index) => {
           let open = openIndex === index;
           return (
