@@ -25,7 +25,7 @@ function SidebarButton({
 }
 export function Sidebar() {
   return (
-    <nav className='border-black/5 border-r-2 px-5 py-5 space-y-2 self-stretch'>
+    <nav className='border-black/5 border-r-2 px-5 py-5 space-y-2 self-stretch wl:block hidden'>
       <SidebarButton label='Dashboard' Icon={SIconDashboard} />
       <SidebarButton label='Company Profile' Icon={SIconCompany} />
       <SidebarButton active label='Post a New Job' Icon={SIconPost} />

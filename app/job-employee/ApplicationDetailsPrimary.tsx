@@ -6,7 +6,7 @@ import { FormLabel } from "~/components/FormLabel/FormLabel";
 export function ApplicationDetailsPrimary({ onNext, onCancel }: any) {
   return (
     <>
-      <h1 className='font-semibold text-2xl'>Application Details</h1>
+      <h1 className='font-semibold text-2xl text-center md:text-left'>Application Details</h1>
 
       <div className='bg-teal/5 p-7 mt-7 rounded-xl'>
         <div className='grid grid-cols-1 lg:grid-cols-2 gap-x-4 gap-y-8'>
