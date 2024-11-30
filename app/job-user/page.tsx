@@ -80,7 +80,7 @@ function TopFilterBar() {
 
 export default function UserJobPanel() {
   return (
-    <AppLayout>
+    <AppLayout pageTitle="Jobs">
       <div>
         <div className='app-container py-8'>
           <div className='flex max-md:flex-col gap-4'>

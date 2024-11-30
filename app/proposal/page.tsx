@@ -174,7 +174,7 @@ function SearchControls() {
 
 export default function ProposalPage() {
   return (
-    <AppLayout>
+    <AppLayout pageTitle="Proposals" showSearchButton>
       <div className='app-container py-8'>
         <h1 className='font-semibold text-3xl'>
           Marketing Landing Page Initiative
