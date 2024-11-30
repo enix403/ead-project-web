@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import ResumeIcon from "~/app/assets/icon-resumes.svg";
 import JobIcon from "~/app/assets/icon-job.svg";
@@ -10,8 +10,9 @@ import Hero3 from "~/app/assets/about-p3.jpg";
 import Hero4 from "~/app/assets/about-p4.jpg";
 import Hero5 from "~/app/assets/about-p5.jpg";
 import Hero6 from "~/app/assets/about-p6.jpg";
+import Hero7 from "~/app/assets/about-p7.jpg";
 
-import Image from 'next/image';
+import Image from "next/image";
 
 import { AppLayout } from "~/components/AppLayout/AppLayout";
 import { TitleMark } from "~/components/decorations";
@@ -21,96 +22,124 @@ import clsx from "clsx";
 function StatBlock({ title, desc }: { title: string; desc: string }) {
   return (
     <div className="space-y-2 w-56">
-      <h3 className="font-semibold text-4xl text-center">{title}</h3>
-      <p className="text-black/50 font-normal text-center">{desc}</p>
+      <h3 className="font-semibold text-2xl md:text-4xl text-center">
+        {title}
+      </h3>
+      <p className="text-black/50 font-normal text-esm md:text-base text-center">
+        {desc}
+      </p>
     </div>
   );
 }
 
 function HeroImageSet() {
   return (
-    <div
-      className={clsx(
-        "[&_img]:rounded-xl [&_img]:object-cover mt-10",
-        "grid grid-rows-[auto,45px,auto] grid-cols-[repeat(4,1fr)] gap-1 md:gap-4"
-      )}
-    >
-      <div className="row-[1/-1] col-[1]">
-        <Image alt="" src={Hero1} className="h-full" />
-      </div>
+    <>
+      {/* Desktop */}
+      <div
+        className={clsx(
+          "hidden sm:grid",
+          "[&_img]:rounded-xl [&_img]:object-cover mt-10 app-container",
+          "grid-rows-[auto,45px,auto] grid-cols-[repeat(4,1fr)] gap-1 md:gap-4"
+        )}
+      >
+        <div className="row-[1/-1] col-[1]">
+          <Image alt="" src={Hero1} className="h-full" />
+        </div>
 
-      <div className="row-[1/2] col-[2]">
-        <Image alt="" src={Hero2} className="w-full" />
-      </div>
-      <div className="row-[2/4] col-[2]">
-        <Image alt="" src={Hero3} className="h-full" />
-      </div>
-      <div className="row-[1/3] col-[3]">
-        <Image alt="" src={Hero4} className="h-full" />
-      </div>
-      <div className="row-[3/4] col-[3]">
-        <Image alt="" src={Hero5} className="w-full" />
-      </div>
+        <div className="row-[1/2] col-[2]">
+          <Image alt="" src={Hero2} className="w-full" />
+        </div>
+        <div className="row-[2/4] col-[2]">
+          <Image alt="" src={Hero3} className="h-full" />
+        </div>
+        <div className="row-[1/3] col-[3]">
+          <Image alt="" src={Hero4} className="h-full" />
+        </div>
+        <div className="row-[3/4] col-[3]">
+          <Image alt="" src={Hero5} className="w-full" />
+        </div>
 
-      <div className="row-[1/-1] col-[4]">
-        <Image alt="" src={Hero6} className="h-full" />
+        <div className="row-[1/-1] col-[4]">
+          <Image alt="" src={Hero6} className="h-full" />
+        </div>
       </div>
-    </div>
+      {/* Mobile */}
+      <div
+        className={clsx(
+          "flex sm:hidden",
+          "mt-8 gap-x-3",
+          "items-start overflow-hidden",
+          "[&_img]:rounded-xl [&_img]:object-cover",
+        )}
+      >
+        <Image alt="" src={Hero1} className="w-[46%] shrink-0 aspect-[1.7] -ml-10" />
+        <Image alt="" src={Hero7} className="w-[46%] shrink-0 aspect-[1.7]" />
+        <Image alt="" src={Hero4} className="w-[46%] shrink-0 aspect-[1.7]" />
+      </div>
+    </>
   );
 }
 
 function TopSection() {
   return (
-    <div className="app-container w-full py-10">
-      {/* Title */}
-      <h1 className="text-4xl text-center">
-        <span className="font-bold text-teal mr-1 relative bg-bdlue-600">
-          About
-          <TitleMark className="absolute w-32 top-full -left-5 dd -translate-y-2.5" />
-        </span>
-        <span className="font-normal">Us</span>
-      </h1>
+    <>
+      <div className="app-container w-full pt-10">
+        {/* Title */}
+        <h1 className="text-4xl text-center">
+          <span className="font-bold text-teal mr-1 relative bg-bdlue-600">
+            About
+            <TitleMark className="absolute w-32 top-full -left-5 dd -translate-y-2.5" />
+          </span>
+          <span className="font-normal">Us</span>
+        </h1>
 
-      {/* Subtitle */}
-      <p className="text-center text-xl font-normal text-black/50 mt-6 max-w-lg mx-auto">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur
-        tristique mauris rhoncus odio aliquet, vitae.
-      </p>
+        {/* Subtitle */}
+        <p className="text-center text-xl font-normal text-black/50 mt-6 max-w-lg mx-auto">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur
+          tristique mauris rhoncus odio aliquet, vitae.
+        </p>
+      </div>
 
       <HeroImageSet />
 
-      {/* Stats */}
-      <div className="flex max-md:flex-col max-md:items-center justify-center mt-16 gap-y-10 gap-x-24">
-        <StatBlock title="4M" desc="4 million daily active users" />
-        <StatBlock title="12k" desc="Over 12k open job positions" />
-        <StatBlock title="20M" desc="Over 20 million stories shared" />
+      <div className="app-container w-full pb-10">
+        {/* Stats */}
+        <div className="flex justify-center mt-6 md:mt-16 gap-x-6 md:gap-x-24">
+          <StatBlock title="4M" desc="4 million daily active users" />
+          <StatBlock title="12k" desc="Over 12k open job positions" />
+          <StatBlock title="20M" desc="Over 20 million stories shared" />
+        </div>
+
+        {/* About text */}
+        <h1 className="text-3xl font-semibold mt-12 text-center md:text-left">
+          About Seasonistas
+        </h1>
+
+        <section className="space-y-8 mt-4 text-black/50 text-md text-center md:text-left">
+          <p>
+            Far much that one rank beheld bluebird after outside ignobly
+            allegedly more when oh arrogantly vehement irresistibly fussy
+            penguin insect additionally wow absolutely crud meretriciously
+            hastily dalmatian a glowered inset one echidna cassowary some parrot
+            and much as goodness some froze the sullen much connected bat
+            wonderfully on instantaneously eel valiantly petted this along
+            across highhandedly much.
+          </p>
+          <p>
+            Repeatedly dreamed alas opossum but dramatically despite
+            expeditiously that jeepers loosely yikes that as or eel underneath
+            kept and slept compactly far purred sure abidingly up above fitting
+            to strident wiped set waywardly far the and pangolin horse approving
+            paid chuckled cassowary oh above a much opposite far much
+            hypnotically more therefore wasp less that hey apart well like while
+            superbly orca and far hence one.Far much that one rank beheld
+            bluebird after outside ignobly allegedly more when oh arrogantly
+            vehement irresistibly fussy.
+          </p>
+        </section>
       </div>
-
-      {/* About text */}
-      <h1 className="text-3xl font-semibold mt-12">About Seasonistas</h1>
-
-      <section className="space-y-8 mt-4 text-black/50 text-md">
-        <p>
-          Far much that one rank beheld bluebird after outside ignobly allegedly
-          more when oh arrogantly vehement irresistibly fussy penguin insect
-          additionally wow absolutely crud meretriciously hastily dalmatian a
-          glowered inset one echidna cassowary some parrot and much as goodness
-          some froze the sullen much connected bat wonderfully on
-          instantaneously eel valiantly petted this along across highhandedly
-          much.
-        </p>
-        <p>
-          Repeatedly dreamed alas opossum but dramatically despite expeditiously
-          that jeepers loosely yikes that as or eel underneath kept and slept
-          compactly far purred sure abidingly up above fitting to strident wiped
-          set waywardly far the and pangolin horse approving paid chuckled
-          cassowary oh above a much opposite far much hypnotically more
-          therefore wasp less that hey apart well like while superbly orca and
-          far hence one.Far much that one rank beheld bluebird after outside
-          ignobly allegedly more when oh arrogantly vehement irresistibly fussy.
-        </p>
-      </section>
-    </div>
+    </>
   );
 }
 
@@ -125,7 +154,7 @@ function JobBanner() {
           Over 1 million interactions, 50,000 success stories Make yours now.
         </p>
 
-        <div className="flex max-md:flex-col justify-center mt-5 gap-2">
+        <div className="flex max-ph:flex-cold justify-center mt-5 gap-2">
           <Button fullRounded theme="white">
             Search Job
           </Button>
