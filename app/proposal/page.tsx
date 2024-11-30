@@ -14,6 +14,20 @@ import { Tab, TabGroup, TabList } from "@headlessui/react";
 import { Select } from "~/components/Select/Select";
 import { ProposalCard } from "./ProposalCard";
 import { ProposalsFilter } from "./ProposalsFilter";
+import { DivProps } from "react-html-props";
+
+function PageTitle(props: DivProps) {
+  return (
+    <div {...props}>
+      <h1 className="font-semibold text-3xl">
+        Marketing Landing Page Initiative
+      </h1>
+      <p className="mt-1.5">
+        <span className="text-teal">28 invites</span> Left
+      </p>
+    </div>
+  );
+}
 
 function PrimaryTabButton({
   shortLabel,
@@ -44,11 +58,14 @@ function PrimaryTabButton({
   );
 }
 
-function PrimaryTabs() {
+function PrimaryTabs({ className }: DivProps) {
   return (
     <TabGroup
       as="div"
-      className="app-container md:mt-7 flex-1 -mx-7 max-md:pb-3 max-md:border-b max-md:border-black/10 overflow-auto"
+      className={clsx(
+        "app-container flex-1 -mx-7 max-md:pb-3 max-md:border-b max-md:border-black/10 overflow-auto",
+        className
+      )}
     >
       <TabList
         as="div"
@@ -84,9 +101,9 @@ function PrimaryTabs() {
   );
 }
 
-function SearchControls() {
+function SearchControls(props: DivProps) {
   return (
-    <div>
+    <div {...props}>
       <div className="flex max-md:flex-col max-md:items-stretch items-center gap-2">
         <div className="border border-black/20 rounded-xl flex-1 flex overflow-hidden px-2.5 py-2.5 gap-x-1.5">
           <IconSearch size={17} className="self-center" />
@@ -113,27 +130,21 @@ function SearchControls() {
   );
 }
 
-function PageTitle() {
-  return (
-    <div>
-      <h1 className="font-semibold text-3xl">
-        Marketing Landing Page Initiative
-      </h1>
-      <p className="mt-1.5">
-        <span className="text-teal">28 invites</span> Left
-      </p>
-    </div>
-  );
-}
-
 export default function ProposalPage() {
   return (
     <AppLayout pageTitle="Proposals" showSearchButton>
       <div className="app-container py-8 w-full">
-        {/* <PageTitle /> */}
-        {/* <PrimaryTabs /> */}
-        {/* <ProposalsFilter /> */}
-        {/* <SearchControls /> */}
+        <div className="hidden md:block flex-1">
+          <PageTitle />
+          <PrimaryTabs className="mt-5" />
+          <ProposalsFilter className="mt-7" />
+          <SearchControls className="mt-4" />
+        </div>
+        <div className="md:hidden block flex-1">
+          <PrimaryTabs />
+          <ProposalsFilter className="mt-5" />
+          <PageTitle className="mt-4" />
+        </div>
 
         <div className="mt-4 grid wl:grid-cols-2 gap-6">
           <ProposalCard isBestMatch />
