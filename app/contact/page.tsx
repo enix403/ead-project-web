@@ -48,7 +48,7 @@ function TopSection() {
         tristique mauris rhoncus odio aliquet, vitae.
       </p>
 
-      <div className='flex max-md:flex-col max-md:items-center justify-center gap-x-20 gap-y-12 mt-12'>
+      <div className='flex justify-center  gap-x-10 sm:gap-x-20 gap-y-12 mt-12'>
         <ContactInfoBlock Icon={IconBrandInstagram} title='@Seasonistas' />
         <ContactInfoBlock Icon={IconMailFilled} title='Seasonistas' />
         <ContactInfoBlock Icon={IconPhoneFilled} title='+92 311 9293 45' />
