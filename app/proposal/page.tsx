@@ -13,6 +13,7 @@ import { IconAdjustmentsHorizontal, IconSearch } from "@tabler/icons-react";
 import { Tab, TabGroup, TabList } from "@headlessui/react";
 import { Select } from "~/components/Select/Select";
 import { ProposalCard } from "./ProposalCard";
+import { ProposalsFilter } from "./ProposalsFilter";
 
 function PrimaryTabButton({
   shortLabel,
@@ -83,37 +84,44 @@ function PrimaryTabs() {
   );
 }
 
-function SecondaryTabs() {
+function SearchControls() {
   return (
-    <TabGroup className="mt-6 border-b border-gray-line-2/50 pb-1.5">
-      <TabList className="flex gap-10 font-semibold text-black/50 ">
-        <Tab className="data-[selected]:text-teal">All Proposals (5)</Tab>
-        <Tab className="data-[selected]:text-teal">Shortlisted</Tab>
-        <Tab className="data-[selected]:text-teal">Messaged</Tab>
-        <Tab className="data-[selected]:text-teal">Archived</Tab>
-      </TabList>
-    </TabGroup>
+    <div>
+      <div className="flex max-md:flex-col max-md:items-stretch items-center gap-2">
+        <div className="border border-black/20 rounded-xl flex-1 flex overflow-hidden px-2.5 py-2.5 gap-x-1.5">
+          <IconSearch size={17} className="self-center" />
+          <input
+            size={1}
+            className="flex-1 outline-none"
+            placeholder="Search"
+          />
+        </div>
+        <Button variant="outlined" fullRounded className="!px-10 !gap-x-2">
+          <IconAdjustmentsHorizontal />
+          Filters
+        </Button>
+        <div className="flex items-center gap-x-2.5">
+          Sort:
+          <Select>
+            <option>Best Match</option>
+            <option>Another Match</option>
+          </Select>
+        </div>
+      </div>
+      <h2 className="text-teal font-bold mt-1">Advanced Search</h2>
+    </div>
   );
 }
 
-function SearchControls() {
+function PageTitle() {
   return (
-    <div className="mt-5 flex max-md:flex-col max-md:items-stretch items-center gap-2">
-      <div className="border border-black/20 rounded-xl flex-1 flex overflow-hidden px-2.5 py-2.5 gap-x-1.5">
-        <IconSearch size={17} className="self-center" />
-        <input size={1} className="flex-1 outline-none" placeholder="Search" />
-      </div>
-      <Button variant="outlined" fullRounded className="!px-10 !gap-x-2">
-        <IconAdjustmentsHorizontal />
-        Filters
-      </Button>
-      <div className="flex items-center gap-x-2.5">
-        Sort:
-        <Select>
-          <option>Best Match</option>
-          <option>Another Match</option>
-        </Select>
-      </div>
+    <div>
+      <h1 className="font-semibold text-3xl">
+        Marketing Landing Page Initiative
+      </h1>
+      <p className="mt-1.5">
+        <span className="text-teal">28 invites</span> Left
+      </p>
     </div>
   );
 }
@@ -122,18 +130,10 @@ export default function ProposalPage() {
   return (
     <AppLayout pageTitle="Proposals" showSearchButton>
       <div className="app-container py-8 w-full">
-        <h1 className="font-semibold text-3xl">
-          Marketing Landing Page Initiative
-        </h1>
-        <p className="mt-1.5">
-          <span className="text-teal">28 invites</span> Left
-        </p>
-        {/* <SecondaryTabs /> */}
+        {/* <PageTitle /> */}
+        {/* <PrimaryTabs /> */}
+        {/* <ProposalsFilter /> */}
         {/* <SearchControls /> */}
-        {/* </div> */}
-        <PrimaryTabs />
-        {/* <div className="app-container pb-8"> */}
-        <h2 className="text-teal font-bold mt-1.5">Advanced Search</h2>
 
         <div className="mt-4 grid wl:grid-cols-2 gap-6">
           <ProposalCard isBestMatch />
