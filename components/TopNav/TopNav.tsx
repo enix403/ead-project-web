@@ -42,30 +42,36 @@ function Contents({ pageTitle, showSearchButton }: TopNavProps) {
           className="h-7 w-auto lg:h-10 wl:block hidden"
         />
         <div className="flex gap-x-3.5 items-center">
-          {showSearchButton ? (
+          {showSearchButton && (
             <IconButton className="wl:hidden block" variant="text">
               <IconSearch className="w-20" />
             </IconButton>
-          ) : (
-            <>
-              <IconButton variant="text">
-                <MessageIcon className="w-5" />
-              </IconButton>
-              <IconButton variant="text">
-                <div className="relative">
-                  <BellIcon className="w-5" />
-                  <div className="w-2.5 h-2.5 bg-teal absolute rounded-full top-0 right-0 -translate-y-1/3" />
-                </div>
-              </IconButton>
-              <button className="sm:block hidden">
-                <Image
-                  src={ProfileImage}
-                  alt=""
-                  className="w-11 h-11 rounded-full"
-                />
-              </button>
-            </>
           )}
+
+          <IconButton
+            variant="text"
+            className={clsx(showSearchButton && "max-wl:hidden")}
+          >
+            <MessageIcon className="w-5" />
+          </IconButton>
+          <IconButton
+            variant="text"
+            className={clsx(showSearchButton && "max-wl:hidden")}
+          >
+            <div className="relative">
+              <BellIcon className="w-5" />
+              <div className="w-2.5 h-2.5 bg-teal absolute rounded-full top-0 right-0 -translate-y-1/3" />
+            </div>
+          </IconButton>
+          <button
+            className={clsx(showSearchButton ? "max-wl:hidden" : "sm:block hidden")}
+          >
+            <Image
+              src={ProfileImage}
+              alt=""
+              className="w-11 h-11 rounded-full"
+            />
+          </button>
         </div>
       </div>
       <div className="absolute left-1/2 h-full -translate-x-1/2 top-0 flex items-center">
