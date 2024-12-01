@@ -18,6 +18,7 @@ import { AppLayout } from "~/components/AppLayout/AppLayout";
 import { TitleMark } from "~/components/decorations";
 import { Button } from "~/components/Button/Button";
 import clsx from "clsx";
+import Link from "next/link";
 
 function StatBlock({ title, desc }: { title: string; desc: string }) {
   return (
@@ -155,11 +156,11 @@ function JobBanner() {
         </p>
 
         <div className="flex max-ph:flex-cold justify-center mt-5 gap-2">
-          <a href="/job-user">
+          <Link href="/job-user">
             <Button fullRounded theme="white">
               Search Job
             </Button>
-          </a>
+          </Link>
           <Button fullRounded theme="white" variant="outlined">
             Apply Job Now
           </Button>
