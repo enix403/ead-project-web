@@ -22,8 +22,8 @@ function PageTitle(props: DivProps) {
       <h1 className="font-semibold text-3xl">
         Marketing Landing Page Initiative
       </h1>
-      <p className="mt-1.5">
-        <span className="text-teal">28 invites</span> Left
+      <p className="text-2xl mt-1.5">
+        <span className="text-teal">28 invites</span> left
       </p>
     </div>
   );

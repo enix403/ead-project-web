@@ -65,7 +65,7 @@ function TopFilterBar() {
         size={1}
         className='outline-none flex-1 p-2.5'
         placeholder='Enter'
-        defaultValue='Ui Designer'
+        defaultValue='UI Designer'
       />
       <input
         size={1}

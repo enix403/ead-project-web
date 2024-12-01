@@ -40,16 +40,16 @@ export function Footer(props: FooterProps) {
           "hover:[&>a]:underline",
           "text-lg font-medium whitespace-nowrap",
           "grid",
-          "grid-cols-1 ph:grid-cols-2 gap-x-2 gap-y-6",
-          "sm:grid-cols-[repeat(6,auto)] sm:justify-items-center sm:gap-x-16"
+          "grid-cols-1 ph:grid-cols-2 gap-x-6 gap-y-6",
+          "sm:grid-cols-[repeat(6,auto)] sm:justify-items-center sm:gap-x-10"
         )}
       >
-        <Link href="/">Home</Link>
-        <Link href="/proposal">Experience</Link>
-        <Link href="#">News</Link>
-        <Link href="/about">About us</Link>
         <Link href="/">Jobs</Link>
-        <Link href="/contact">Contact</Link>
+        <Link href="/proposal">Proposals</Link>
+        <Link href="/job-employee">Find Employers</Link>
+        <Link href="#">Messages</Link>
+        <Link href="/about">About us</Link>
+        <Link href="/contact">Contact us</Link>
       </div>
       <div className="flex gap-x-3 mt-8">
         <SocialIcon imageSrc={IconFacebook} />
