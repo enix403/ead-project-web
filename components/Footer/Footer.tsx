@@ -42,11 +42,12 @@ export function Footer(props: FooterProps) {
         )}
       >
         <Link href="/">Home</Link>
-        <Link href="/proposal">Experience</Link>
-        <Link href="#">News</Link>
-        <Link href="/about">About us</Link>
+        <Link href="/proposal">Proposals</Link>
         <Link href="/job-user">Jobs</Link>
-        <Link href="/contact">Contact</Link>
+        <Link href="/job-employee">Find Employers</Link>
+        <Link href="#">Messages</Link>
+        <Link href="/about">About us</Link>
+        <Link href="/contact">Contact us</Link>
       </div>
       <div className="flex gap-x-3 mt-8">
         <SocialIcon imageSrc={IconFacebook} />

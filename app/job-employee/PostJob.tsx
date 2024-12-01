@@ -17,7 +17,7 @@ export function PostJob({ onNext, onCancel }: any) {
         <FormLabel label='Job Description'>
           <TextArea
             className='h-40'
-            defaultValue='Spent severl years working on sheep on wall street. Had moderate success investing in Yugo`s on wall street. Managed a small team buying and selling stics for farmers. Spent several years licensing licorice in west palm beach, FL. Developed several new methods for working it banjos in the aftermarekt. Spent a weekend iporting banjos n west palm beach,  Yugo`s on wall street. Managed a small team buying and selling stics for farmers. Spent several years licensing licorice in west palm beach, FL. Developed several new methods for working it banjos in the aftermarekt. Spent a weekend iporting banjos n west palm beach.'
+            defaultValue='Spent several years working on sheep on wall street. Had moderate success investing in Yugo`s on wall street. Managed a small team buying and selling sticks for farmers. Spent several years licensing licorice in west palm beach, FL. Developed several new methods for working banjos in the aftermarket. Spent a weekend importing banjos in west palm beach, Yugo`s on wall street. Managed a small team buying and selling sticks for farmers. Spent several years licensing licorice in west palm beach, FL. Developed several new methods for working banjos in the aftermarket. Spent a weekend importing banjos at west palm beach.'
           />
         </FormLabel>
 
