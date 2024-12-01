@@ -13,32 +13,18 @@ import { IconButton } from "@material-tailwind/react";
 import Link from "next/link";
 import { IconMenu2, IconX } from "@tabler/icons-react";
 import { Button } from "../Button/Button";
-// import { useState } from "react";
 
 import { atom, useAtom, useSetAtom } from "jotai";
+import { AllLinks, ViewMode } from "../AllLinks";
 
 export interface TopNavProps {
   pageTitle?: string;
-  showSearchButton?: boolean;
-}
-
-function DesktopLinks() {
-  return (
-    <>
-      <Link href="/">Home</Link>
-      <Link href="/proposal">Proposals</Link>
-      <Link href="/">Jobs</Link>
-      <Link href="/job-employee">Find Employers</Link>
-      <Link href="#">Messages</Link>
-      <Link href="/about">About us</Link>
-      <Link href="/contact">Contact us</Link>
-    </>
-  );
+  viewMode: ViewMode;
 }
 
 const drawerAtom = atom(false);
 
-function Contents({ pageTitle }: TopNavProps) {
+function Contents({ pageTitle, viewMode }: TopNavProps) {
   const setDrawerOpen = useSetAtom(drawerAtom);
 
   let loggedIn = false;
@@ -96,19 +82,27 @@ function Contents({ pageTitle }: TopNavProps) {
             "wl:flex hidden"
           )}
         >
-          <DesktopLinks />
+          <AllLinks viewMode={viewMode} />
         </div>
-        <h1 className="text-2xl font-semibold wl:hidden max-ph:hidden block">{pageTitle}</h1>
+        <h1 className="text-2xl font-semibold wl:hidden max-ph:hidden block">
+          {pageTitle}
+        </h1>
       </div>
 
       <div className="absolute top-0 left-0">
-        <MobileDrawer loggedIn={loggedIn} />
+        <MobileDrawer loggedIn={loggedIn} viewMode={viewMode} />
       </div>
     </>
   );
 }
 
-export function MobileDrawer({ loggedIn }: { loggedIn: boolean }) {
+export function MobileDrawer({
+  loggedIn,
+  viewMode,
+}: {
+  loggedIn: boolean;
+  viewMode: ViewMode;
+}) {
   const [isOpen, setIsOpen] = useAtom(drawerAtom);
 
   return (
@@ -134,13 +128,7 @@ export function MobileDrawer({ loggedIn }: { loggedIn: boolean }) {
         </div>
 
         <div className="flex flex-col gap-y-3 mt-8 hover:[&>a]:underline">
-          <Link href="/">Home</Link>
-          <Link href="/proposal">Proposals</Link>
-          <Link href="/">Jobs</Link>
-          <Link href="/job-employee">Find Emloyers</Link>
-          <Link href="#">Messages</Link>
-          <Link href="/about">About us</Link>
-          <Link href="/contact">Contact us</Link>
+          <AllLinks viewMode={viewMode} />
         </div>
 
         {!loggedIn && (

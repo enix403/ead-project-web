@@ -6,12 +6,12 @@ import { Footer } from "~/components/Footer/Footer";
 export function AppLayout({
   children,
   ...navProps
-}: PropsWithChildren & TopNavProps) {
+}: PropsWithChildren & Omit<TopNavProps, "viewMode">) {
   return (
     <main className="min-h-screen flex flex-col">
-      <TopNav {...navProps} />
+      <TopNav {...navProps} viewMode="employer" />
       <div className="flex-1 flex flex-col">{children}</div>
-      <Footer />
+      <Footer viewMode="employer" />
     </main>
   );
 }
