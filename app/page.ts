@@ -1,1 +1,1 @@
-export { default } from './job-user';
+export { default } from './home/page';

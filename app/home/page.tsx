@@ -130,7 +130,7 @@ function SearchControls(props: DivProps) {
   );
 }
 
-export default function ProposalPage() {
+export default function HomeProposalsPage() {
   return (
     <AppLayout pageTitle="Proposals" showSearchButton>
       <div className="app-container py-8 w-full">

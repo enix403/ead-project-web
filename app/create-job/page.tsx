@@ -8,7 +8,7 @@ import { ApplicationDetailsPrimary } from "./ApplicationDetailsPrimary";
 import { ApplicationDetailsSecondary } from "./ApplicationDetailsSecondary";
 import { ReactNode, useState } from "react";
 
-export default function EmployeeJobPanel() {
+export default function CreateJobPage() {
   const [activePage, setActivePage] = useState(0);
 
   function onNext() {
