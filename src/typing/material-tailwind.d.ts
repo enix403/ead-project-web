@@ -7,6 +7,10 @@ type EventCapture = {
   onPointerLeaveCapture?: unknown;
 };
 
+interface CorrectPlaceholder extends EventCapture {
+  placeholder?: unknown;
+}
+
 declare module "@material-tailwind/react" {
   export interface ButtonProps extends EventCapture {
     placeholder?: unknown;
@@ -42,6 +46,12 @@ declare module "@material-tailwind/react" {
     placeholder?: unknown;
   }
   export interface TypographyProps extends EventCapture {
+    placeholder?: unknown;
+  }
+  export interface AccordionHeaderProps extends EventCapture {
+    placeholder?: unknown;
+  }
+  export interface AccordionProps extends EventCapture {
     placeholder?: unknown;
   }
 }
