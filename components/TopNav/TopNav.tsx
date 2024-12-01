@@ -40,7 +40,9 @@ function Contents({ pageTitle }: TopNavProps) {
   return (
     <>
       <div className="flex justify-between items-center">
-        <Image alt="" src={Logo} className="h-7 w-auto lg:h-10" />
+        <Link href="/">
+          <Image alt="" src={Logo} className="h-7 w-auto lg:h-10" />
+        </Link>
         <div className="flex gap-x-3.5 items-center">
           {loggedIn ? (
             <>
