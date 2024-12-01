@@ -71,7 +71,7 @@ function Contents({ pageTitle }: TopNavProps) {
           )}
 
           {/* ============ */}
-          <MobileDrawer />
+          <MobileDrawer loggedIn={loggedIn} />
         </div>
       </div>
       <div className="absolute left-1/2 h-full -translate-x-1/2 top-0 flex items-center">
@@ -90,11 +90,8 @@ function Contents({ pageTitle }: TopNavProps) {
   );
 }
 
-export function MobileDrawer() {
+export function MobileDrawer({ loggedIn }: { loggedIn: boolean }) {
   const [isOpen, setIsOpen] = useState(false);
-  const toggleDrawer = () => {
-    setIsOpen((prevState) => !prevState);
-  };
 
   return (
     <>
@@ -110,7 +107,10 @@ export function MobileDrawer() {
         open={isOpen}
         onClose={() => setIsOpen(false)}
         direction="right"
-        className="p-4"
+        overlayOpacity={0.6}
+        duration={200}
+        lockBackgroundScroll
+        className="!w-[85vw] ph:!w-[300px] p-4"
       >
         <div className="flex justify-between items-center">
           <Image alt="" src={Logo} className="h-7 w-auto lg:h-10" />
@@ -122,6 +122,22 @@ export function MobileDrawer() {
             <IconX className="w-6" />
           </IconButton>
         </div>
+
+        <div className="flex flex-col gap-y-3 mt-8 hover:[&>a]:underline">
+          <Link href="/">Home</Link>
+          <Link href="/proposal">Proposals</Link>
+          <Link href="/job-user">Jobs</Link>
+          <Link href="/job-employee">Find Emloyers</Link>
+          <Link href="#">Messages</Link>
+          <Link href="/about">About us</Link>
+          <Link href="/contact">Contact us</Link>
+        </div>
+
+        {/* {!loggedIn && (
+          <Link href="/auth" className="block mt-8">
+            <Button className="!px-4d !py-2d">Register / Login</Button>
+          </Link>
+        )} */}
       </Drawer>
     </>
   );
