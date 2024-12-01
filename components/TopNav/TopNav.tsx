@@ -1,14 +1,19 @@
+import "react-modern-drawer/dist/index.css";
+
 import Logo from "./assets/logo-big.png";
 import MessageIcon from "./assets/message.svg";
 import BellIcon from "./assets/notification.svg";
 import ProfileImage from "~/app/assets/profile-1.webp";
 
+import Drawer from "react-modern-drawer";
 import Image from "next/image";
 
 import clsx from "clsx";
 import { IconButton } from "@material-tailwind/react";
 import Link from "next/link";
-import { IconMenu2, IconSearch } from "@tabler/icons-react";
+import { IconMenu2, IconX } from "@tabler/icons-react";
+import { Button } from "../Button/Button";
+import { useState } from "react";
 
 export interface TopNavProps {
   pageTitle?: string;
@@ -29,49 +34,44 @@ function DesktopLinks() {
   );
 }
 
-function Contents({ pageTitle, showSearchButton }: TopNavProps) {
+function Contents({ pageTitle }: TopNavProps) {
+  let loggedIn = false;
+
   return (
     <>
       <div className="flex justify-between items-center">
-        <IconButton className="wl:hidden block" variant="text">
-          <IconMenu2 className="w-20" />
-        </IconButton>
-        <Image
-          alt=""
-          src={Logo}
-          className="h-7 w-auto lg:h-10 wl:block hidden"
-        />
+        <Image alt="" src={Logo} className="h-7 w-auto lg:h-10" />
         <div className="flex gap-x-3.5 items-center">
-          {showSearchButton && (
-            <IconButton className="wl:hidden block" variant="text">
-              <IconSearch className="w-20" />
-            </IconButton>
+          {loggedIn ? (
+            <>
+              <IconButton variant="text" className={"wl:block"}>
+                <MessageIcon className="w-5" />
+              </IconButton>
+              <IconButton variant="text" className={"wl:block"}>
+                <div className="relative">
+                  <BellIcon className="w-5" />
+                  <div className="w-2.5 h-2.5 bg-teal absolute rounded-full top-0 right-0 -translate-y-1/3" />
+                </div>
+              </IconButton>
+
+              <button className={clsx("wl:block hidden")}>
+                <Image
+                  src={ProfileImage}
+                  alt=""
+                  className="w-11 h-11 rounded-full"
+                />
+              </button>
+            </>
+          ) : (
+            <Link href="/auth">
+              <Button className="!px-4 !py-1.5 text-sm">
+                Register / Login
+              </Button>
+            </Link>
           )}
 
-          <IconButton
-            variant="text"
-            className={clsx(showSearchButton && "max-wl:hidden")}
-          >
-            <MessageIcon className="w-5" />
-          </IconButton>
-          <IconButton
-            variant="text"
-            className={clsx(showSearchButton && "max-wl:hidden")}
-          >
-            <div className="relative">
-              <BellIcon className="w-5" />
-              <div className="w-2.5 h-2.5 bg-teal absolute rounded-full top-0 right-0 -translate-y-1/3" />
-            </div>
-          </IconButton>
-          <button
-            className={clsx(showSearchButton ? "max-wl:hidden" : "sm:block hidden")}
-          >
-            <Image
-              src={ProfileImage}
-              alt=""
-              className="w-11 h-11 rounded-full"
-            />
-          </button>
+          {/* ============ */}
+          <MobileDrawer />
         </div>
       </div>
       <div className="absolute left-1/2 h-full -translate-x-1/2 top-0 flex items-center">
@@ -86,6 +86,43 @@ function Contents({ pageTitle, showSearchButton }: TopNavProps) {
         </div>
         <h1 className="text-2xl font-semibold wl:hidden block">{pageTitle}</h1>
       </div>
+    </>
+  );
+}
+
+export function MobileDrawer() {
+  const [isOpen, setIsOpen] = useState(false);
+  const toggleDrawer = () => {
+    setIsOpen((prevState) => !prevState);
+  };
+
+  return (
+    <>
+      <IconButton
+        onClick={() => setIsOpen(true)}
+        className="wl:hidden block"
+        variant="text"
+      >
+        <IconMenu2 className="w-20" />
+      </IconButton>
+
+      <Drawer
+        open={isOpen}
+        onClose={() => setIsOpen(false)}
+        direction="right"
+        className="p-4"
+      >
+        <div className="flex justify-between items-center">
+          <Image alt="" src={Logo} className="h-7 w-auto lg:h-10" />
+          <IconButton
+            onClick={() => setIsOpen(false)}
+            variant="text"
+            className={"wl:block"}
+          >
+            <IconX className="w-6" />
+          </IconButton>
+        </div>
+      </Drawer>
     </>
   );
 }
