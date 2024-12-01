@@ -30,15 +30,18 @@ export function Footer(props: FooterProps) {
     <footer
       {...combineVisualProps(props, {
         className: [
-          "bg-x-purple py-10 flex flex-col justify-center items-center text-white",
+          "bg-x-purple py-10 flex flex-col justify-center px-4 ph:items-center text-white",
           "max-w-screen overflow-x-auto"
         ],
       })}
     >
       <div
         className={clsx(
-          "flex font-medium text-lg gap-x-8 md:gap-x-16 whitespace-nowrap",
-          "hover:[&>a]:underline"
+          "hover:[&>a]:underline",
+          "text-lg font-medium whitespace-nowrap",
+          "grid",
+          "grid-cols-1 ph:grid-cols-2 gap-x-2 gap-y-6",
+          "sm:grid-cols-[repeat(6,auto)] sm:justify-items-center sm:gap-x-16"
         )}
       >
         <Link href="/">Home</Link>
@@ -54,7 +57,7 @@ export function Footer(props: FooterProps) {
         <SocialIcon imageSrc={IconInstagram} />
       </div>
 
-      <h3 className="mt-7 font-medium text-white opacity-75">Seasonistas</h3>
+      <h3 className="mt-7 font-medium text-white opacity-75 text-center">Seasonistas</h3>
     </footer>
   );
 }
