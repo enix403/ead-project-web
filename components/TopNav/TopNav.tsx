@@ -13,7 +13,9 @@ import { IconButton } from "@material-tailwind/react";
 import Link from "next/link";
 import { IconMenu2, IconX } from "@tabler/icons-react";
 import { Button } from "../Button/Button";
-import { useState } from "react";
+// import { useState } from "react";
+
+import { atom, useAtom, useSetAtom } from "jotai";
 
 export interface TopNavProps {
   pageTitle?: string;
@@ -34,7 +36,11 @@ function DesktopLinks() {
   );
 }
 
+const drawerAtom = atom(false);
+
 function Contents({ pageTitle }: TopNavProps) {
+  const setDrawerOpen = useSetAtom(drawerAtom);
+
   let loggedIn = false;
 
   return (
@@ -65,7 +71,7 @@ function Contents({ pageTitle }: TopNavProps) {
               </button>
             </>
           ) : (
-            <Link href="/auth">
+            <Link href="/auth" className="hidden ph:block">
               <Button className="!px-4 !py-1.5 text-sm">
                 Register / Login
               </Button>
@@ -73,7 +79,13 @@ function Contents({ pageTitle }: TopNavProps) {
           )}
 
           {/* ============ */}
-          <MobileDrawer loggedIn={loggedIn} />
+          <IconButton
+            onClick={() => setDrawerOpen(true)}
+            className="wl:hidden block"
+            variant="text"
+          >
+            <IconMenu2 className="w-20" />
+          </IconButton>
         </div>
       </div>
       <div className="absolute left-1/2 h-full -translate-x-1/2 top-0 flex items-center">
@@ -86,25 +98,21 @@ function Contents({ pageTitle }: TopNavProps) {
         >
           <DesktopLinks />
         </div>
-        <h1 className="text-2xl font-semibold wl:hidden block">{pageTitle}</h1>
+        <h1 className="text-2xl font-semibold wl:hidden max-ph:hidden block">{pageTitle}</h1>
+      </div>
+
+      <div className="absolute top-0 left-0">
+        <MobileDrawer loggedIn={loggedIn} />
       </div>
     </>
   );
 }
 
 export function MobileDrawer({ loggedIn }: { loggedIn: boolean }) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useAtom(drawerAtom);
 
   return (
     <>
-      <IconButton
-        onClick={() => setIsOpen(true)}
-        className="wl:hidden block"
-        variant="text"
-      >
-        <IconMenu2 className="w-20" />
-      </IconButton>
-
       <Drawer
         open={isOpen}
         onClose={() => setIsOpen(false)}
@@ -135,11 +143,11 @@ export function MobileDrawer({ loggedIn }: { loggedIn: boolean }) {
           <Link href="/contact">Contact us</Link>
         </div>
 
-        {/* {!loggedIn && (
+        {!loggedIn && (
           <Link href="/auth" className="block mt-8">
             <Button className="!px-4d !py-2d">Register / Login</Button>
           </Link>
-        )} */}
+        )}
       </Drawer>
     </>
   );
