@@ -3,12 +3,12 @@ import type { CSSProperties } from "react";
 
 export interface VisualProps {
   className?: string | undefined;
-  styles?: CSSProperties | undefined;
+  style?: CSSProperties | undefined;
 }
 
 export interface CombineVisualPropsIn {
   className?: ClassValue | undefined;
-  styles?: CSSProperties | undefined;
+  style?: CSSProperties | undefined;
 }
 
 export type NoClass<T> = Omit<T, 'className'>;
@@ -18,13 +18,13 @@ export function combineVisualProps<T extends VisualProps>(
   baseProps: T,
   props: CombineVisualPropsIn
 ): T {
-  let { className: baseClassName, styles: baseStyles } = baseProps;
-  let { className: themeClassName, styles: themeStyles } = props;
+  let { className: baseClassName, style: baseStyles } = baseProps;
+  let { className: themeClassName, style: themeStyles } = props;
 
   return {
     ...baseProps,
     className: clsx(baseClassName, themeClassName),
-    styles: {
+    style: {
       ...baseStyles,
       ...themeStyles
     }

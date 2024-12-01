@@ -36,7 +36,7 @@ export function FilterList({ children }: PropsWithChildren) {
 
   return (
     <div>
-      <div className="md:bg-teal/5 flex md:flex-col overflow-auto gap-3 md:px-2 md:py-4 pb-2 md:rounded-xl">
+      <div className="md:bg-teal/5 flex flex-wrap md:flex-col overflow-auto gap-3 md:px-2 md:py-4 pb-2 md:rounded-xl">
         {filterConfigs.map((filter, index) => {
           let open = openIndex === index;
           return (
@@ -52,7 +52,7 @@ export function FilterList({ children }: PropsWithChildren) {
                 className={clsx(
                   "flex justify-between w-full items-center gap-x-2 md:gap-x-32 rounded-xl",
                   "bg-teal text-white hover:bg-teal-dark hover:md:bg-teal/5 md:text-black md:bg-transparent",
-                  "px-2 py-2"
+                  "px-4 py-2"
                 )}
               >
                 <p className="whitespace-nowrap">{filter.label}</p>

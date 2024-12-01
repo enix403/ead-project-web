@@ -26,4 +26,7 @@ declare module "@material-tailwind/react" {
   export interface AvatarProps extends EventCapture {
     placeholder?: unknown;
   }
+  export interface DrawerProps extends EventCapture {
+    placeholder?: unknown;
+  }
 }
