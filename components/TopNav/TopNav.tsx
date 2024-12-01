@@ -27,7 +27,7 @@ function DesktopLinks() {
     <>
       <Link href="/">Home</Link>
       <Link href="/proposal">Proposals</Link>
-      <Link href="/job-user">Jobs</Link>
+      <Link href="/">Jobs</Link>
       <Link href="/job-employee">Find Emloyers</Link>
       <Link href="#">Messages</Link>
       <Link href="/about">About us</Link>
@@ -136,7 +136,7 @@ export function MobileDrawer({ loggedIn }: { loggedIn: boolean }) {
         <div className="flex flex-col gap-y-3 mt-8 hover:[&>a]:underline">
           <Link href="/">Home</Link>
           <Link href="/proposal">Proposals</Link>
-          <Link href="/job-user">Jobs</Link>
+          <Link href="/">Jobs</Link>
           <Link href="/job-employee">Find Emloyers</Link>
           <Link href="#">Messages</Link>
           <Link href="/about">About us</Link>

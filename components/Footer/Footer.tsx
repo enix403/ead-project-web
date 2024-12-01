@@ -48,7 +48,7 @@ export function Footer(props: FooterProps) {
         <Link href="/proposal">Experience</Link>
         <Link href="#">News</Link>
         <Link href="/about">About us</Link>
-        <Link href="/job-user">Jobs</Link>
+        <Link href="/">Jobs</Link>
         <Link href="/contact">Contact</Link>
       </div>
       <div className="flex gap-x-3 mt-8">
