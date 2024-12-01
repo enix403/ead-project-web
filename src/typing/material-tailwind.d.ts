@@ -29,4 +29,19 @@ declare module "@material-tailwind/react" {
   export interface DrawerProps extends EventCapture {
     placeholder?: unknown;
   }
+  export interface CardProps extends EventCapture {
+    placeholder?: unknown;
+  }
+  export interface ListProps extends EventCapture {
+    placeholder?: unknown;
+  }
+  export interface ListItemProps extends EventCapture {
+    placeholder?: unknown;
+  }
+  export interface ListItemPrefixProps extends EventCapture {
+    placeholder?: unknown;
+  }
+  export interface TypographyProps extends EventCapture {
+    placeholder?: unknown;
+  }
 }
