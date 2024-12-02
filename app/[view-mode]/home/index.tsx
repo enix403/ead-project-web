@@ -5,9 +5,9 @@ import PIconPlus from "~/app/assets/p-plus.svg";
 import PIconEye from "~/app/assets/p-eye.svg";
 import PIconPerson from "~/app/assets/p-person.svg";
 
-import { Fragment, ReactNode } from "react";
+import { Fragment, ReactNode, useContext, useState } from "react";
 import clsx from "clsx";
-import { AppLayout } from "~/components/AppLayout/AppLayout";
+import { AppLayout, ViewModeContext } from "~/components/AppLayout/AppLayout";
 import { Button } from "~/components/Button/Button";
 import { IconAdjustmentsHorizontal, IconSearch } from "@tabler/icons-react";
 import { Tab, TabGroup, TabList } from "@headlessui/react";
@@ -15,6 +15,7 @@ import { Select } from "~/components/Select/Select";
 import { ProposalCard } from "./ProposalCard";
 import { ProposalsFilter } from "./ProposalsFilter";
 import { DivProps } from "react-html-props";
+import { Filters } from "./filters/Filters";
 
 function PageTitle(props: DivProps) {
   return (
@@ -59,6 +60,8 @@ function PrimaryTabButton({
 }
 
 function PrimaryTabs({ className }: DivProps) {
+  let viewMode = useContext(ViewModeContext);
+
   return (
     <TabGroup
       as="div"
@@ -77,24 +80,19 @@ function PrimaryTabs({ className }: DivProps) {
         )}
       >
         <PrimaryTabButton
-          shortLabel="View Job Post"
-          label="View Job Post"
+          shortLabel={"All"}
+          label={viewMode === "employer" ? "All Jobs" : "All Profiles"}
           icon={<PIconBriefcase />}
         />
         <PrimaryTabButton
-          shortLabel="Invite"
-          label="Invite Employers"
+          shortLabel="Proposals"
+          label="Proposals"
           icon={<PIconPlus />}
         />
         <PrimaryTabButton
-          shortLabel="Review"
-          label="Review Proposals"
+          shortLabel="Saved"
+          label="Saved"
           icon={<PIconEye />}
-        />
-        <PrimaryTabButton
-          shortLabel="Hire"
-          label="Hire (0)"
-          icon={<PIconPerson />}
         />
       </TabList>
     </TabGroup>
@@ -102,6 +100,7 @@ function PrimaryTabs({ className }: DivProps) {
 }
 
 function SearchControls(props: DivProps) {
+  let [showFilters, setShowFilters] = useState(false);
   return (
     <div {...props}>
       <div className="flex max-md:flex-col max-md:items-stretch items-center gap-2">
@@ -113,7 +112,12 @@ function SearchControls(props: DivProps) {
             placeholder="Search"
           />
         </div>
-        <Button variant="outlined" fullRounded className="!px-10 !gap-x-2">
+        <Button
+          variant="outlined"
+          fullRounded
+          className="!px-10 !gap-x-2"
+          onClick={() => setShowFilters((x) => !x)}
+        >
           <IconAdjustmentsHorizontal />
           Filters
         </Button>
@@ -125,14 +129,15 @@ function SearchControls(props: DivProps) {
           </Select>
         </div>
       </div>
-      <h2 className="text-teal font-bold mt-1">Advanced Search</h2>
+      {/* <h2 className="text-teal font-bold mt-1">Advanced Search</h2> */}
+      {showFilters && <Filters className="mt-4" />}
     </div>
   );
 }
 
-export default function ProposalPage() {
+export default function HomeProposalsPage({ params }: { params: any }) {
   return (
-    <AppLayout pageTitle="Proposals" showSearchButton>
+    <AppLayout pageTitle="Proposals" params={params}>
       <div className="app-container py-8 w-full">
         <div className="hidden md:block flex-1">
           <PageTitle />
@@ -144,6 +149,7 @@ export default function ProposalPage() {
           <PrimaryTabs />
           <ProposalsFilter className="mt-5" />
           <PageTitle className="mt-4" />
+          <SearchControls className="mt-4" />
         </div>
 
         <div className="mt-4 grid wl:grid-cols-2 gap-6">

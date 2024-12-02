@@ -23,7 +23,7 @@ export function Filter(_props: FilterProps) {
   return null;
 }
 
-export function FilterList({ children }: PropsWithChildren) {
+export function FilterList({ children, className }: PropsWithChildren & { className?: string }) {
   let filterConfigs =
     Children.map(children, (child) => {
       if (isValidElement(child) && child.type === Filter) {
@@ -35,8 +35,8 @@ export function FilterList({ children }: PropsWithChildren) {
   let [openIndex, setOpenIndex] = useState(-1);
 
   return (
-    <div>
-      <div className="md:bg-teal/5 flex flex-wrap md:flex-col overflow-auto gap-3 md:px-2 md:py-4 pb-2 md:rounded-xl">
+    <div className={className}>
+      <div className="flex flex-wrap overflow-auto gap-3 pb-2">
         {filterConfigs.map((filter, index) => {
           let open = openIndex === index;
           return (
@@ -50,8 +50,8 @@ export function FilterList({ children }: PropsWithChildren) {
                   }
                 }}
                 className={clsx(
-                  "flex justify-between w-full items-center gap-x-2 md:gap-x-32 rounded-xl",
-                  "bg-teal text-white hover:bg-teal-dark hover:md:bg-teal/5 md:text-black md:bg-transparent",
+                  "flex justify-between w-full items-center gap-x-2 rounded-xl",
+                  "bg-teal text-white hover:bg-teal-dark",
                   "px-4 py-2"
                 )}
               >
@@ -60,15 +60,15 @@ export function FilterList({ children }: PropsWithChildren) {
                   className={clsx("ta", open && "-rotate-180")}
                 />
               </button>
-              {open && (
+              {/* {open && (
                 <div className="px-2 pt-1 max-md:hidden">{filter.children}</div>
-              )}
+              )} */}
             </div>
           );
         })}
       </div>
       {openIndex > -1 && (
-        <div className="mt-4 md:hidden">
+        <div className="mt-4">
           {filterConfigs[openIndex].children}
         </div>
       )}
@@ -76,15 +76,15 @@ export function FilterList({ children }: PropsWithChildren) {
   );
 }
 
-export function Filters() {
+export function Filters({ className }: { className?: string }) {
   return (
-    <FilterList>
-      <Filter label="Search by Keywords">
+    <FilterList className={className}>
+      {/* <Filter label="Search by Keywords">
         <RichInput
           icon={<IconSearch size={17} />}
           inputProps={{ placeholder: "UI/UX Designer" }}
         />
-      </Filter>
+      </Filter> */}
       <Filter label="Location">
         <RichInput
           icon={<IconMapPin size={17} />}

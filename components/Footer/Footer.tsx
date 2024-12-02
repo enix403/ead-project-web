@@ -5,8 +5,9 @@ import IconInstagram from "./assets/instagram.svg";
 import Link from "next/link";
 
 import clsx from "clsx";
-import { FooterProps } from "react-html-props";
+import { FooterProps as HtmlFooterProps } from "react-html-props";
 import { combineVisualProps } from "../VisualComponent";
+import { AllLinks, ViewMode } from "../AllLinks";
 
 function SocialIcon({
   imageSrc: Icon,
@@ -25,13 +26,17 @@ function SocialIcon({
   );
 }
 
-export function Footer(props: FooterProps) {
+export type FooterProps = HtmlFooterProps & {
+  viewMode: ViewMode;
+};
+
+export function Footer({ viewMode, ...props }: FooterProps) {
   return (
     <footer
       {...combineVisualProps(props, {
         className: [
           "bg-x-purple py-10 flex flex-col justify-center px-4 ph:items-center text-white",
-          "max-w-screen overflow-x-auto"
+          "max-w-screen overflow-x-auto",
         ],
       })}
     >
@@ -41,15 +46,13 @@ export function Footer(props: FooterProps) {
           "text-lg font-medium whitespace-nowrap",
           "grid",
           "grid-cols-1 ph:grid-cols-2 gap-x-6 gap-y-6",
-          "justify-items-center sm:grid-cols-[repeat(6,auto)] sm:justify-items-center sm:gap-x-10"
+          "justify-items-center sm:justify-items-center sm:gap-x-10",
+          viewMode === "employer"
+            ? "sm:grid-cols-[repeat(4,auto)] md:grid-cols-[repeat(7,auto)]"
+            : "sm:grid-cols-[repeat(5,auto)]"
         )}
       >
-        <Link href="/">Jobs</Link>
-        <Link href="/proposal">Proposals</Link>
-        <Link href="/job-employee">Find Employers</Link>
-        <Link href="#">Messages</Link>
-        <Link href="/about">About us</Link>
-        <Link href="/contact">Contact us</Link>
+        <AllLinks viewMode={viewMode} />
       </div>
       <div className="grid grid-cols-3 mt-8 justify-items-center">
         <SocialIcon imageSrc={IconFacebook} />
@@ -57,7 +60,9 @@ export function Footer(props: FooterProps) {
         <SocialIcon imageSrc={IconInstagram} />
       </div>
 
-      <h3 className="mt-7 font-medium text-white opacity-75 text-center">Seasonistas</h3>
+      <h3 className="mt-7 font-medium text-white opacity-75 text-center">
+        Seasonistas
+      </h3>
     </footer>
   );
 }

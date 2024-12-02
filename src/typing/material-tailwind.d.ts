@@ -7,26 +7,28 @@ type EventCapture = {
   onPointerLeaveCapture?: unknown;
 };
 
+interface CorrectPlaceholder extends EventCapture {
+  placeholder?: unknown;
+}
+
+interface CorrectCrossOrigin extends EventCapture {
+  crossOrigin?: unknown;
+}
+
 declare module "@material-tailwind/react" {
-  export interface ButtonProps extends EventCapture {
-    placeholder?: unknown;
-  }
-  export interface InputProps extends EventCapture {
-    crossOrigin?: unknown;
-  }
-  export interface SwitchProps extends EventCapture {
-    crossOrigin?: unknown;
-  }
-  export interface SelectProps extends EventCapture {
-    placeholder?: unknown;
-  }
-  export interface IconButtonProps extends EventCapture {
-    placeholder?: unknown;
-  }
-  export interface AvatarProps extends EventCapture {
-    placeholder?: unknown;
-  }
-  export interface DrawerProps extends EventCapture {
-    placeholder?: unknown;
-  }
+  export interface InputProps extends CorrectCrossOrigin {}
+  export interface SwitchProps extends CorrectCrossOrigin {}
+
+  export interface ButtonProps extends CorrectPlaceholder {}
+  export interface SelectProps extends CorrectPlaceholder {}
+  export interface IconButtonProps extends CorrectPlaceholder {}
+  export interface AvatarProps extends CorrectPlaceholder {}
+  export interface DrawerProps extends CorrectPlaceholder {}
+  export interface CardProps extends CorrectPlaceholder {}
+  export interface ListProps extends CorrectPlaceholder {}
+  export interface ListItemProps extends CorrectPlaceholder {}
+  export interface ListItemPrefixProps extends CorrectPlaceholder {}
+  export interface TypographyProps extends CorrectPlaceholder {}
+  export interface AccordionHeaderProps extends CorrectPlaceholder {}
+  export interface AccordionProps extends CorrectPlaceholder {}
 }

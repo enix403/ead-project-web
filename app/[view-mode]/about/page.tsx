@@ -235,9 +235,9 @@ function BottomSection() {
 
 /* ============================================== */
 
-export default function AboutUs() {
+export default function AboutUs({ params }: { params: any }) {
   return (
-    <AppLayout>
+    <AppLayout params={params}>
       <TopSection />
       <JobBanner />
       <BottomSection />
