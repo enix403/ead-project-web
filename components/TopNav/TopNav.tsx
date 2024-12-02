@@ -27,7 +27,7 @@ const drawerAtom = atom(false);
 function Contents({ pageTitle, viewMode }: TopNavProps) {
   const setDrawerOpen = useSetAtom(drawerAtom);
 
-  let loggedIn = false;
+  let loggedIn = true;
 
   return (
     <>
@@ -35,24 +35,24 @@ function Contents({ pageTitle, viewMode }: TopNavProps) {
         <Link href={`/${viewMode}`}>
           <Image alt="" src={Logo} className="h-7 w-auto lg:h-10" />
         </Link>
-        <div className="flex gap-x-3.5 items-center">
+        <div className="flex gap-x-2 wl:gap-x-3.5 items-center">
           {loggedIn ? (
             <>
-              <IconButton variant="text" className={"wl:block"}>
+              <IconButton variant="text">
                 <MessageIcon className="w-5" />
               </IconButton>
-              <IconButton variant="text" className={"wl:block"}>
+              {/* <IconButton variant="text">
                 <div className="relative">
                   <BellIcon className="w-5" />
                   <div className="w-2.5 h-2.5 bg-teal absolute rounded-full top-0 right-0 -translate-y-1/3" />
                 </div>
-              </IconButton>
+              </IconButton> */}
 
-              <button className={clsx("wl:block hidden")}>
+              <button>
                 <Image
                   src={ProfileImage}
                   alt=""
-                  className="w-11 h-11 rounded-full"
+                  className="w-8 h-8 rounded-full"
                 />
               </button>
             </>
