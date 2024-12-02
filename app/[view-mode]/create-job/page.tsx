@@ -8,7 +8,7 @@ import { ApplicationDetailsPrimary } from "./ApplicationDetailsPrimary";
 import { ApplicationDetailsSecondary } from "./ApplicationDetailsSecondary";
 import { ReactNode, useState } from "react";
 
-export default function CreateJobPage() {
+export default function CreateJobPage({ params }: { params: any }) {
   const [activePage, setActivePage] = useState(0);
 
   function onNext() {
@@ -34,7 +34,7 @@ export default function CreateJobPage() {
   }
 
   return (
-    <AppLayout pageTitle="Jobs">
+    <AppLayout pageTitle="Jobs" params={params}>
       <div className="flex-1 flex items-start">
         <Sidebar />
         <div className="flex-1 px-7 py-8">{rendered}</div>

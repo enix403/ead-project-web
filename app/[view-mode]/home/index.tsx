@@ -130,9 +130,9 @@ function SearchControls(props: DivProps) {
   );
 }
 
-export default function HomeProposalsPage() {
+export default function HomeProposalsPage({ params }: { params: any }) {
   return (
-    <AppLayout pageTitle="Proposals" showSearchButton>
+    <AppLayout pageTitle="Proposals" params={params}>
       <div className="app-container py-8 w-full">
         <div className="hidden md:block flex-1">
           <PageTitle />

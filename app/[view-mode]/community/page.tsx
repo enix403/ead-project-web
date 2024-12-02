@@ -60,9 +60,9 @@ function Post() {
   );
 }
 
-export default function Community() {
+export default function Community({ params }: { params: any }) {
   return (
-    <AppLayout>
+    <AppLayout params={params}>
       <div className="pb-8 pt-3">
         <div className="max-w-4xl mx-auto">
           <Post />

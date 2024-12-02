@@ -53,9 +53,9 @@ export function AccordionCustomAnimation() {
   );
 }
 
-export default function InformationPage() {
+export default function InformationPage({ params }: { params: any }) {
   return (
-    <AppLayout>
+    <AppLayout params={params}>
       <div className="pb-8 pt-6">
         <div className="max-w-4xl mx-auto px-4">
           <h3 className="mb-8 text-2xl md:text-4xl font-semibold text-center">
