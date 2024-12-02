@@ -8,12 +8,8 @@ export function AllLinks({ viewMode }: { viewMode: ViewMode }) {
       <Link href="#">Home</Link>
       <Link href="#">About us</Link>
       <Link href="#">Community</Link>
-      {viewMode === "employer" && (
-        <>
-          <Link href="#">Create job</Link>
-          <Link href="#">Postings</Link>
-        </>
-      )}
+      <Link href="#">Create job</Link>
+      <Link href="#">Postings</Link>
       <Link href="#">Information</Link>
       <Link href="#">Contact us</Link>
     </>

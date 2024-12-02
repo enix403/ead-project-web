@@ -57,9 +57,9 @@ function ApplicantRow() {
   );
 }
 
-export default function Postings() {
+export default function Postings({ params }: { params: any }) {
   return (
-    <AppLayout>
+    <AppLayout params={params}>
       <div className="pb-8 pt-6">
         <div className="max-w-4xl mx-auto">
           <h3 className="mb-6 text-2xl font-semibold">Your Postings</h3>
