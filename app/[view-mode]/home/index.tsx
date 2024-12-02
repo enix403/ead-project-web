@@ -12,7 +12,7 @@ import { Button } from "~/components/Button/Button";
 import { IconAdjustmentsHorizontal, IconSearch } from "@tabler/icons-react";
 import { Tab, TabGroup, TabList } from "@headlessui/react";
 import { Select } from "~/components/Select/Select";
-import { ProposalCard } from "./ProposalCard";
+import { ProposalCard } from "~/components/ProposalCard";
 import { ProposalsFilter } from "./ProposalsFilter";
 import { DivProps } from "react-html-props";
 import { Filters } from "./filters/Filters";
@@ -109,7 +109,7 @@ function SearchControls(props: DivProps) {
           <input
             size={1}
             className="flex-1 outline-none"
-            placeholder="Search"
+            placeholder="Job title, keywords or company"
           />
         </div>
         <Button
