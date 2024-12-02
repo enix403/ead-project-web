@@ -36,7 +36,6 @@ export default function CreateJobPage({ params }: { params: any }) {
   return (
     <AppLayout pageTitle="Jobs" params={params}>
       <div className="flex-1 flex items-start">
-        {/* <Sidebar /> */}
         <div className="flex-1 px-7 py-8">{rendered}</div>
       </div>
     </AppLayout>
