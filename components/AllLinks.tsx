@@ -8,8 +8,12 @@ export function AllLinks({ viewMode }: { viewMode: ViewMode }) {
       <Link href={`/${viewMode}/`}>Home</Link>
       <Link href={`/${viewMode}/about`}>About us</Link>
       <Link href={`/${viewMode}/community`}>Community</Link>
-      <Link href={`/${viewMode}/create-job`}>Create job</Link>
-      <Link href={`/${viewMode}/postings`}>Postings</Link>
+      {viewMode === "employer" && (
+        <>
+          <Link href={`/${viewMode}/create-job`}>Create job</Link>
+          <Link href={`/${viewMode}/postings`}>Postings</Link>
+        </>
+      )}
       <Link href={`/${viewMode}/information`}>Information</Link>
       <Link href={`/${viewMode}/contact`}>Contact us</Link>
     </>
