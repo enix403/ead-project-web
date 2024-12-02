@@ -5,13 +5,13 @@ export type ViewMode = "employer" | "employee";
 export function AllLinks({ viewMode }: { viewMode: ViewMode }) {
   return (
     <>
-      <Link href="#">Home</Link>
-      <Link href="#">About us</Link>
-      <Link href="#">Community</Link>
-      <Link href="#">Create job</Link>
-      <Link href="#">Postings</Link>
-      <Link href="#">Information</Link>
-      <Link href="#">Contact us</Link>
+      <Link href={`/${viewMode}/`}>Home</Link>
+      <Link href={`/${viewMode}/about`}>About us</Link>
+      <Link href={`/${viewMode}/community`}>Community</Link>
+      <Link href={`/${viewMode}/create-job`}>Create job</Link>
+      <Link href={`/${viewMode}/postings`}>Postings</Link>
+      <Link href={`/${viewMode}/information`}>Information</Link>
+      <Link href={`/${viewMode}/contact`}>Contact us</Link>
     </>
   );
 }

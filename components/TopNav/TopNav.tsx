@@ -32,7 +32,7 @@ function Contents({ pageTitle, viewMode }: TopNavProps) {
   return (
     <>
       <div className="flex justify-between items-center">
-        <Link href="/">
+        <Link href={`/${viewMode}`}>
           <Image alt="" src={Logo} className="h-7 w-auto lg:h-10" />
         </Link>
         <div className="flex gap-x-3.5 items-center">
