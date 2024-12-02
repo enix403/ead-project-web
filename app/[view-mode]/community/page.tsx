@@ -2,15 +2,33 @@
 
 import clsx from "clsx";
 import { Avatar, Badge } from "@material-tailwind/react";
+import { motion } from "framer-motion";
 
 import { AppLayout } from "~/components/AppLayout/AppLayout";
 import { Button } from "~/components/Button/Button";
 
-function PersonCard() {
+
+const variants = {
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: i * 0.05,
+      ease: "easeInOut", duration: 0.5
+    },
+  }),
+  hidden: { opacity: 0, y: 80 },
+}
+
+function PersonCard({ index }: { index: number }) {
   return (
-    <div
+    <motion.div
+      initial="hidden"
+      animate="visible"
+      custom={index}
+      variants={variants}
       className={clsx(
-        "flex flex-col items-center border border-gray-line-2 p-5 rounded-xl shadow hover:shadow-lg ta shadow-gray-line-2"
+        "flex flex-col items-center border border-gray-line-2 p-5 rounded-xl shadow hover:shadow-lg shadow-gray-line-2"
       )}
     >
       <Badge
@@ -34,7 +52,7 @@ function PersonCard() {
       <Button fullWidth variant="outlined" fullRounded className="!py-1 mt-3">
         Message
       </Button>
-    </div>
+    </motion.div>
   );
 }
 
@@ -47,19 +65,18 @@ export default function Community({ params }: { params: any }) {
             Connect with new people
           </h3>
 
-          <div className="grid grid-cols-3 gap-5">
-            <PersonCard />
-            <PersonCard />
-            <PersonCard />
-            <PersonCard />
-            <PersonCard />
-            <PersonCard />
-            <PersonCard />
-            <PersonCard />
-            <PersonCard />
-          </div>
+          <motion.div
+            className="grid grid-cols-3 gap-5"
+          >
+            {repeatNode(9, (index) => <PersonCard index={index} />)}
+          </motion.div>
         </div>
       </div>
     </AppLayout>
   );
+}
+
+
+export function repeatNode<T>(len: number, callback: (index: number) => T): T[] {
+  return [...Array(len)].map((_, index) => callback(index));
 }
