@@ -39,7 +39,7 @@ export function ProposalCard({ isBestMatch }: { isBestMatch?: boolean }) {
           onClick={() => setFav(prev => !prev)}
         >
           <IconHeartFilled
-            className={clsx(fav ? "text-teal" : "text-black/30")}
+            className={clsx(fav ? "text-[#922fcf]" : "text-gray-600/30")}
           />
         </IconButton>
       </header>
