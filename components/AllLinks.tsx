@@ -6,7 +6,6 @@ export function AllLinks({ viewMode }: { viewMode: ViewMode }) {
   return (
     <>
       <Link href={`/${viewMode}/`}>Home</Link>
-      <Link href={`/${viewMode}/about`}>About us</Link>
       <Link href={`/${viewMode}/community`}>Community</Link>
       {viewMode === "employer" && (
         <>
@@ -15,6 +14,7 @@ export function AllLinks({ viewMode }: { viewMode: ViewMode }) {
         </>
       )}
       <Link href={`/${viewMode}/information`}>Information</Link>
+      <Link href={`/${viewMode}/about`}>About us</Link>
       <Link href={`/${viewMode}/contact`}>Contact us</Link>
     </>
   );
