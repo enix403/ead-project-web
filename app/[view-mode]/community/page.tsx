@@ -77,6 +77,6 @@ export default function Community({ params }: { params: any }) {
 }
 
 
-export function repeatNode<T>(len: number, callback: (index: number) => T): T[] {
+function repeatNode<T>(len: number, callback: (index: number) => T): T[] {
   return [...Array(len)].map((_, index) => callback(index));
 }
