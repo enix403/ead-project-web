@@ -5,9 +5,9 @@ import PIconPlus from "~/app/assets/p-plus.svg";
 import PIconEye from "~/app/assets/p-eye.svg";
 import PIconPerson from "~/app/assets/p-person.svg";
 
-import { Fragment, ReactNode } from "react";
+import { Fragment, ReactNode, useContext } from "react";
 import clsx from "clsx";
-import { AppLayout } from "~/components/AppLayout/AppLayout";
+import { AppLayout, ViewModeContext } from "~/components/AppLayout/AppLayout";
 import { Button } from "~/components/Button/Button";
 import { IconAdjustmentsHorizontal, IconSearch } from "@tabler/icons-react";
 import { Tab, TabGroup, TabList } from "@headlessui/react";
@@ -59,6 +59,8 @@ function PrimaryTabButton({
 }
 
 function PrimaryTabs({ className }: DivProps) {
+  let viewMode = useContext(ViewModeContext);
+
   return (
     <TabGroup
       as="div"
@@ -77,24 +79,19 @@ function PrimaryTabs({ className }: DivProps) {
         )}
       >
         <PrimaryTabButton
-          shortLabel="View Job Post"
-          label="View Job Post"
+          shortLabel={"All"}
+          label={viewMode === "employer" ? "All Jobs" : "All Profiles"}
           icon={<PIconBriefcase />}
         />
         <PrimaryTabButton
-          shortLabel="Invite"
-          label="Invite Employers"
+          shortLabel="Proposals"
+          label="Proposals"
           icon={<PIconPlus />}
         />
         <PrimaryTabButton
-          shortLabel="Review"
-          label="Review Proposals"
+          shortLabel="Saved"
+          label="Saved"
           icon={<PIconEye />}
-        />
-        <PrimaryTabButton
-          shortLabel="Hire"
-          label="Hire (0)"
-          icon={<PIconPerson />}
         />
       </TabList>
     </TabGroup>
