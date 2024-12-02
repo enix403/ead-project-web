@@ -9,7 +9,7 @@ import {
   AccordionBody,
 } from "@material-tailwind/react";
 
-export function AccordionCustomAnimation() {
+function AccordionCustomAnimation() {
   const [open, setOpen] = React.useState(0);
 
   const handleOpen = (value: any) => setOpen(open === value ? 0 : value);

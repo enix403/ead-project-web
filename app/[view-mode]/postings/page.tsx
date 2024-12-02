@@ -9,7 +9,7 @@ import {
   Typography,
 } from "@material-tailwind/react";
 
-export function PostingCard() {
+function PostingCard() {
   return (
     <div className="border-gray-line-2/50 border rounded-xl px-5 py-5">
       <div>
