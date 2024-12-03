@@ -35,4 +35,6 @@ declare module "@material-tailwind/react" {
   export interface CardHeaderProps extends CorrectPlaceholder {}
   export interface CardBodyProps extends CorrectPlaceholder {}
   export interface CardFooterProps extends CorrectPlaceholder {}
+  export interface MenuListProps extends CorrectPlaceholder {}
+  export interface MenuItemProps extends CorrectPlaceholder {}
 }
