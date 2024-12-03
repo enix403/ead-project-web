@@ -3,16 +3,13 @@
 import {
   Badge,
   Avatar,
-  ListItem,
-  ListItemPrefix,
   Typography,
 } from "@material-tailwind/react";
 import clsx from "clsx";
-import { Input } from "~/components/Input/Input";
 import { repeatNode } from "~/app/utils/markup";
 import { AppLayout } from "~/components/AppLayout/AppLayout";
 import { ChatWindow } from "./ChatWindow";
-import { IconMessage, IconSearch, IconSend2 } from "@tabler/icons-react";
+import { IconMessage, IconSend2 } from "@tabler/icons-react";
 import { Button } from "~/components/Button/Button";
 
 function ContactsList() {
@@ -58,33 +55,28 @@ function ActiveChat() {
     <div className={clsx("flex-1", "max-h-[80vh]", "relative")}>
       <div
         className={clsx(
-          // " bg-yellow-500/70",
-          "bg-teal-dark",
+          "bg-teal",
           "absolute top-0 w-full",
           "z-[60]",
-          "flex"
+          "flex gap-x-4",
+          "py-2 px-4"
         )}
       >
-        {/* <ListItem ripple={false}>
-          <ListItemPrefix>
-            <Avatar variant="circular" alt="User" src="/profile-2.jpg" />
-          </ListItemPrefix>
-          <div>
-            <Typography variant="h6" color="blue-gray">
-              Yiannis Andrew
-            </Typography>
-            <Typography variant="small" color="gray" className="font-normal">
-              Senior Software Engineer at Apple | 2021 - 2024
-            </Typography>
-          </div>
-        </ListItem> */}
+        <Avatar variant="circular" alt="User" src="/profile-2.jpg" />
+        <div className="flex-1">
+          <Typography variant="h6" color="white">
+            Yiannis Andrew
+          </Typography>
+          <Typography variant="small" color="white" className="font-normal">
+            Senior Software Engineer
+          </Typography>
+        </div>
       </div>
       <div className="h-full max-h-full overflow-y-auto pt-20 pb-24 px-8">
         <ChatWindow />
       </div>
       <div
         className={clsx(
-          // " bg-yellow-500/70",
           "bg-white",
           "absolute bottom-0 w-full h-20 flex items-center gap-x-4",
           "px-8"
