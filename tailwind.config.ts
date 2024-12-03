@@ -40,7 +40,8 @@ let config = {
         'gray-line-2': '#BAB7B7',
         'gray-line-3': '#828193',
         'gray-prose': '#6E6E6E',
-        'x-purple': '#441D5C'
+        'x-purple': '#441D5C',
+        'x-ctrl-purple': '#922fcf'
       },
     },
     screens: {
