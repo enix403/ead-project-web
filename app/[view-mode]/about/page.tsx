@@ -21,6 +21,7 @@ import clsx from "clsx";
 import Link from "next/link";
 
 import { FrequentlyAskedQuestions } from "./FrequentlyAskedQuestions";
+import { OurTeam } from "./OurTeam";
 
 function StatBlock({ title, desc }: { title: string; desc: string }) {
   return (
@@ -245,6 +246,7 @@ export default function AboutUs({ params }: { params: any }) {
   return (
     <AppLayout params={params}>
       <TopSection />
+      <OurTeam />
       <JobBanner />
       <BottomSection />
 
