@@ -4,6 +4,10 @@ import { AppLayout } from "~/components/AppLayout/AppLayout";
 import {
   Avatar,
   Button,
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
   IconButton,
   List,
   ListItem,
@@ -32,7 +36,8 @@ function PostingCard() {
     []
   );
 
-  const DisplayIcon = display === 'list'? IconListDetails : IconLayoutDashboard;
+  const DisplayIcon =
+    display === "list" ? IconListDetails : IconLayoutDashboard;
 
   return (
     <div className="border-gray-line-2/50 border rounded-xl px-5 py-5">
@@ -74,13 +79,64 @@ function PostingCard() {
         </Button>
       </div>
 
-      <List>
-        <ApplicantRow />
-        <ApplicantRow />
-        <ApplicantRow />
-        <ApplicantRow />
-      </List>
+      {display === 'list' ?  <ApplicantsList /> : <ApplicantsGrid />}
     </div>
+  );
+}
+
+/* ======================= */
+
+function ApplicantsGrid() {
+  return (
+    <div className="grid grid-cols-3 gap-6 mt-4">
+      <ApplicantCell />
+      <ApplicantCell />
+      <ApplicantCell />
+      <ApplicantCell />
+    </div>
+  );
+}
+
+function ApplicantCell() {
+  return (
+    <Card className="border-2 border-teal-dark">
+      <CardHeader floated={false}>
+        <img src="/profile-2.jpg" />
+      </CardHeader>
+      <CardBody className="text-center">
+        <Typography variant="h6" color="blue-gray">
+          Yiannis Andrew
+        </Typography>
+        <Typography variant="small" color="gray" className="font-normal">
+          Senior Software Engineer at Apple | 2021 - 2024
+        </Typography>
+      </CardBody>
+      <CardFooter className="pt-0 flex items-center justify-center gap-x-2">
+        <Tooltip content="Interested">
+          <IconButton color="green" variant="text">
+            <IconCheck />
+          </IconButton>
+        </Tooltip>
+        <Tooltip content="Not Interested">
+          <IconButton color="red" variant="text">
+            <IconX />
+          </IconButton>
+        </Tooltip>
+      </CardFooter>
+    </Card>
+  );
+}
+
+/* ============================= */
+
+function ApplicantsList() {
+  return (
+    <List>
+      <ApplicantRow />
+      <ApplicantRow />
+      <ApplicantRow />
+      <ApplicantRow />
+    </List>
   );
 }
 
@@ -115,6 +171,8 @@ function ApplicantRow() {
     </ListItem>
   );
 }
+
+/* ============================= */
 
 export default function Postings({ params }: { params: any }) {
   return (
