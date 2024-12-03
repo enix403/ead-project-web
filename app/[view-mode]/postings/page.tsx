@@ -4,12 +4,20 @@ import { AppLayout } from "~/components/AppLayout/AppLayout";
 import {
   Avatar,
   Button,
+  IconButton,
   List,
   ListItem,
   ListItemPrefix,
+  ListItemSuffix,
+  Tooltip,
   Typography,
 } from "@material-tailwind/react";
-import { IconVersionsOff } from "@tabler/icons-react";
+import {
+  IconCheck,
+  IconHeartFilled,
+  IconVersionsOff,
+  IconX,
+} from "@tabler/icons-react";
 
 function PostingCard() {
   return (
@@ -20,7 +28,7 @@ function PostingCard() {
         </span>
         <Button
           size="sm"
-          color="red"
+          color="amber"
           variant="text"
           className="flex items-center gap-2"
         >
@@ -52,7 +60,7 @@ function PostingCard() {
 
 function ApplicantRow() {
   return (
-    <ListItem>
+    <ListItem ripple={false}>
       <ListItemPrefix>
         <Avatar variant="circular" alt="User" src="/profile-2.jpg" />
       </ListItemPrefix>
@@ -64,6 +72,20 @@ function ApplicantRow() {
           Senior Software Engineer at Apple | 2021 - 2024
         </Typography>
       </div>
+      <ListItemSuffix className="flex items-center gap-x-4">
+        {/* Yes / No */}
+        <Tooltip content="Interested">
+          <IconButton color="green" variant="text">
+            <IconCheck />
+          </IconButton>
+        </Tooltip>
+        <Tooltip content="Not Interested">
+          <IconButton color="red" variant="text">
+            <IconX />
+          </IconButton>
+        </Tooltip>
+        {/* Yes / No */}
+      </ListItemSuffix>
     </ListItem>
   );
 }
