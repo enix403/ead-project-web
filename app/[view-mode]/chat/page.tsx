@@ -1,6 +1,12 @@
 "use client";
 
-import { Badge, Avatar } from "@material-tailwind/react";
+import {
+  Badge,
+  Avatar,
+  ListItem,
+  ListItemPrefix,
+  Typography,
+} from "@material-tailwind/react";
 import clsx from "clsx";
 import { Input } from "~/components/Input/Input";
 import { repeatNode } from "~/app/utils/markup";
@@ -50,7 +56,30 @@ function ContactsList() {
 function ActiveChat() {
   return (
     <div className={clsx("flex-1", "max-h-[80vh]", "relative")}>
-      <div className="h-full max-h-full overflow-y-auto pb-24 px-8">
+      <div
+        className={clsx(
+          // " bg-yellow-500/70",
+          "bg-teal-dark",
+          "absolute top-0 w-full",
+          "z-[60]",
+          "flex"
+        )}
+      >
+        {/* <ListItem ripple={false}>
+          <ListItemPrefix>
+            <Avatar variant="circular" alt="User" src="/profile-2.jpg" />
+          </ListItemPrefix>
+          <div>
+            <Typography variant="h6" color="blue-gray">
+              Yiannis Andrew
+            </Typography>
+            <Typography variant="small" color="gray" className="font-normal">
+              Senior Software Engineer at Apple | 2021 - 2024
+            </Typography>
+          </div>
+        </ListItem> */}
+      </div>
+      <div className="h-full max-h-full overflow-y-auto pt-20 pb-24 px-8">
         <ChatWindow />
       </div>
       <div
