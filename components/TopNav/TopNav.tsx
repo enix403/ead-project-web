@@ -67,9 +67,11 @@ function Contents({ pageTitle, viewMode }: TopNavProps) {
                   <MenuItem>Add card</MenuItem>
                 </MenuList>
               </Menu>
-              <IconButton variant="text">
-                <MessageIcon className="w-5" />
-              </IconButton>
+              <Link href={`/${viewMode}/chat`}>
+                <IconButton variant="text">
+                  <MessageIcon className="w-5" />
+                </IconButton>
+              </Link>
               {/* <IconButton variant="text">
                 <div className="relative">
                   <BellIcon className="w-5" />
