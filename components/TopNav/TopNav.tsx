@@ -5,6 +5,8 @@ import MessageIcon from "./assets/message.svg";
 import BellIcon from "./assets/notification.svg";
 import ProfileImage from "~/app/assets/profile-1.webp";
 
+import { US } from "country-flag-icons/react/3x2";
+
 import Drawer from "react-modern-drawer";
 import Image from "next/image";
 
@@ -50,9 +52,21 @@ function Contents({ pageTitle, viewMode }: TopNavProps) {
         <div className="flex gap-x-1 items-center">
           {loggedIn ? (
             <>
-              <IconButton variant="text">
-                <IconSettingsFilled size={22} stroke={1} />
-              </IconButton>
+              <Menu>
+                <MenuHandler>
+                  <IconButton variant="text">
+                    <IconSettingsFilled size={22} stroke={1} />
+                  </IconButton>
+                </MenuHandler>
+                <MenuList>
+                  <MenuItem>Logout</MenuItem>
+                  <MenuItem className="flex justify-between items-center">
+                    Change language
+                    <US title="United States" className="w-5" />
+                  </MenuItem>
+                  <MenuItem>Add card</MenuItem>
+                </MenuList>
+              </Menu>
               <IconButton variant="text">
                 <MessageIcon className="w-5" />
               </IconButton>

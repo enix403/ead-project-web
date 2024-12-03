@@ -14,7 +14,7 @@ import { AppLayout } from "~/components/AppLayout/AppLayout";
 export default function UserProfile({ params }: { params: any }) {
   return (
     <AppLayout params={params}>
-      <div className="max-w-7xl mx-auto py-8">
+      <div className="max-w-7xl mx-auto py-8 px-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Column */}
           <Card className="border-2 shadow-md">
