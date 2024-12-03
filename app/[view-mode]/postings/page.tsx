@@ -14,12 +14,26 @@ import {
 } from "@material-tailwind/react";
 import {
   IconCheck,
-  IconHeartFilled,
+  IconLayoutDashboard,
+  IconListDetails,
   IconVersionsOff,
   IconX,
 } from "@tabler/icons-react";
+import { atom, useAtom } from "jotai";
+import { useCallback } from "react";
+
+const displayAtom = atom<"list" | "grid">("list");
 
 function PostingCard() {
+  const [display, setDisplay] = useAtom(displayAtom);
+
+  const toggle = useCallback(
+    () => setDisplay((x) => (x === "grid" ? "list" : "grid")),
+    []
+  );
+
+  const DisplayIcon = display === 'list'? IconListDetails : IconLayoutDashboard;
+
   return (
     <div className="border-gray-line-2/50 border rounded-xl px-5 py-5">
       <div className="flex items-center justify-between gap-x-3">
@@ -46,7 +60,19 @@ function PostingCard() {
         disposal.
       </p>
 
-      <h2 className="text-lg font-semibold mt-4 mb-2">Applicants (4)</h2>
+      <div className="flex justify-between items-center">
+        <h2 className="text-lg font-semibold mt-4 mb-2">Applicants (4)</h2>
+        <Button
+          size="sm"
+          color="blue"
+          variant="text"
+          className="flex items-center gap-2"
+          onClick={toggle}
+        >
+          <DisplayIcon size={20} />
+          Display: {display}
+        </Button>
+      </div>
 
       <List>
         <ApplicantRow />
