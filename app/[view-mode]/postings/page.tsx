@@ -3,19 +3,30 @@
 import { AppLayout } from "~/components/AppLayout/AppLayout";
 import {
   Avatar,
+  Button,
   List,
   ListItem,
   ListItemPrefix,
   Typography,
 } from "@material-tailwind/react";
+import { IconVersionsOff } from "@tabler/icons-react";
 
 function PostingCard() {
   return (
     <div className="border-gray-line-2/50 border rounded-xl px-5 py-5">
-      <div>
+      <div className="flex items-center justify-between gap-x-3">
         <span className="bg-green-500 text-white font-bold px-2 py-1.5 text-fine rounded-md">
           Active
         </span>
+        <Button
+          size="sm"
+          color="red"
+          variant="text"
+          className="flex items-center gap-2"
+        >
+          Mark as inactice
+          <IconVersionsOff size={20} />
+        </Button>
       </div>
       <h3 className="font-semibold text-lg mt-3">
         Chef - Mediterranean Cuisine, Experience in Hotel and Restaurant
