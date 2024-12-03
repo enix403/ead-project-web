@@ -2,8 +2,12 @@
 
 import { Badge, Avatar } from "@material-tailwind/react";
 import clsx from "clsx";
+import { Input } from "~/components/Input/Input";
 import { repeatNode } from "~/app/utils/markup";
 import { AppLayout } from "~/components/AppLayout/AppLayout";
+import { ChatWindow } from "./ChatWindow";
+import { IconMessage, IconSearch, IconSend2 } from "@tabler/icons-react";
+import { Button } from "~/components/Button/Button";
 
 function ContactsList() {
   return (
@@ -45,16 +49,31 @@ function ContactsList() {
 
 function ActiveChat() {
   return (
-    <div
-      className={clsx(
-        "flex-1",
-        "overflow-y-auto max-h-[80vh]",
-        "p-3 pb-20"
-      )}
-    >
-      {repeatNode(100, (index) => (
-        <p>Chat {index}</p>
-      ))}
+    <div className={clsx("flex-1", "max-h-[80vh]", "relative")}>
+      <div className="h-full max-h-full overflow-y-auto pb-24 px-8">
+        <ChatWindow />
+      </div>
+      <div
+        className={clsx(
+          // " bg-yellow-500/70",
+          "bg-white",
+          "absolute bottom-0 w-full h-20 flex items-center gap-x-4",
+          "px-8"
+        )}
+      >
+        <div className="border border-black/20 rounded-xl flex-1 flex overflow-hidden px-2.5 py-2.5 gap-x-1.5">
+          <IconMessage size={17} className="self-center" />
+          <input
+            size={1}
+            className="flex-1 outline-none"
+            placeholder="Enter message"
+          />
+        </div>
+        <Button>
+          Send
+          <IconSend2 />
+        </Button>
+      </div>
     </div>
   );
 }
