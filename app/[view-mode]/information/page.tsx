@@ -10,6 +10,7 @@ import React, { PropsWithChildren, useContext } from "react";
 import { TitleMark } from "~/components/decorations";
 import clsx from "clsx";
 import { FrequentlyAskedQuestions } from "../about/FrequentlyAskedQuestions";
+import { PriceListCells } from "./PriceListCells";
 
 function FeatureBlock({
   Icon,
@@ -67,6 +68,8 @@ function InformationPageContent() {
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur
           tristique mauris rhoncus odio aliquet, vitae.
         </p>
+
+        <PriceListCells />
 
         <section className="mt-8 space-y-6">
           <h1 className="text-2xl font-bold pt-4">
