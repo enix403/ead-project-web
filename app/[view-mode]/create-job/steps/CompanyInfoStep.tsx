@@ -86,9 +86,21 @@ export function CompanyInfoStep({ onNext, onCancel }: StepCallbacks) {
           </div>
         </div>
 
-        <FormLabel label="Complete Address">
-          <TextArea placeholder="Enter complete address" className="h-20" />
+        <FormLabel label="Street / Address">
+          <TextArea placeholder="Enter Street / Address" className="h-20" />
         </FormLabel>
+
+        <div className="flex gap-4 flex-col md:flex-row">
+          <FormLabel label="Find on Map" className="flex-[2]">
+            <Input placeholder="Enter complete address" />
+          </FormLabel>
+          <FormLabel label="Latitude" className="flex-1">
+            <Input />
+          </FormLabel>
+          <FormLabel label="Longitude" className="flex-1">
+            <Input />
+          </FormLabel>
+        </div>
 
         <FormLabel label="Date Posted">
           <Input type="date" placeholder="Select the date posted" />
