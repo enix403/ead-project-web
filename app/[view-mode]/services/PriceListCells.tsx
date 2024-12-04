@@ -21,10 +21,11 @@ export function Cell({ title }: { title: string }) {
         shadow={false}
         color="transparent"
         className={clsx(
-          "absolute inset-0 m-0 h-full w-full rounded-none bg-cover bg-center",
+          "absolute inset-0 m-0 h-full w-full rounded-none bg-cover bg-center"
         )}
         style={{
-          backgroundImage: 'url(https://images.unsplash.com/photo-1725308468426-9b5e227dc15c?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw1OHx8fGVufDB8fHx8fA%3D%3D)'
+          backgroundImage:
+            "url(https://images.unsplash.com/photo-1725308468426-9b5e227dc15c?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw1OHx8fGVufDB8fHx8fA%3D%3D)",
         }}
       >
         <div className="to-bg-black-10 absolute inset-0 h-full w-full bg-gradient-to-t from-black/80 via-black/50" />
@@ -45,15 +46,20 @@ export function Cell({ title }: { title: string }) {
   );
 }
 
-
 export function PriceListCells() {
   const viewMode = useContext(ViewModeContext);
   return (
     <section className="flex mt-8 gap-4">
-      <Cell title="CV Improvement Price List" />
-      <Cell title="CV Creation Price List" />
-      {viewMode === 'employer' && (
-        <Cell title="CV Management Price List" />
+      {viewMode === "employer" ? (
+        <>
+          <Cell title="CV Management" />
+          <Cell title="Job Postings Management" />
+        </>
+      ) : (
+        <>
+          <Cell title="CV Improvement" />
+          <Cell title="CV Creation" />
+        </>
       )}
     </section>
   );

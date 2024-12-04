@@ -8,7 +8,6 @@ import ResumeIcon from "~/app/assets/icon-resumes.svg";
 import React, { PropsWithChildren, useContext } from "react";
 import { TitleMark } from "~/components/decorations";
 import { FrequentlyAskedQuestions } from "~/components/FrequentlyAskedQuestions";
-import { PriceListCells } from "./PriceListCells";
 import { JobBanner } from "./JobBanner";
 import { IconCoinFilled, IconCoins, IconUserSearch } from "@tabler/icons-react";
 
@@ -69,10 +68,6 @@ function InformationPageContent() {
           tristique mauris rhoncus odio aliquet, vitae.
         </p>
 
-        <PriceListCells />
-      </div>
-      <JobBanner />
-      <div className="app-container max-w-5xl w-full">
         <section className="mt-8 space-y-6">
           <h1 className="text-2xl font-bold pt-4">
             Information around seasonal work.
@@ -120,7 +115,9 @@ function InformationPageContent() {
           <FeatureBlock Icon={IconCoins} title="Minimum wage" />
           <FeatureBlock Icon={IconCoinFilled} title="Net wage" />
         </div>
-
+      </div>
+      <JobBanner />
+      <div className="app-container max-w-5xl w-full">
         <h1 className="text-4xl text-center mt-12 mb-8">
           <span className="font-bold text-teal mr-1 relative bg-bdlue-600">
             Frequently
