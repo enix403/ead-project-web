@@ -52,7 +52,7 @@ function ContactsList() {
 
 function ActiveChat() {
   return (
-    <div className={clsx("flex-1", "max-h-[80vh]", "relative")}>
+    <div className={clsx("flex-1", "max-h-[80vh]", "relative bg-[#e0dcdc]")}>
       <div
         className={clsx(
           "bg-teal",
@@ -86,7 +86,7 @@ function ActiveChat() {
           <IconMessage size={17} className="self-center" />
           <input
             size={1}
-            className="flex-1 outline-none"
+            className="flex-1 outline-none bg-transparent"
             placeholder="Enter message"
           />
         </div>
