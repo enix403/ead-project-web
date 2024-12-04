@@ -12,7 +12,7 @@ export function SpecificInfoStep({ onNext, onCancel }: StepCallbacks) {
       </h1>
 
       <div className="bg-teal/5 p-7 mt-7 rounded-xl space-y-6">
-        <FormLabel label="Job Type">
+        <FormLabel showAsterik label="Job Type">
           <Select variant="light">
             <option>Full-Time</option>
             <option>Part-Time</option>
@@ -21,7 +21,7 @@ export function SpecificInfoStep({ onNext, onCancel }: StepCallbacks) {
           </Select>
         </FormLabel>
 
-        <FormLabel label="Experience Level">
+        <FormLabel showAsterik label="Experience Level">
           <Select variant="light">
             <option>Entry Level</option>
             <option>Mid Level</option>
@@ -45,12 +45,12 @@ export function SpecificInfoStep({ onNext, onCancel }: StepCallbacks) {
 
         <div className="flex gap-4 flex-col md:flex-row">
           <div className="flex-1">
-            <FormLabel label="Salary">
+            <FormLabel showAsterik label="Salary">
               <Input placeholder="Enter salary range" />
             </FormLabel>
           </div>
           <div className="flex-1">
-            <FormLabel label="Periods of Work">
+            <FormLabel showAsterik label="Periods of Work">
               <Input placeholder="e.g., 9 AM - 5 PM" />
             </FormLabel>
           </div>
@@ -65,7 +65,7 @@ export function SpecificInfoStep({ onNext, onCancel }: StepCallbacks) {
 
         <div className="flex gap-4 flex-col md:flex-row">
           <div className="flex-1">
-            <FormLabel label="Working Language">
+            <FormLabel showAsterik label="Working Language">
               <Select variant="light">
                 <option>English</option>
                 <option>Spanish</option>
@@ -74,7 +74,7 @@ export function SpecificInfoStep({ onNext, onCancel }: StepCallbacks) {
             </FormLabel>
           </div>
           <div className="flex-1">
-            <FormLabel label="Residence">
+            <FormLabel showAsterik label="Residence">
               <Select variant="light">
                 <option>Yes</option>
                 <option>No</option>
@@ -85,7 +85,7 @@ export function SpecificInfoStep({ onNext, onCancel }: StepCallbacks) {
 
         <div className="flex gap-4 flex-col md:flex-row">
           <div className="flex-1">
-            <FormLabel label="Food">
+            <FormLabel showAsterik label="Food">
               <Select variant="light">
                 <option>Provided</option>
                 <option>Not Provided</option>

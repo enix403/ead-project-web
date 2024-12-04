@@ -8,6 +8,7 @@ import { GeneralInfoStep } from "./steps/GeneralInfoStep";
 import { SpecificInfoStep } from "./steps/SpecificInfoStep";
 import { CompanyInfoStep } from "./steps/CompanyInfoStep";
 import { QuestionsStep } from "./steps/QuestionsStep";
+import { Step, Stepper } from "@material-tailwind/react";
 
 export default function CreateJobPage({ params }: { params: any }) {
   const [pageIndex, setPageIndex] = useState(0);
@@ -33,6 +34,15 @@ export default function CreateJobPage({ params }: { params: any }) {
     <AppLayout pageTitle="Jobs" params={params}>
       <div className="flex-1 flex items-start">
         <div className="flex-1 px-7 py-8">
+          <Stepper
+            className="mb-4"
+            activeStep={pageIndex}
+          >
+            {steps.map((_, index) => (
+              // @ts-ignore
+              <Step key={index}>{index + 1}</Step>
+            ))}
+          </Stepper>
           <StepComponent onNext={onNext} onCancel={onCancel} />
         </div>
       </div>
