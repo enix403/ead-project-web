@@ -1,12 +1,13 @@
 "use client";
 
 import { AppLayout } from "~/components/AppLayout/AppLayout";
-import { Sidebar } from "./Sidebar";
 
-import { PostJob } from "./PostJob";
-import { ApplicationDetailsPrimary } from "./ApplicationDetailsPrimary";
-import { ApplicationDetailsSecondary } from "./ApplicationDetailsSecondary";
 import { ReactNode, useState } from "react";
+
+import { GeneralInfoStep } from "./steps/GeneralInfoStep";
+import { SpecificInfoStep } from "./steps/SpecificInfoStep";
+import { CompanyInfoStep } from "./steps/CompanyInfoStep";
+import { QuestionsStep } from "./steps/QuestionsStep";
 
 export default function CreateJobPage({ params }: { params: any }) {
   const [activePage, setActivePage] = useState(0);
@@ -19,24 +20,23 @@ export default function CreateJobPage({ params }: { params: any }) {
     setActivePage((x) => Math.max(0, x - 1));
   }
 
-  let rendered: ReactNode;
+  let steps = [
+    GeneralInfoStep,
+    SpecificInfoStep,
+    CompanyInfoStep,
+    QuestionsStep,
+  ];
 
-  if (activePage === 0) {
-    rendered = <PostJob onNext={onNext} onCancel={onCancel} />;
-  } else if (activePage === 1) {
-    rendered = (
-      <ApplicationDetailsPrimary onNext={onNext} onCancel={onCancel} />
-    );
-  } else {
-    rendered = (
-      <ApplicationDetailsSecondary onNext={onNext} onCancel={onCancel} />
-    );
-  }
+  // let index = activePage;
+  let index = 0;
+  let StepComponent = steps[index];
 
   return (
     <AppLayout pageTitle="Jobs" params={params}>
       <div className="flex-1 flex items-start">
-        <div className="flex-1 px-7 py-8">{rendered}</div>
+        <div className="flex-1 px-7 py-8">
+          <StepComponent onNext={onNext} onCancel={onCancel} />
+        </div>
       </div>
     </AppLayout>
   );

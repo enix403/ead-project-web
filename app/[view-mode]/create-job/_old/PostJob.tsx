@@ -74,7 +74,6 @@ export function PostJob({ onNext, onCancel }: any) {
         Reuse a past job as a template
       </h4>
 
-
       <div className="mt-4 grid wl:grid-cols-2 gap-6">
         <ProposalTemplateCard />
         <ProposalTemplateCard />
