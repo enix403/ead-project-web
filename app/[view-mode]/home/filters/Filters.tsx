@@ -5,6 +5,8 @@ import {
   IconChevronDown,
   IconCirclePlusFilled,
   IconMapPin,
+  IconMathEqualGreater,
+  IconMathEqualLower,
   IconSearch,
 } from "@tabler/icons-react";
 import clsx from "clsx";
@@ -23,7 +25,10 @@ export function Filter(_props: FilterProps) {
   return null;
 }
 
-export function FilterList({ children, className }: PropsWithChildren & { className?: string }) {
+export function FilterList({
+  children,
+  className,
+}: PropsWithChildren & { className?: string }) {
   let filterConfigs =
     Children.map(children, (child) => {
       if (isValidElement(child) && child.type === Filter) {
@@ -68,9 +73,7 @@ export function FilterList({ children, className }: PropsWithChildren & { classN
         })}
       </div>
       {openIndex > -1 && (
-        <div className="mt-4">
-          {filterConfigs[openIndex].children}
-        </div>
+        <div className="mt-4">{filterConfigs[openIndex].children}</div>
       )}
     </div>
   );
@@ -134,11 +137,16 @@ export function Filters({ className }: { className?: string }) {
         </Button>
       </Filter>
       <Filter label="Salary">
-        <RangeSlider />
-
-        <Button fullRounded className="mx-auto">
-          $0 - $2000
-        </Button>
+        <div className="flex gap-x-4">
+          <RichInput
+            icon={<IconMathEqualGreater size={17} />}
+            inputProps={{ placeholder: "Min salary" }}
+          />
+          <RichInput
+            icon={<IconMathEqualLower size={17} />}
+            inputProps={{ placeholder: "Max salary" }}
+          />
+        </div>
       </Filter>
     </FilterList>
   );

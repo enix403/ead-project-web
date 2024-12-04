@@ -165,7 +165,7 @@ function JobBanner() {
         <div className="flex max-ph:flex-cold justify-center mt-5 gap-2">
           <Link href="/job-user">
             <Button fullRounded theme="white">
-              Search Job
+              Search Document
             </Button>
           </Link>
           <Button fullRounded theme="white" variant="outlined">

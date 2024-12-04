@@ -57,10 +57,10 @@ function InformationPageContent() {
         {/* Title */}
         <h1 className="text-4xl text-center">
           <span className="font-bold text-teal mr-1 relative bg-bdlue-600">
-            Who
+            Information
             <TitleMark className="absolute w-32 top-full -left-5 dd -translate-y-2.5" />
           </span>
-          <span className="font-normal"> we are</span>
+          {/* <span className="font-normal"> we are</span> */}
         </h1>
 
         {/* Subtitle */}
