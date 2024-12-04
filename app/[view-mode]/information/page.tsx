@@ -1,17 +1,16 @@
 "use client";
 
+import clsx from "clsx";
 import { AppLayout, ViewModeContext } from "~/components/AppLayout/AppLayout";
 
 import ResumeIcon from "~/app/assets/icon-resumes.svg";
-import JobIcon from "~/app/assets/icon-job.svg";
-import HelpIcon from "~/app/assets/icon-help.svg";
 
 import React, { PropsWithChildren, useContext } from "react";
 import { TitleMark } from "~/components/decorations";
-import clsx from "clsx";
 import { FrequentlyAskedQuestions } from "../about/FrequentlyAskedQuestions";
 import { PriceListCells } from "./PriceListCells";
 import { JobBanner } from "./JobBanner";
+import { IconCoinFilled, IconCoins, IconUserSearch } from "@tabler/icons-react";
 
 function FeatureBlock({
   Icon,
@@ -22,11 +21,11 @@ function FeatureBlock({
     <div className="flex flex-col items-center md:max-w-sm flex-1">
       <div
         className={clsx(
-          "bg-black w-16 h-16 flex items-center justify-center",
+          "bg-black text-white w-16 h-16 flex items-center justify-center",
           "rounded-full"
         )}
       >
-        {Icon && <Icon className="w-7" />}
+        {Icon && <Icon size={40} className="w-7 scale-110" />}
       </div>
 
       <div
@@ -110,7 +109,7 @@ function InformationPageContent() {
 
         <div className="flex max-md:flex-col justify-center gap-x-3 gap-y-8 mt-8">
           {viewMode === "employer" ? (
-            <FeatureBlock Icon={ResumeIcon} title="Find Employees">
+            <FeatureBlock Icon={IconUserSearch} title="Find Employees">
               Service to help find the best employee for your company
             </FeatureBlock>
           ) : (
@@ -118,8 +117,8 @@ function InformationPageContent() {
               Service for improving and creating a proper CV.
             </FeatureBlock>
           )}
-          <FeatureBlock Icon={JobIcon} title="Minimum wage" />
-          <FeatureBlock Icon={JobIcon} title="Net wage" />
+          <FeatureBlock Icon={IconCoins} title="Minimum wage" />
+          <FeatureBlock Icon={IconCoinFilled} title="Net wage" />
         </div>
 
         <h1 className="text-4xl text-center mt-12 mb-8">
