@@ -11,6 +11,7 @@ import { TitleMark } from "~/components/decorations";
 import clsx from "clsx";
 import { FrequentlyAskedQuestions } from "../about/FrequentlyAskedQuestions";
 import { PriceListCells } from "./PriceListCells";
+import { JobBanner } from "./JobBanner";
 
 function FeatureBlock({
   Icon,
@@ -53,7 +54,7 @@ function InformationPageContent() {
 
   return (
     <div className="pb-40 pt-8">
-      <div className="app-container max-w-5xl w-full">
+      <div className="app-container max-w-5xl w-full mb-12">
         {/* Title */}
         <h1 className="text-4xl text-center">
           <span className="font-bold text-teal mr-1 relative bg-bdlue-600">
@@ -70,7 +71,9 @@ function InformationPageContent() {
         </p>
 
         <PriceListCells />
-
+      </div>
+      <JobBanner />
+      <div className="app-container max-w-5xl w-full">
         <section className="mt-8 space-y-6">
           <h1 className="text-2xl font-bold pt-4">
             Information around seasonal work.
@@ -119,15 +122,14 @@ function InformationPageContent() {
           <FeatureBlock Icon={JobIcon} title="Net wage" />
         </div>
 
-
         <h1 className="text-4xl text-center mt-12 mb-8">
-            <span className="font-bold text-teal mr-1 relative bg-bdlue-600">
-              Frequently
-              <TitleMark className="absolute w-32 top-full -left-5 dd -translate-y-2.5" />
-            </span>
-            <span className="font-normal"> Asked Questions</span>
-          </h1>
-          <FrequentlyAskedQuestions />
+          <span className="font-bold text-teal mr-1 relative bg-bdlue-600">
+            Frequently
+            <TitleMark className="absolute w-32 top-full -left-5 dd -translate-y-2.5" />
+          </span>
+          <span className="font-normal"> Asked Questions</span>
+        </h1>
+        <FrequentlyAskedQuestions />
       </div>
     </div>
   );
