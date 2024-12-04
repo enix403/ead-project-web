@@ -22,6 +22,8 @@ import Link from "next/link";
 
 import { FrequentlyAskedQuestions } from "./FrequentlyAskedQuestions";
 import { OurTeam } from "./OurTeam";
+import { ContactInfoBlock } from "../contact/page";
+import { IconBrandInstagram, IconMailFilled } from "@tabler/icons-react";
 
 function StatBlock({ title, desc }: { title: string; desc: string }) {
   return (
@@ -96,10 +98,10 @@ function TopSection() {
         {/* Title */}
         <h1 className="text-4xl text-center">
           <span className="font-bold text-teal mr-1 relative bg-bdlue-600">
-            About
+            Who
             <TitleMark className="absolute w-32 top-full -left-5 dd -translate-y-2.5" />
           </span>
-          <span className="font-normal">Us</span>
+          <span className="font-normal"> we are</span>
         </h1>
 
         {/* Subtitle */}
@@ -146,13 +148,65 @@ function TopSection() {
             vehement irresistibly fussy.
           </p>
         </section>
+        <h1 className="text-3xl font-semibold mt-12 text-center md:text-left">
+          Our Mission
+        </h1>
+
+        <section className="space-y-8 mt-4 text-black/50 text-md text-center md:text-left">
+          <p>
+            Far much that one rank beheld bluebird after outside ignobly
+            allegedly more when oh arrogantly vehement irresistibly fussy
+            penguin insect additionally wow absolutely crud meretriciously
+            hastily dalmatian a glowered inset one echidna cassowary some parrot
+            and much as goodness some froze the sullen much connected bat
+            wonderfully on instantaneously eel valiantly petted this along
+            across highhandedly much.
+          </p>
+          <p>
+            Repeatedly dreamed alas opossum but dramatically despite
+            expeditiously that jeepers loosely yikes that as or eel underneath
+            kept and slept compactly far purred sure abidingly up above fitting
+            to strident wiped set waywardly far the and pangolin horse approving
+            paid chuckled cassowary oh above a much opposite far much
+            hypnotically more therefore wasp less that hey apart well like while
+            superbly orca and far hence one.Far much that one rank beheld
+            bluebird after outside ignobly allegedly more when oh arrogantly
+            vehement irresistibly fussy.
+          </p>
+        </section>
+
+        <h1 className="text-3xl font-semibold mt-12 text-center md:text-left">
+          Our Values
+        </h1>
+
+        <section className="space-y-8 mt-4 text-black/50 text-md text-center md:text-left">
+          <p>
+            Far much that one rank beheld bluebird after outside ignobly
+            allegedly more when oh arrogantly vehement irresistibly fussy
+            penguin insect additionally wow absolutely crud meretriciously
+            hastily dalmatian a glowered inset one echidna cassowary some parrot
+            and much as goodness some froze the sullen much connected bat
+            wonderfully on instantaneously eel valiantly petted this along
+            across highhandedly much.
+          </p>
+          <p>
+            Repeatedly dreamed alas opossum but dramatically despite
+            expeditiously that jeepers loosely yikes that as or eel underneath
+            kept and slept compactly far purred sure abidingly up above fitting
+            to strident wiped set waywardly far the and pangolin horse approving
+            paid chuckled cassowary oh above a much opposite far much
+            hypnotically more therefore wasp less that hey apart well like while
+            superbly orca and far hence one.Far much that one rank beheld
+            bluebird after outside ignobly allegedly more when oh arrogantly
+            vehement irresistibly fussy.
+          </p>
+        </section>
       </div>
     </>
   );
 }
 
 /* ============================================== */
-
 
 function FeatureBlock({ Icon, title }: { Icon: any; title: string }) {
   return (
@@ -188,15 +242,14 @@ function FeatureBlock({ Icon, title }: { Icon: any; title: string }) {
 
 function BottomSection() {
   return (
-    <div className="app-container w-full pt-14 pb-12">
+    <div className="app-container w-full">
       {/* Title */}
       <h1 className="text-4xl text-center">
-        <span className="font-normal">Our</span>
         <span className="font-bold text-teal mr-1 relative bg-bdlue-600">
-          Working
+          What we
           <TitleMark className="absolute w-48 top-full -left-8 dd -translate-y-1.5" />
         </span>
-        <span className="font-normal">Process</span>
+        <span className="font-normal"> do</span>
       </h1>
 
       {/* Subtitle */}
@@ -206,10 +259,43 @@ function BottomSection() {
       </p>
 
       {/* Features */}
-      <div className="flex max-md:flex-col justify-center gap-x-3 gap-y-8 mt-8">
+      <div className="flex max-md:flex-col justify-center gap-x-3 gap-y-8 mt-16">
         <FeatureBlock Icon={ResumeIcon} title="Free Resume Assessments" />
         <FeatureBlock Icon={JobIcon} title="Job Fit Scoring" />
         <FeatureBlock Icon={HelpIcon} title="Help Every Step of the Way" />
+      </div>
+
+      <h1 className="text-3xl font-semibold mt-12 text-center md:text-left">
+        Social responsibility
+      </h1>
+
+      <section className="space-y-8 mt-4 text-black/50 text-md text-center md:text-left">
+        <p>
+          Far much that one rank beheld bluebird after outside ignobly allegedly
+          more when oh arrogantly vehement irresistibly fussy penguin insect
+          additionally wow absolutely crud meretriciously hastily dalmatian a
+          glowered inset one echidna cassowary some parrot and much as goodness
+          some froze the sullen much connected bat wonderfully on
+          instantaneously eel valiantly petted this along across highhandedly
+          much.
+        </p>
+        <p>
+          Repeatedly dreamed alas opossum but dramatically despite expeditiously
+          that jeepers loosely yikes that as or eel underneath kept and slept
+          compactly far purred sure abidingly up above fitting to strident wiped
+          set waywardly far the and pangolin horse approving paid chuckled
+          cassowary oh above a much opposite far much hypnotically more
+          therefore wasp less that hey apart well like while superbly orca and
+          far hence one.Far much that one rank beheld bluebird after outside
+          ignobly allegedly more when oh arrogantly vehement irresistibly fussy.
+        </p>
+      </section>
+
+      {/* Follow */}
+      <h1 className="text-xl font-semibold mt-12 text-center">Follow us At</h1>
+      <div className="flex justify-center  gap-x-10 sm:gap-x-20 gap-y-12 mt-4">
+        <ContactInfoBlock Icon={IconBrandInstagram} title="@seasonistas" />
+        <ContactInfoBlock Icon={IconMailFilled} title="info@seasonistas.com" />
       </div>
     </div>
   );

@@ -31,7 +31,7 @@ function TeamMemberCell() {
 
 export function OurTeam() {
   return (
-    <section className="app-container w-full pb-20">
+    <section className="app-container w-full pb-14">
       <h1 className="text-4xl text-center mt-6 mb-14">
         <span className="font-bold text-teal mr-1 relative bg-bdlue-600">
           Our
