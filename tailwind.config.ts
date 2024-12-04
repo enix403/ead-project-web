@@ -19,7 +19,7 @@
 // };
 // export default config;
 
-const withMT = require("@material-tailwind/react/utils/withMT");
+import withMT from "@material-tailwind/react/utils/withMT";
 
 /** @type {import('tailwindcss').Config} */
 let config = {
@@ -40,7 +40,8 @@ let config = {
         'gray-line-2': '#BAB7B7',
         'gray-line-3': '#828193',
         'gray-prose': '#6E6E6E',
-        'x-purple': '#441D5C'
+        'x-purple': '#441D5C',
+        'x-ctrl-purple': '#922fcf'
       },
     },
     screens: {
@@ -79,8 +80,8 @@ let config = {
   ]
 };
 
-/** @type {import('tailwindcss').Config} */
-let mtConfig = withMT(config);
+// @ts-ignore
+let mtConfig: import('tailwindcss').Config = withMT(config);
 
 // Material Tailwind seems to overwrite config.theme.screens. See here:
 // https://github.com/creativetimofficial/material-tailwind/blob/a318436ecab2abfe6986c9e32b4fed8007b78014/packages/material-tailwind-react/src/utils/withMT.js

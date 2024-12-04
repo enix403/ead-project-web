@@ -3,9 +3,9 @@ import type {
   SelectProps as HtmlSelectProps
 } from "react-html-props";
 import { combineVisualProps } from "../VisualComponent";
-import { IconBriefcase2, IconChevronDown } from "@tabler/icons-react";
+import { IconChevronDown } from "@tabler/icons-react";
 
-export type SelectProps = HtmlDivProps &
+export type SelectProps = Omit<HtmlDivProps, "value" | "onChange"> &
   Pick<HtmlSelectProps, "value" | "onChange"> & {
     selectClassName?: string | undefined;
     selectProps?: Omit<HtmlSelectProps, "value" | "onChange"> | undefined;

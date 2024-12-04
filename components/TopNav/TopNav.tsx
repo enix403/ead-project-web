@@ -5,13 +5,27 @@ import MessageIcon from "./assets/message.svg";
 import BellIcon from "./assets/notification.svg";
 import ProfileImage from "~/app/assets/profile-1.webp";
 
+import { US } from "country-flag-icons/react/3x2";
+
 import Drawer from "react-modern-drawer";
 import Image from "next/image";
 
-import clsx from "clsx";
 import { IconButton } from "@material-tailwind/react";
+import {
+  Menu,
+  MenuHandler,
+  MenuList,
+  MenuItem,
+} from "@material-tailwind/react";
+
+import clsx from "clsx";
 import Link from "next/link";
-import { IconMenu2, IconX } from "@tabler/icons-react";
+import {
+  IconMenu2,
+  IconSettings,
+  IconSettingsFilled,
+  IconX,
+} from "@tabler/icons-react";
 import { Button } from "../Button/Button";
 
 import { atom, useAtom, useSetAtom } from "jotai";
@@ -35,12 +49,29 @@ function Contents({ pageTitle, viewMode }: TopNavProps) {
         <Link href={`/${viewMode}`}>
           <Image alt="" src={Logo} className="h-7 w-auto lg:h-10" />
         </Link>
-        <div className="flex gap-x-2 wl:gap-x-3.5 items-center">
+        <div className="flex gap-x-1 items-center">
           {loggedIn ? (
             <>
-              <IconButton variant="text">
-                <MessageIcon className="w-5" />
-              </IconButton>
+              <Menu>
+                <MenuHandler>
+                  <IconButton variant="text">
+                    <IconSettingsFilled size={22} stroke={1} />
+                  </IconButton>
+                </MenuHandler>
+                <MenuList>
+                  <MenuItem>Logout</MenuItem>
+                  <MenuItem className="flex justify-between items-center">
+                    Change language
+                    <US title="United States" className="w-5" />
+                  </MenuItem>
+                  <MenuItem>Add card</MenuItem>
+                </MenuList>
+              </Menu>
+              <Link href={`/${viewMode}/chat`}>
+                <IconButton variant="text">
+                  <MessageIcon className="w-5" />
+                </IconButton>
+              </Link>
               {/* <IconButton variant="text">
                 <div className="relative">
                   <BellIcon className="w-5" />
@@ -52,7 +83,7 @@ function Contents({ pageTitle, viewMode }: TopNavProps) {
                 <Image
                   src={ProfileImage}
                   alt=""
-                  className="w-8 h-8 rounded-full"
+                  className="w-8 h-8 rounded-full ml-2.5"
                 />
               </button>
             </>

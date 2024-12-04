@@ -3,19 +3,57 @@
 import { AppLayout } from "~/components/AppLayout/AppLayout";
 import {
   Avatar,
+  Button,
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
+  IconButton,
   List,
   ListItem,
   ListItemPrefix,
+  ListItemSuffix,
+  Tooltip,
   Typography,
 } from "@material-tailwind/react";
+import {
+  IconCheck,
+  IconLayoutDashboard,
+  IconListDetails,
+  IconVersionsOff,
+  IconX,
+} from "@tabler/icons-react";
+import { atom, useAtom } from "jotai";
+import { useCallback } from "react";
+
+const displayAtom = atom<"list" | "grid">("list");
 
 function PostingCard() {
+  const [display, setDisplay] = useAtom(displayAtom);
+
+  const toggle = useCallback(
+    () => setDisplay((x) => (x === "grid" ? "list" : "grid")),
+    []
+  );
+
+  const DisplayIcon =
+    display === "list" ? IconListDetails : IconLayoutDashboard;
+
   return (
     <div className="border-gray-line-2/50 border rounded-xl px-5 py-5">
-      <div>
+      <div className="flex items-center justify-between gap-x-3">
         <span className="bg-green-500 text-white font-bold px-2 py-1.5 text-fine rounded-md">
           Active
         </span>
+        <Button
+          size="sm"
+          color="amber"
+          variant="text"
+          className="flex items-center gap-2"
+        >
+          Mark as inactice
+          <IconVersionsOff size={20} />
+        </Button>
       </div>
       <h3 className="font-semibold text-lg mt-3">
         Chef - Mediterranean Cuisine, Experience in Hotel and Restaurant
@@ -27,21 +65,84 @@ function PostingCard() {
         disposal.
       </p>
 
-      <h2 className="text-lg font-semibold mt-4 mb-2">Applicants (4)</h2>
+      <div className="flex justify-between items-center">
+        <h2 className="text-lg font-semibold mt-4 mb-2">Applicants (4)</h2>
+        <Button
+          size="sm"
+          color="blue"
+          variant="text"
+          className="flex items-center gap-2"
+          onClick={toggle}
+        >
+          <DisplayIcon size={20} />
+          Display: {display}
+        </Button>
+      </div>
 
-      <List>
-        <ApplicantRow />
-        <ApplicantRow />
-        <ApplicantRow />
-        <ApplicantRow />
-      </List>
+      {display === 'list' ?  <ApplicantsList /> : <ApplicantsGrid />}
     </div>
+  );
+}
+
+/* ======================= */
+
+function ApplicantsGrid() {
+  return (
+    <div className="grid grid-cols-3 gap-6 mt-4">
+      <ApplicantCell />
+      <ApplicantCell />
+      <ApplicantCell />
+      <ApplicantCell />
+    </div>
+  );
+}
+
+function ApplicantCell() {
+  return (
+    <Card className="border-2 border-teal-dark">
+      <CardHeader floated={false}>
+        <img src="/profile-2.jpg" />
+      </CardHeader>
+      <CardBody className="text-center">
+        <Typography variant="h6" color="blue-gray">
+          Yiannis Andrew
+        </Typography>
+        <Typography variant="small" color="gray" className="font-normal">
+          Senior Software Engineer at Apple | 2021 - 2024
+        </Typography>
+      </CardBody>
+      <CardFooter className="pt-0 flex items-center justify-center gap-x-2">
+        <Tooltip content="Interested">
+          <IconButton color="green" variant="text">
+            <IconCheck />
+          </IconButton>
+        </Tooltip>
+        <Tooltip content="Not Interested">
+          <IconButton color="red" variant="text">
+            <IconX />
+          </IconButton>
+        </Tooltip>
+      </CardFooter>
+    </Card>
+  );
+}
+
+/* ============================= */
+
+function ApplicantsList() {
+  return (
+    <List>
+      <ApplicantRow />
+      <ApplicantRow />
+      <ApplicantRow />
+      <ApplicantRow />
+    </List>
   );
 }
 
 function ApplicantRow() {
   return (
-    <ListItem>
+    <ListItem ripple={false}>
       <ListItemPrefix>
         <Avatar variant="circular" alt="User" src="/profile-2.jpg" />
       </ListItemPrefix>
@@ -53,9 +154,25 @@ function ApplicantRow() {
           Senior Software Engineer at Apple | 2021 - 2024
         </Typography>
       </div>
+      <ListItemSuffix className="flex items-center gap-x-4">
+        {/* Yes / No */}
+        <Tooltip content="Interested">
+          <IconButton color="green" variant="text">
+            <IconCheck />
+          </IconButton>
+        </Tooltip>
+        <Tooltip content="Not Interested">
+          <IconButton color="red" variant="text">
+            <IconX />
+          </IconButton>
+        </Tooltip>
+        {/* Yes / No */}
+      </ListItemSuffix>
     </ListItem>
   );
 }
+
+/* ============================= */
 
 export default function Postings({ params }: { params: any }) {
   return (

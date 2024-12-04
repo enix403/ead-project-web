@@ -125,11 +125,12 @@ function SearchControls(props: DivProps) {
           Sort:
           <Select>
             <option>Best Match</option>
-            <option>Another Match</option>
+            <option>Popularity</option>
+            <option>Listing Date</option>
+            <option>Price</option>
           </Select>
         </div>
       </div>
-      {/* <h2 className="text-teal font-bold mt-1">Advanced Search</h2> */}
       {showFilters && <Filters className="mt-4" />}
     </div>
   );

@@ -2,7 +2,7 @@
 @tailwind utilities;
 
 html {
-  font-size: 14px;
+  font-size: 14.5px;
 }
 
 body {
@@ -34,6 +34,18 @@ body {
 @layer components {
   .d {
     @apply bg-red-400;
+  }
+
+  .d2 {
+    @apply bg-green-400;
+  }
+
+  .d3 {
+    @apply bg-purple-400;
+  }
+
+  .d4 {
+    @apply bg-yellow-600;
   }
 
   .app-container {

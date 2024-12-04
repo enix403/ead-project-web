@@ -34,7 +34,7 @@ export function ProposalCard({
         </Badge>
 
         {isBestMatch && (
-          <div className="bg-[#922fcf] text-white font-bold px-2 py-1.5 text-fine ml-3 rounded-md">
+          <div className="bg-x-ctrl-purple text-white font-bold px-2 py-1.5 text-fine ml-3 rounded-md">
             Best Match
           </div>
         )}
@@ -46,7 +46,7 @@ export function ProposalCard({
             onClick={() => setFav((prev) => !prev)}
           >
             <IconHeartFilled
-              className={clsx(fav ? "text-[#922fcf]" : "text-gray-600/30")}
+              className={clsx(fav ? "text-x-ctrl-purple" : "text-gray-600/30")}
             />
           </IconButton>
         )}

@@ -20,6 +20,9 @@ import { Button } from "~/components/Button/Button";
 import clsx from "clsx";
 import Link from "next/link";
 
+import { FrequentlyAskedQuestions } from "./FrequentlyAskedQuestions";
+import { OurTeam } from "./OurTeam";
+
 function StatBlock({ title, desc }: { title: string; desc: string }) {
   return (
     <div className="space-y-2 w-56">
@@ -71,10 +74,14 @@ function HeroImageSet() {
           "flex sm:hidden",
           "mt-8 gap-x-3",
           "items-start overflow-hidden",
-          "[&_img]:rounded-xl [&_img]:object-cover",
+          "[&_img]:rounded-xl [&_img]:object-cover"
         )}
       >
-        <Image alt="" src={Hero1} className="w-[46%] shrink-0 aspect-[1.7] -ml-10" />
+        <Image
+          alt=""
+          src={Hero1}
+          className="w-[46%] shrink-0 aspect-[1.7] -ml-10"
+        />
         <Image alt="" src={Hero7} className="w-[46%] shrink-0 aspect-[1.7]" />
         <Image alt="" src={Hero4} className="w-[46%] shrink-0 aspect-[1.7]" />
       </div>
@@ -206,7 +213,7 @@ function FeatureBlock({ Icon, title }: { Icon: any; title: string }) {
 
 function BottomSection() {
   return (
-    <div className="app-container w-full pt-14 pb-20">
+    <div className="app-container w-full pt-14 pb-12">
       {/* Title */}
       <h1 className="text-4xl text-center">
         <span className="font-normal">Our</span>
@@ -239,8 +246,20 @@ export default function AboutUs({ params }: { params: any }) {
   return (
     <AppLayout params={params}>
       <TopSection />
+      <OurTeam />
       <JobBanner />
       <BottomSection />
+
+      <div className="app-container w-full pb-20">
+        <h1 className="text-4xl text-center mt-12 mb-8">
+          <span className="font-bold text-teal mr-1 relative bg-bdlue-600">
+            Frequently
+            <TitleMark className="absolute w-32 top-full -left-5 dd -translate-y-2.5" />
+          </span>
+          <span className="font-normal"> Asked Questions</span>
+        </h1>
+        <FrequentlyAskedQuestions />
+      </div>
     </AppLayout>
   );
 }
