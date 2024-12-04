@@ -39,4 +39,6 @@ declare module "@material-tailwind/react" {
   export interface MenuItemProps extends CorrectPlaceholder {}
   export interface StepperProps extends CorrectPlaceholder {}
   export interface StepProps extends CorrectPlaceholder {}
+  export interface TabsHeaderProps extends CorrectPlaceholder {}
+  export interface TabProps extends CorrectPlaceholder {}
 }

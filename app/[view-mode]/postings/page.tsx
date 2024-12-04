@@ -13,6 +13,9 @@ import {
   ListItem,
   ListItemPrefix,
   ListItemSuffix,
+  Tab,
+  Tabs,
+  TabsHeader,
   Tooltip,
   Typography,
 } from "@material-tailwind/react";
@@ -20,11 +23,12 @@ import {
   IconCheck,
   IconLayoutDashboard,
   IconListDetails,
-  IconVersionsOff,
+  IconScanPosition,
   IconX,
 } from "@tabler/icons-react";
 import { atom, useAtom } from "jotai";
 import { useCallback } from "react";
+import Link from "next/link";
 
 const displayAtom = atom<"list" | "grid">("list");
 
@@ -45,15 +49,18 @@ function PostingCard() {
         <span className="bg-green-500 text-white font-bold px-2 py-1.5 text-fine rounded-md">
           Active
         </span>
-        <Button
-          size="sm"
-          color="amber"
-          variant="text"
-          className="flex items-center gap-2"
-        >
-          Mark as inactice
-          <IconVersionsOff size={20} />
-        </Button>
+        {/* ... Repost button ... */}
+        <Link href="create-job">
+          <Button
+            size="lg"
+            color="purple"
+            variant="text"
+            className="flex items-center gap-2 !p-4"
+          >
+            Repost
+            <IconScanPosition size={20} />
+          </Button>
+        </Link>
       </div>
       <h3 className="font-semibold text-lg mt-3">
         Chef - Mediterranean Cuisine, Experience in Hotel and Restaurant
@@ -79,7 +86,16 @@ function PostingCard() {
         </Button>
       </div>
 
-      {display === 'list' ?  <ApplicantsList /> : <ApplicantsGrid />}
+      {display === "list" ? <ApplicantsList /> : <ApplicantsGrid />}
+
+      <div className="flex items-center gap-x-4 pt-4 mt-2  border-t border-gray-line-2">
+        <Button size="sm" color="blue" variant="filled" className="text-sm">
+          Archive
+        </Button>
+        <Button size="sm" color="amber" variant="filled" className="text-sm">
+          Make Inactive
+        </Button>
+      </div>
     </div>
   );
 }
@@ -174,15 +190,56 @@ function ApplicantRow() {
 
 /* ============================= */
 
+const data = [
+  {
+    label: "HTML",
+    value: "html",
+    desc: `It really matters and then like it really doesn't matter.
+    What matters is the people who are sparked by it. And the people
+    who are like offended by it, it doesn't matter.`,
+  },
+  {
+    label: "React",
+    value: "react",
+    desc: `Because it's about motivating the doers. Because I'm here
+    to follow my dreams and inspire other people to follow their dreams, too.`,
+  },
+  {
+    label: "Vue",
+    value: "vue",
+    desc: `We're not always in the position that we want to be at.
+    We're constantly growing. We're constantly making mistakes. We're
+    constantly trying to express ourselves and actualize our dreams.`,
+  },
+  {
+    label: "Angular",
+    value: "angular",
+    desc: `Because it's about motivating the doers. Because I'm here
+    to follow my dreams and inspire other people to follow their dreams, too.`,
+  },
+  {
+    label: "Svelte",
+    value: "svelte",
+    desc: `We're not always in the position that we want to be at.
+    We're constantly growing. We're constantly making mistakes. We're
+    constantly trying to express ourselves and actualize our dreams.`,
+  },
+];
+
 export default function Postings({ params }: { params: any }) {
   return (
     <AppLayout params={params}>
       <div className="pb-8 pt-6">
         <div className="max-w-4xl mx-auto">
           <h3 className="mb-6 text-2xl font-semibold">Your Postings</h3>
+          <Tabs value="A" className="mb-6">
+            <TabsHeader>
+              <Tab value="A">All</Tab>
+              <Tab value="B">Active</Tab>
+              <Tab value="C">Expired</Tab>
+            </TabsHeader>
+          </Tabs>
           <div className="space-y-4">
-            <PostingCard />
-            <PostingCard />
             <PostingCard />
             <PostingCard />
           </div>
