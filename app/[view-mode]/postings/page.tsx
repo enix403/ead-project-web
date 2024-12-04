@@ -29,10 +29,11 @@ import {
 import { atom, useAtom } from "jotai";
 import { useCallback } from "react";
 import Link from "next/link";
+import clsx from "clsx";
 
 const displayAtom = atom<"list" | "grid">("list");
 
-function PostingCard() {
+function PostingCard({ active }: { active?: boolean }) {
   const [display, setDisplay] = useAtom(displayAtom);
 
   const toggle = useCallback(
@@ -44,9 +45,21 @@ function PostingCard() {
     display === "list" ? IconListDetails : IconLayoutDashboard;
 
   return (
-    <div className="border-gray-line-2/50 border rounded-xl px-5 py-5">
+    <div
+      className={clsx(
+        "rounded-xl px-5 py-5",
+        active
+          ? "border-x-purple border-4 shadow-xl shadow-x-purple/60"
+          : "border border-gray-line-2/80"
+      )}
+    >
       <div className="flex items-center justify-between gap-x-3">
-        <span className="bg-green-500 text-white font-bold px-2 py-1.5 text-fine rounded-md">
+        <span
+          className={clsx(
+            "bg-x-purple text-white font-bold px-2 py-1.5 text-fine rounded-md",
+            !active && "invisible"
+          )}
+        >
           Active
         </span>
         {/* ... Repost button ... */}
@@ -55,7 +68,7 @@ function PostingCard() {
             size="lg"
             color="purple"
             variant="text"
-            className="flex items-center gap-2 !p-4"
+            className="flex items-center gap-2 !px-4 !py-2"
           >
             Repost
             <IconScanPosition size={20} />
@@ -190,42 +203,6 @@ function ApplicantRow() {
 
 /* ============================= */
 
-const data = [
-  {
-    label: "HTML",
-    value: "html",
-    desc: `It really matters and then like it really doesn't matter.
-    What matters is the people who are sparked by it. And the people
-    who are like offended by it, it doesn't matter.`,
-  },
-  {
-    label: "React",
-    value: "react",
-    desc: `Because it's about motivating the doers. Because I'm here
-    to follow my dreams and inspire other people to follow their dreams, too.`,
-  },
-  {
-    label: "Vue",
-    value: "vue",
-    desc: `We're not always in the position that we want to be at.
-    We're constantly growing. We're constantly making mistakes. We're
-    constantly trying to express ourselves and actualize our dreams.`,
-  },
-  {
-    label: "Angular",
-    value: "angular",
-    desc: `Because it's about motivating the doers. Because I'm here
-    to follow my dreams and inspire other people to follow their dreams, too.`,
-  },
-  {
-    label: "Svelte",
-    value: "svelte",
-    desc: `We're not always in the position that we want to be at.
-    We're constantly growing. We're constantly making mistakes. We're
-    constantly trying to express ourselves and actualize our dreams.`,
-  },
-];
-
 export default function Postings({ params }: { params: any }) {
   return (
     <AppLayout params={params}>
@@ -240,8 +217,9 @@ export default function Postings({ params }: { params: any }) {
             </TabsHeader>
           </Tabs>
           <div className="space-y-4">
+            <PostingCard active />
             <PostingCard />
-            <PostingCard />
+            <PostingCard active />
           </div>
         </div>
       </div>
