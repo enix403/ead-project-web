@@ -5,6 +5,9 @@ import { FormLabel } from "~/components/FormLabel/FormLabel";
 import { ProposalCard } from "~/components/ProposalCard";
 import { StepCallbacks } from "./common";
 
+import allJobs from "../jobs.json";
+import { useEffect, useState } from "react";
+
 function ProposalTemplateCard() {
   return (
     <ProposalCard
@@ -19,13 +22,22 @@ function ProposalTemplateCard() {
 }
 
 export function GeneralInfoStep({ onNext, onCancel }: StepCallbacks) {
+  const [selectedJobIndex, setSelectedJobIndex] = useState(0);
+  const [selectedRoleIndex, setSelectedRoleIndex] = useState(0);
+
+  useEffect(() => {
+    setSelectedRoleIndex(0);
+  }, [selectedJobIndex]);
+
+  let selectedRole = allJobs[selectedJobIndex].specialisms[selectedRoleIndex];
+
   return (
     <>
       <h1 className="font-semibold text-2xl text-center md:text-left">
         Post a New Job !
       </h1>
       <h4 className="mt-1 text-black/70 text-center md:text-left">
-        Ready to jump back in?
+        Ready to jump back in? {selectedJobIndex}
       </h4>
 
       <div className="bg-teal/5 p-7 mt-7 rounded-xl space-y-6">
@@ -39,20 +51,38 @@ export function GeneralInfoStep({ onNext, onCancel }: StepCallbacks) {
           />
         </FormLabel>
 
-        <div className="flex gap-4 flex-col md:flex-row">
-          <FormLabel label="Job Category" className="flex-1">
-            <Select variant="light">
-              <option>Job Category 1</option>
-              <option>Job Category 2</option>
-            </Select>
-          </FormLabel>
-          <FormLabel label="Specialisms" className="flex-1">
-            <Select variant="light">
-              <option>Specialisms 1</option>
-              <option>Specialisms 2</option>
-            </Select>
-          </FormLabel>
-        </div>
+        <FormLabel label="Job Category">
+          <Select
+            variant="light"
+            value={selectedJobIndex}
+            onChange={(event) => {
+              setSelectedJobIndex(+event.target.value);
+            }}
+          >
+            {allJobs.map((job, index) => (
+              <option value={index} key={index}>
+                {job.category}
+              </option>
+            ))}
+          </Select>
+        </FormLabel>
+        <FormLabel label="Specialisms">
+          <Select
+            variant="light"
+            value={selectedRoleIndex}
+            onChange={(event) => {
+              setSelectedRoleIndex(+event.target.value);
+            }}
+          >
+            {allJobs[selectedJobIndex].specialisms.map((role, index) => (
+              <option value={index} key={index}>
+                {role.title}
+              </option>
+            ))}
+          </Select>
+        </FormLabel>
+
+        <p className="!mt-2 italic">{selectedRole.info}</p>
 
         <div className="pt-6">
           <div className="flex gap-x-3">
