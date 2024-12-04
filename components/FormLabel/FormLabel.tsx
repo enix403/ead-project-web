@@ -6,12 +6,20 @@ export function FormLabel({
   label,
   children,
   showAsterik,
+  inline,
   ...rest
-}: { label: string; showAsterik?: boolean } & HtmlLabelProps) {
+}: {
+  label: string;
+  showAsterik?: boolean;
+  inline?: boolean;
+} & HtmlLabelProps) {
   return (
     <label
       {...combineVisualProps(rest, {
-        className: "flex flex-col gap-y-1.5",
+        className: [
+          "flex gap-y-1.5 gap-x-2", //
+          inline ? "flex-row" : "flex-col",
+        ],
       })}
     >
       {label && (

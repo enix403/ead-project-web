@@ -8,6 +8,8 @@ import { AppLayout, ViewModeContext } from "~/components/AppLayout/AppLayout";
 import { Button } from "~/components/Button/Button";
 import { useContext } from "react";
 import { IconSearch } from "@tabler/icons-react";
+import { FormLabel } from "~/components/FormLabel/FormLabel";
+import { Select } from "~/components/Select/Select";
 
 const variants = {
   visible: (i: number) => ({
@@ -87,6 +89,28 @@ function Content() {
             className="flex-1 outline-none"
             placeholder="Search for people"
           />
+        </div>
+
+        <div
+          className={clsx(
+            "flex flex-col md:flex-row gap-x-4 xl:gap-x-12 gap-y-4 mb-8"
+          )}
+        >
+          <FormLabel inline label="Location" className="flex-1">
+            <Select className="flex-1">
+              <option>USA</option>
+              <option>Arizona</option>
+              <option>Canada</option>
+            </Select>
+          </FormLabel>
+          <FormLabel inline label="Job Type" className="flex-1">
+            <Select className="flex-1">
+              <option>Full-Time</option>
+              <option>Part-Time</option>
+              <option>Contract</option>
+              <option>Internship</option>
+            </Select>
+          </FormLabel>
         </div>
 
         <motion.div className="grid grid-cols-3 gap-5">
