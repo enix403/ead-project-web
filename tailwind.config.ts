@@ -41,7 +41,8 @@ let config = {
         'gray-line-3': '#828193',
         'gray-prose': '#6E6E6E',
         'x-purple': '#441D5C',
-        'x-ctrl-purple': '#922fcf'
+        // 'x-ctrl-purple': '#922fcf'
+        'x-ctrl-purple': '#441D5C'
       },
     },
     screens: {
