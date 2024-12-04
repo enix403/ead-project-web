@@ -27,7 +27,8 @@ export default function CreateJobPage({ params }: { params: any }) {
     QuestionsStep,
   ];
 
-  let StepComponent = steps[pageIndex];
+  // let StepComponent = steps[pageIndex];
+  let StepComponent = steps[2];
 
   return (
     <AppLayout pageTitle="Jobs" params={params}>
