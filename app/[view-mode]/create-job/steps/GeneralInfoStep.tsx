@@ -46,10 +46,10 @@ export function GeneralInfoStep({ onNext, onCancel }: StepCallbacks) {
               <option>Specialisms 2</option>
             </Select>
           </FormLabel>
-          <FormLabel label="Job Type" className="flex-1">
+          <FormLabel label="Specialisms" className="flex-1">
             <Select variant="light">
-              <option>Job Type 1</option>
-              <option>Job Type 2</option>
+              <option>Specialisms 1</option>
+              <option>Specialisms 2</option>
             </Select>
           </FormLabel>
         </div>
