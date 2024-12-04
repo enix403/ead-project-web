@@ -2,7 +2,7 @@
 
 import { AppLayout } from "~/components/AppLayout/AppLayout";
 
-import { ReactNode, useState } from "react";
+import { useState } from "react";
 
 import { GeneralInfoStep } from "./steps/GeneralInfoStep";
 import { SpecificInfoStep } from "./steps/SpecificInfoStep";
@@ -10,14 +10,14 @@ import { CompanyInfoStep } from "./steps/CompanyInfoStep";
 import { QuestionsStep } from "./steps/QuestionsStep";
 
 export default function CreateJobPage({ params }: { params: any }) {
-  const [activePage, setActivePage] = useState(0);
+  const [pageIndex, setPageIndex] = useState(0);
 
   function onNext() {
-    setActivePage((x) => Math.min(2, x + 1));
+    setPageIndex((x) => Math.min(steps.length - 1, x + 1));
   }
 
   function onCancel() {
-    setActivePage((x) => Math.max(0, x - 1));
+    setPageIndex((x) => Math.max(0, x - 1));
   }
 
   let steps = [
@@ -27,9 +27,7 @@ export default function CreateJobPage({ params }: { params: any }) {
     QuestionsStep,
   ];
 
-  // let index = activePage;
-  let index = 3;
-  let StepComponent = steps[index];
+  let StepComponent = steps[pageIndex];
 
   return (
     <AppLayout pageTitle="Jobs" params={params}>
