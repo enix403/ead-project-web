@@ -52,11 +52,21 @@ function Contents({ pageTitle, viewMode }: TopNavProps) {
         <div className="flex gap-x-1 items-center">
           {loggedIn ? (
             <>
+              <Link href={`/${viewMode}/chat`}>
+                <IconButton variant="text">
+                  <MessageIcon className="w-5" />
+                </IconButton>
+              </Link>
+
               <Menu>
                 <MenuHandler>
-                  <IconButton variant="text">
-                    <IconSettingsFilled size={22} stroke={1} />
-                  </IconButton>
+                  <button>
+                    <Image
+                      src={ProfileImage}
+                      alt=""
+                      className="w-8 h-8 rounded-full ml-2.5"
+                    />
+                  </button>
                 </MenuHandler>
                 <MenuList>
                   <MenuItem>Logout</MenuItem>
@@ -64,28 +74,13 @@ function Contents({ pageTitle, viewMode }: TopNavProps) {
                     Change language
                     <US title="United States" className="w-5" />
                   </MenuItem>
+                  <MenuItem className="flex justify-between items-center">
+                    Change currency
+                    <span className="text-xs font-bold">EUR</span>
+                  </MenuItem>
                   <MenuItem>Add card</MenuItem>
                 </MenuList>
               </Menu>
-              <Link href={`/${viewMode}/chat`}>
-                <IconButton variant="text">
-                  <MessageIcon className="w-5" />
-                </IconButton>
-              </Link>
-              {/* <IconButton variant="text">
-                <div className="relative">
-                  <BellIcon className="w-5" />
-                  <div className="w-2.5 h-2.5 bg-teal absolute rounded-full top-0 right-0 -translate-y-1/3" />
-                </div>
-              </IconButton> */}
-
-              <button>
-                <Image
-                  src={ProfileImage}
-                  alt=""
-                  className="w-8 h-8 rounded-full ml-2.5"
-                />
-              </button>
             </>
           ) : (
             <Link href="/auth" className="hidden ph:block">
