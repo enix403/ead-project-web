@@ -3,7 +3,7 @@ import { Input, TextArea } from "~/components/Input/Input";
 import { Select } from "~/components/Select/Select";
 import { FormLabel } from "~/components/FormLabel/FormLabel";
 import { ProposalCard } from "~/components/ProposalCard";
-import { StepCallbacks } from "./common";
+import { StepProps } from "./common";
 
 import allJobs from "../jobs.json";
 import { useEffect, useState } from "react";
@@ -21,7 +21,7 @@ function ProposalTemplateCard() {
   );
 }
 
-export function GeneralInfoStep({ onNext, onCancel }: StepCallbacks) {
+export function GeneralInfoStep({ onNext, onCancel, progressView }: StepProps) {
   const [selectedJobIndex, setSelectedJobIndex] = useState(0);
   const [selectedRoleIndex, setSelectedRoleIndex] = useState(0);
 
@@ -36,9 +36,10 @@ export function GeneralInfoStep({ onNext, onCancel }: StepCallbacks) {
       <h1 className="font-semibold text-2xl text-center md:text-left">
         Post a New Job !
       </h1>
-      <h4 className="mt-1 text-black/70 text-center md:text-left">
-        Ready to jump back in? {selectedJobIndex}
-      </h4>
+      {progressView}
+      {/* <h4 className="text-black/70 text-center md:text-left">
+        Ready to jump back in?
+      </h4> */}
 
       <div className="bg-teal/5 p-7 mt-7 rounded-xl space-y-6">
         <FormLabel showAsterik label="Job Title">

@@ -1,6 +1,6 @@
 import { Button } from "~/components/Button/Button";
 import { Input, TextArea } from "~/components/Input/Input";
-import { StepCallbacks } from "./common";
+import { StepProps } from "./common";
 
 import { useState } from "react";
 
@@ -57,12 +57,14 @@ function QuestionsForm() {
   );
 }
 
-export function QuestionsStep({ onNext, onCancel }: StepCallbacks) {
+export function QuestionsStep({ onNext, onCancel, progressView }: StepProps) {
   return (
     <>
       <h1 className="font-semibold text-2xl text-center md:text-left">
         Employee Questions
       </h1>
+
+      {progressView}
 
       <div className="bg-teal/5 p-7 mt-7 rounded-xl space-y-6">
         <QuestionsForm />

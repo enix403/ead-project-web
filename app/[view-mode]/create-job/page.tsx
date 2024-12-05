@@ -30,20 +30,20 @@ export default function CreateJobPage({ params }: { params: any }) {
 
   let StepComponent = steps[pageIndex];
 
+  let progressView = (
+    <Stepper className="mt-4" activeStep={pageIndex}>
+      {steps.map((_, index) => (
+        // @ts-ignore
+        <Step key={index}>{index + 1}</Step>
+      ))}
+    </Stepper>
+  );
+
   return (
     <AppLayout pageTitle="Jobs" params={params}>
       <div className="flex-1 flex items-start">
         <div className="flex-1 px-7 py-8">
-          <Stepper
-            className="mb-4"
-            activeStep={pageIndex}
-          >
-            {steps.map((_, index) => (
-              // @ts-ignore
-              <Step key={index}>{index + 1}</Step>
-            ))}
-          </Stepper>
-          <StepComponent onNext={onNext} onCancel={onCancel} />
+          <StepComponent onNext={onNext} onCancel={onCancel} progressView={progressView} />
         </div>
       </div>
     </AppLayout>
