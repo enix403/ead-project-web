@@ -10,6 +10,7 @@ import { TitleMark } from "~/components/decorations";
 import { FrequentlyAskedQuestions } from "~/components/FrequentlyAskedQuestions";
 import { JobBanner } from "./JobBanner";
 import { IconCoinFilled, IconCoins, IconUserSearch } from "@tabler/icons-react";
+import { InfoStepper } from "./InfoStepper";
 
 function FeatureBlock({
   Icon,
@@ -117,8 +118,9 @@ function InformationPageContent() {
         </div>
       </div>
       <JobBanner />
-      <div className="app-container max-w-5xl w-full">
-        <h1 className="text-4xl text-center mt-12 mb-8">
+      <div className="app-container max-w-5xl w-full pt-8">
+        <InfoStepper />
+        <h1 className="text-4xl text-center mt-14 mb-8">
           <span className="font-bold text-teal mr-1 relative bg-bdlue-600">
             Frequently
             <TitleMark className="absolute w-32 top-full -left-5 dd -translate-y-2.5" />

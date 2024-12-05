@@ -126,7 +126,7 @@ function SearchControls(props: DivProps) {
           <Select>
             <option>Best Match</option>
             <option>Popularity</option>
-            <option>Listing Date</option>
+            <option>Date</option>
             <option>Price</option>
           </Select>
         </div>

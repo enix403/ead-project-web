@@ -1,7 +1,7 @@
 import { Button } from "~/components/Button/Button";
 import { Input, TextArea } from "~/components/Input/Input";
 import { FormLabel } from "~/components/FormLabel/FormLabel";
-import { StepCallbacks } from "./common";
+import { StepForm, StepProps } from "./common";
 
 function LogoInput() {
   return (
@@ -47,76 +47,85 @@ function LogoInput() {
   );
 }
 
-export function CompanyInfoStep({ onNext, onCancel }: StepCallbacks) {
+export function CompanyInfoStep({ onNext, onCancel, progressView }: StepProps) {
   return (
     <>
       <h1 className="font-semibold text-2xl text-center md:text-left">
         Company Information
       </h1>
 
-      <div className="bg-teal/5 p-7 mt-7 rounded-xl space-y-6">
-        <FormLabel showAsterik label="Company Name">
-          <Input placeholder="Enter company name" />
-        </FormLabel>
+      {progressView}
 
-        <FormLabel showAsterik label="Username">
-          <Input placeholder="Enter username" />
-        </FormLabel>
+      <StepForm onNext={onNext}>
+        <div className="bg-teal/5 p-7 mt-7 rounded-xl space-y-6">
+          <FormLabel showAsterik label="Company Name">
+            <Input required placeholder="Enter company name" />
+          </FormLabel>
 
-        <FormLabel label="Company Description">
-          <TextArea placeholder="Describe your company" className="h-20" />
-        </FormLabel>
+          <FormLabel showAsterik label="Username">
+            <Input required placeholder="Enter username" />
+          </FormLabel>
 
-        <FormLabel label="Website">
-          <Input placeholder="Enter company website URL" />
-        </FormLabel>
+          <FormLabel label="Company Description">
+            <TextArea
+              placeholder={`
+              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eaque quia deserunt enim accusamus temporibus et corporis sequi cumque quas nam soluta harum veritatis, modi incidunt dicta, tempora laborum asperiores molestiae!`.trim()}
+              className="h-20"
+            />
+          </FormLabel>
 
-        <LogoInput />
+          <FormLabel label="Website">
+            <Input placeholder="Enter company website URL" />
+          </FormLabel>
 
-        <div className="flex gap-4 flex-col md:flex-row">
-          <div className="flex-1">
-            <FormLabel showAsterik label="Country">
-              <Input placeholder="Enter country" />
+          <LogoInput />
+
+          <div className="flex gap-4 flex-col md:flex-row">
+            <div className="flex-1">
+              <FormLabel showAsterik label="Country">
+                <Input required placeholder="Enter country" />
+              </FormLabel>
+            </div>
+            <div className="flex-1">
+              <FormLabel showAsterik label="City / Island">
+                <Input required placeholder="Enter city / island" />
+              </FormLabel>
+            </div>
+          </div>
+
+          <FormLabel showAsterik label="Area">
+            <TextArea
+              required
+              placeholder="Enter area"
+              className="h-20"
+            />
+          </FormLabel>
+
+          <div className="flex gap-4 flex-col md:flex-row">
+            <FormLabel label="Find on Map" className="flex-[2]">
+              <Input placeholder="Enter complete address" />
+            </FormLabel>
+            <FormLabel label="Postal Code" showAsterik className="flex-1">
+              <Input required placeholder="Enter  postal code" />
             </FormLabel>
           </div>
-          <div className="flex-1">
-            <FormLabel showAsterik label="City">
-              <Input placeholder="Enter city" />
-            </FormLabel>
+
+          <FormLabel label="Date Posted">
+            <Input type="date" placeholder="Select the date posted" />
+          </FormLabel>
+
+          <div className="pt-6">
+            <div className="flex gap-x-3">
+              <Button onClick={onCancel} variant="outlined" fullRounded>
+                Cancel
+              </Button>
+              <Button type="submit" fullRounded>
+                Next
+              </Button>
+            </div>
           </div>
         </div>
-
-        <FormLabel showAsterik label="Street / Address">
-          <TextArea placeholder="Enter Street / Address" className="h-20" />
-        </FormLabel>
-
-        <div className="flex gap-4 flex-col md:flex-row">
-          <FormLabel label="Find on Map" className="flex-[2]">
-            <Input placeholder="Enter complete address" />
-          </FormLabel>
-          <FormLabel label="Latitude" className="flex-1">
-            <Input />
-          </FormLabel>
-          <FormLabel label="Longitude" className="flex-1">
-            <Input />
-          </FormLabel>
-        </div>
-
-        <FormLabel label="Date Posted">
-          <Input type="date" placeholder="Select the date posted" />
-        </FormLabel>
-
-        <div className="pt-6">
-          <div className="flex gap-x-3">
-            <Button onClick={onNext} fullRounded>
-              Next
-            </Button>
-            <Button onClick={onCancel} variant="outlined" fullRounded>
-              Cancel
-            </Button>
-          </div>
-        </div>
-      </div>
+      </StepForm>
     </>
   );
 }

@@ -49,7 +49,7 @@ function PostingCard({ active }: { active?: boolean }) {
       className={clsx(
         "rounded-xl px-5 py-5",
         active
-          ? "border-x-purple border-4 shadow-xl shadow-x-purple/60"
+          ? "border-x-purple border-2"
           : "border border-gray-line-2/80"
       )}
     >
@@ -102,10 +102,7 @@ function PostingCard({ active }: { active?: boolean }) {
       {display === "list" ? <ApplicantsList /> : <ApplicantsGrid />}
 
       <div className="flex items-center gap-x-4 pt-4 mt-2  border-t border-gray-line-2">
-        <Button size="sm" color="blue" variant="filled" className="text-sm">
-          Archive
-        </Button>
-        <Button size="sm" color="amber" variant="filled" className="text-sm">
+        <Button size="sm" color="red" variant="filled" className="text-sm">
           Make Inactive
         </Button>
       </div>

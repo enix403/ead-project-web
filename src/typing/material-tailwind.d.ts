@@ -42,4 +42,5 @@ declare module "@material-tailwind/react" {
   export interface TabsHeaderProps extends CorrectPlaceholder {}
   export interface TabProps extends CorrectPlaceholder {}
   export interface TextareaProps extends CorrectPlaceholder {}
+  export interface CheckboxProps extends CorrectPlaceholder, CorrectCrossOrigin {}
 }

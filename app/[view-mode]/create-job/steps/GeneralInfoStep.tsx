@@ -3,7 +3,7 @@ import { Input, TextArea } from "~/components/Input/Input";
 import { Select } from "~/components/Select/Select";
 import { FormLabel } from "~/components/FormLabel/FormLabel";
 import { ProposalCard } from "~/components/ProposalCard";
-import { StepCallbacks } from "./common";
+import { StepForm, StepProps } from "./common";
 
 import allJobs from "../jobs.json";
 import { useEffect, useState } from "react";
@@ -21,7 +21,7 @@ function ProposalTemplateCard() {
   );
 }
 
-export function GeneralInfoStep({ onNext, onCancel }: StepCallbacks) {
+export function GeneralInfoStep({ onNext, onCancel, progressView }: StepProps) {
   const [selectedJobIndex, setSelectedJobIndex] = useState(0);
   const [selectedRoleIndex, setSelectedRoleIndex] = useState(0);
 
@@ -36,65 +36,69 @@ export function GeneralInfoStep({ onNext, onCancel }: StepCallbacks) {
       <h1 className="font-semibold text-2xl text-center md:text-left">
         Post a New Job !
       </h1>
-      <h4 className="mt-1 text-black/70 text-center md:text-left">
-        Ready to jump back in? {selectedJobIndex}
+      <h4 className="text-black/70 h-0 -translate-y-1 text-sm text-center md:text-left">
+        Ready to jump back in?
       </h4>
+      {progressView}
 
-      <div className="bg-teal/5 p-7 mt-7 rounded-xl space-y-6">
-        <FormLabel showAsterik label="Job Title">
-          <Input placeholder="Title" />
-        </FormLabel>
-        <FormLabel label="Job Description">
-          <TextArea
-            className="h-40"
-            defaultValue="Spent several years working on sheep on wall street. Had moderate success investing in Yugo`s on wall street. Managed a small team buying and selling sticks for farmers. Spent several years licensing licorice in west palm beach, FL. Developed several new methods for working banjos in the aftermarket. Spent a weekend importing banjos in west palm beach, Yugo`s on wall street. Managed a small team buying and selling sticks for farmers. Spent several years licensing licorice in west palm beach, FL. Developed several new methods for working banjos in the aftermarket. Spent a weekend importing banjos at west palm beach."
-          />
-        </FormLabel>
+      <StepForm onNext={onNext}>
+        <div className="bg-teal/5 p-7 mt-7 rounded-xl space-y-6">
+          <FormLabel showAsterik label="Job Title">
+            <Input required placeholder="Title" />
+          </FormLabel>
+          <FormLabel label="Job Description">
+            <TextArea
+              required
+              className="h-40"
+              defaultValue="Spent several years working on sheep on wall street. Had moderate success investing in Yugo`s on wall street. Managed a small team buying and selling sticks for farmers. Spent several years licensing licorice in west palm beach, FL. Developed several new methods for working banjos in the aftermarket. Spent a weekend importing banjos in west palm beach, Yugo`s on wall street. Managed a small team buying and selling sticks for farmers. Spent several years licensing licorice in west palm beach, FL. Developed several new methods for working banjos in the aftermarket. Spent a weekend importing banjos at west palm beach."
+            />
+          </FormLabel>
 
-        <FormLabel showAsterik label="Job Category">
-          <Select
-            variant="light"
-            value={selectedJobIndex}
-            onChange={(event) => {
-              setSelectedJobIndex(+event.target.value);
-            }}
-          >
-            {allJobs.map((job, index) => (
-              <option value={index} key={index}>
-                {job.category}
-              </option>
-            ))}
-          </Select>
-        </FormLabel>
-        <FormLabel showAsterik label="Specialisms">
-          <Select
-            variant="light"
-            value={selectedRoleIndex}
-            onChange={(event) => {
-              setSelectedRoleIndex(+event.target.value);
-            }}
-          >
-            {allJobs[selectedJobIndex].specialisms.map((role, index) => (
-              <option value={index} key={index}>
-                {role.title}
-              </option>
-            ))}
-          </Select>
-        </FormLabel>
+          <FormLabel showAsterik label="Job Category">
+            <Select
+              variant="light"
+              value={selectedJobIndex}
+              onChange={(event) => {
+                setSelectedJobIndex(+event.target.value);
+              }}
+            >
+              {allJobs.map((job, index) => (
+                <option value={index} key={index}>
+                  {job.category}
+                </option>
+              ))}
+            </Select>
+          </FormLabel>
+          <FormLabel showAsterik label="Specialisms">
+            <Select
+              variant="light"
+              value={selectedRoleIndex}
+              onChange={(event) => {
+                setSelectedRoleIndex(+event.target.value);
+              }}
+            >
+              {allJobs[selectedJobIndex].specialisms.map((role, index) => (
+                <option value={index} key={index}>
+                  {role.title}
+                </option>
+              ))}
+            </Select>
+          </FormLabel>
 
-        <p className="!mt-2 italic">{selectedRole.info}</p>
+          <p className="!mt-2 italic">{selectedRole.info}</p>
 
-        <div className="pt-6">
-          <div className="flex gap-x-3">
-            <Button onClick={onNext} fullRounded>
-              Next
-            </Button>
-            <Button onClick={onCancel} variant="outlined" fullRounded>
-              Cancel
-            </Button>
+          <div className="pt-6">
+            <div className="flex gap-x-3">
+              <Button onClick={onCancel} variant="outlined" fullRounded>
+                Cancel
+              </Button>
+              <Button type="submit" fullRounded>
+                Next
+              </Button>
+            </div>
           </div>
         </div>
-      </div>
+      </StepForm>
 
       <hr className="mt-10" />
 
