@@ -53,8 +53,8 @@ export function Footer({ viewMode, ...props }: FooterProps) {
           "grid-cols-1 ph:grid-cols-2 gap-x-6 gap-y-6",
           "justify-items-center sm:justify-items-center sm:gap-x-10",
           viewMode === "employer"
-            ? "sm:grid-cols-[repeat(4,auto)] md:grid-cols-[repeat(7,auto)]"
-            : "sm:grid-cols-[repeat(5,auto)]"
+            ? "sm:grid-cols-[repeat(4,auto)] md:grid-cols-[repeat(8,auto)]"
+            : "sm:grid-cols-[repeat(6,auto)]"
         )}
       >
         <AllLinks viewMode={viewMode} />

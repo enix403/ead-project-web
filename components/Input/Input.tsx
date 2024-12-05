@@ -13,7 +13,10 @@ export function Input({ ...rest }: InputProps) {
     <input
       size={1}
       {...combineVisualProps(rest, {
-        className: "outline-none p-2.5 rounded-lg"
+        className: [
+          "outline-none p-2.5 rounded-lg",
+          "required:invalid:[[data-submitted=true]_&]:outline-red-600"
+        ]
       })}
     />
   );
@@ -25,7 +28,10 @@ export function TextArea({ ...rest }: TextAreaProps) {
   return (
     <textarea
       {...combineVisualProps(rest, {
-        className: "outline-none p-2.5 rounded-lg"
+        className: [
+          "outline-none p-2.5 rounded-lg",
+          "required:invalid:[[data-submitted=true]_&]:outline-red-600"
+        ]
       })}
     />
   );
@@ -43,7 +49,9 @@ export function RichInput({
     <div
       {...combineVisualProps(divProps, {
         className:
-          "border border-black/20 rounded-xl flex-1 flex overflow-hidden px-2.5 py-2 gap-x-1.5 items-center"
+          "border border-black/20 rounded-xl flex-1 flex overflow-hidden px-2.5 py-2 gap-x-1.5 items-center",
+          // "outline-none p-2.5 rounded-lg",
+          // "required:invalid:[[data-submitted=true]_&]:outline-red-600",
       })}
     >
       {icon}

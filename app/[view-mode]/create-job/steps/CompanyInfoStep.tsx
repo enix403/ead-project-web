@@ -1,7 +1,7 @@
 import { Button } from "~/components/Button/Button";
 import { Input, TextArea } from "~/components/Input/Input";
 import { FormLabel } from "~/components/FormLabel/FormLabel";
-import { StepProps } from "./common";
+import { StepForm, StepProps } from "./common";
 
 function LogoInput() {
   return (
@@ -56,69 +56,71 @@ export function CompanyInfoStep({ onNext, onCancel, progressView }: StepProps) {
 
       {progressView}
 
-      <div className="bg-teal/5 p-7 mt-7 rounded-xl space-y-6">
-        <FormLabel showAsterik label="Company Name">
-          <Input placeholder="Enter company name" />
-        </FormLabel>
+      <StepForm onNext={onNext}>
+        <div className="bg-teal/5 p-7 mt-7 rounded-xl space-y-6">
+          <FormLabel showAsterik label="Company Name">
+            <Input required placeholder="Enter company name" />
+          </FormLabel>
 
-        <FormLabel showAsterik label="Username">
-          <Input placeholder="Enter username" />
-        </FormLabel>
+          <FormLabel showAsterik label="Username">
+            <Input required placeholder="Enter username" />
+          </FormLabel>
 
-        <FormLabel label="Company Description">
-          <TextArea placeholder="Describe your company" className="h-20" />
-        </FormLabel>
+          <FormLabel label="Company Description">
+            <TextArea placeholder="Describe your company" className="h-20" />
+          </FormLabel>
 
-        <FormLabel label="Website">
-          <Input placeholder="Enter company website URL" />
-        </FormLabel>
+          <FormLabel label="Website">
+            <Input placeholder="Enter company website URL" />
+          </FormLabel>
 
-        <LogoInput />
+          <LogoInput />
 
-        <div className="flex gap-4 flex-col md:flex-row">
-          <div className="flex-1">
-            <FormLabel showAsterik label="Country">
-              <Input placeholder="Enter country" />
+          <div className="flex gap-4 flex-col md:flex-row">
+            <div className="flex-1">
+              <FormLabel showAsterik label="Country">
+                <Input required placeholder="Enter country" />
+              </FormLabel>
+            </div>
+            <div className="flex-1">
+              <FormLabel showAsterik label="City">
+                <Input required placeholder="Enter city" />
+              </FormLabel>
+            </div>
+          </div>
+
+          <FormLabel showAsterik label="Street / Address">
+            <TextArea required placeholder="Enter Street / Address" className="h-20" />
+          </FormLabel>
+
+          <div className="flex gap-4 flex-col md:flex-row">
+            <FormLabel label="Find on Map" className="flex-[2]">
+              <Input placeholder="Enter complete address" />
+            </FormLabel>
+            <FormLabel label="Latitude" className="flex-1">
+              <Input />
+            </FormLabel>
+            <FormLabel label="Longitude" className="flex-1">
+              <Input />
             </FormLabel>
           </div>
-          <div className="flex-1">
-            <FormLabel showAsterik label="City">
-              <Input placeholder="Enter city" />
-            </FormLabel>
+
+          <FormLabel label="Date Posted">
+            <Input type="date" placeholder="Select the date posted" />
+          </FormLabel>
+
+          <div className="pt-6">
+            <div className="flex gap-x-3">
+              <Button onClick={onCancel} variant="outlined" fullRounded>
+                Cancel
+              </Button>
+              <Button type="submit" fullRounded>
+                Next
+              </Button>
+            </div>
           </div>
         </div>
-
-        <FormLabel showAsterik label="Street / Address">
-          <TextArea placeholder="Enter Street / Address" className="h-20" />
-        </FormLabel>
-
-        <div className="flex gap-4 flex-col md:flex-row">
-          <FormLabel label="Find on Map" className="flex-[2]">
-            <Input placeholder="Enter complete address" />
-          </FormLabel>
-          <FormLabel label="Latitude" className="flex-1">
-            <Input />
-          </FormLabel>
-          <FormLabel label="Longitude" className="flex-1">
-            <Input />
-          </FormLabel>
-        </div>
-
-        <FormLabel label="Date Posted">
-          <Input type="date" placeholder="Select the date posted" />
-        </FormLabel>
-
-        <div className="pt-6">
-          <div className="flex gap-x-3">
-            <Button onClick={onCancel} variant="outlined" fullRounded>
-              Cancel
-            </Button>
-            <Button onClick={onNext} fullRounded>
-              Next
-            </Button>
-          </div>
-        </div>
-      </div>
+      </StepForm>
     </>
   );
 }
