@@ -13,7 +13,7 @@ import { FormLabel } from "~/components/FormLabel/FormLabel";
 import { InputProps } from "react-html-props";
 import { combineVisualProps } from "~/components/VisualComponent";
 
-export function ContactInfoBlock({ Icon, title }: { Icon: any; title: string }) {
+function ContactInfoBlock({ Icon, title }: { Icon: any; title: string }) {
   return (
     <div className='flex flex-col items-center max-w-sm'>
       <div

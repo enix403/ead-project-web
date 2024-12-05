@@ -20,8 +20,24 @@ import clsx from "clsx";
 
 import { FrequentlyAskedQuestions } from "~/components/FrequentlyAskedQuestions";
 import { OurTeam } from "./OurTeam";
-import { ContactInfoBlock } from "../contact/page";
 import { IconBrandInstagram, IconMailFilled } from "@tabler/icons-react";
+
+function ContactInfoBlock({ Icon, title }: { Icon: any; title: string }) {
+  return (
+    <div className='flex flex-col items-center max-w-sm'>
+      <div
+        className={clsx(
+          "border-black/20 border w-14 h-14 flex items-center justify-center",
+          "rounded-full"
+        )}
+      >
+        <Icon size={27} className='text-teal' />
+      </div>
+      {/* <h2 className='text-xl font-semibold'>{title}</h2> */}
+      <h2 className='text-md text-black/50 mt-4 font-semibold'>{title}</h2>
+    </div>
+  );
+}
 
 function StatBlock({ title, desc }: { title: string; desc: string }) {
   return (
