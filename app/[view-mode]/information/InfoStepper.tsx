@@ -7,6 +7,7 @@ import { Button } from "~/components/Button/Button";
 import { Step, Stepper } from "@material-tailwind/react";
 
 function InfoStep1() {
+  const viewMode = useContext(ViewModeContext);
   return (
     <section className="mt-8 space-y-6">
       <h1 className="text-4xl font-bold py-4 max-w-3xl">
@@ -36,11 +37,15 @@ function InfoStep1() {
         Comprehensive information on the legislation related to seasonal work,
         including minimum wages, overtime, etc.
       </p>
-      <h1 className="text-2xl font-bold pt-4">Guide for Foreign Workers</h1>
-      <p>
-        Information for foreign workers looking to work in tourist areas,
-        covering visas, work permits, and rights
-      </p>
+      {viewMode === "employee" && (
+        <>
+          <h1 className="text-2xl font-bold pt-4">Guide for Foreign Workers</h1>
+          <p>
+            Information for foreign workers looking to work in tourist areas,
+            covering visas, work permits, and rights
+          </p>
+        </>
+      )}
       <h1 className="text-2xl font-bold pt-4">Insurance Policies</h1>
       <p>
         Insurance policies for employees and employers to cover them in case of
@@ -50,18 +55,29 @@ function InfoStep1() {
   );
 }
 
+/*
+{viewMode === "employee" && (<>
+</>)}
+*/
+
 function InfoStep2() {
+  const viewMode = useContext(ViewModeContext);
+
   return (
     <section className="mt-8 space-y-6">
       <h1 className="text-4xl font-bold py-4 max-w-3xl">
         Personnel Management and Recruitment
       </h1>
 
-      <h1 className="text-2xl font-bold pt-4">Hiring Processes</h1>
-      <p>
-        Steps and procedures to better prepare for the hiring process, what to
-        expect, and how to prepare their CV.
-      </p>
+      {viewMode === "employee" && (
+        <>
+          <h1 className="text-2xl font-bold pt-4">Hiring Processes</h1>
+          <p>
+            Steps and procedures to better prepare for the hiring process, what
+            to expect, and how to prepare their CV.
+          </p>
+        </>
+      )}
       <h1 className="text-2xl font-bold pt-4">
         Creating the Right Profile for Employees
       </h1>
@@ -74,21 +90,25 @@ function InfoStep2() {
         fugit eos provident numquam fugiat possimus? Minima fugiat illo sunt
         corrupti et?
       </p>
-      <h1 className="text-2xl font-bold pt-4">Staff Recruitment Guide</h1>
-      <p>
-        Guidelines on how to select the right staff, how to evaluate potential
-        employees, and what to include in job advertisements
-      </p>
-      <h1 className="text-2xl font-bold pt-4">Hiring Foreign Workers</h1>
-      <p>
-        A guide for employers on the procedures for hiring foreign workers and
-        how to comply with the law
-      </p>
-      <h1 className="text-2xl font-bold pt-4">Managing Seasonal Staff</h1>
-      <p>
-        Tips on how to better manage seasonal employees, maintain high
-        productivity, and keep morale up during peak tourist periods
-      </p>
+      {viewMode === "employer" && (
+        <>
+          <h1 className="text-2xl font-bold pt-4">Staff Recruitment Guide</h1>
+          <p>
+            Guidelines on how to select the right staff, how to evaluate
+            potential employees, and what to include in job advertisements
+          </p>
+          <h1 className="text-2xl font-bold pt-4">Hiring Foreign Workers</h1>
+          <p>
+            A guide for employers on the procedures for hiring foreign workers
+            and how to comply with the law
+          </p>
+          <h1 className="text-2xl font-bold pt-4">Managing Seasonal Staff</h1>
+          <p>
+            Tips on how to better manage seasonal employees, maintain high
+            productivity, and keep morale up during peak tourist periods
+          </p>
+        </>
+      )}
       <h1 className="text-2xl font-bold pt-4">
         Personnel Management and Organization Tools
       </h1>
