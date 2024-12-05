@@ -36,10 +36,10 @@ export function GeneralInfoStep({ onNext, onCancel, progressView }: StepProps) {
       <h1 className="font-semibold text-2xl text-center md:text-left">
         Post a New Job !
       </h1>
-      {progressView}
-      {/* <h4 className="text-black/70 text-center md:text-left">
+      <h4 className="text-black/70 h-0 -translate-y-1 text-sm text-center md:text-left">
         Ready to jump back in?
-      </h4> */}
+      </h4>
+      {progressView}
 
       <div className="bg-teal/5 p-7 mt-7 rounded-xl space-y-6">
         <FormLabel showAsterik label="Job Title">
