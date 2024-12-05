@@ -4,6 +4,7 @@ import type { PropsWithChildren } from "react";
 import { TopNav, TopNavProps } from "~/components/TopNav/TopNav";
 import { Footer } from "~/components/Footer/Footer";
 import { ViewMode } from "../AllLinks";
+import { LanguageDrawer } from "./LanguageDrawer";
 
 export const ViewModeContext = createContext<ViewMode>("employee");
 
@@ -23,6 +24,9 @@ export function AppLayout({ children, params, ...navProps }: AppLayoutProps) {
         <div className="flex-1 flex flex-col">{children}</div>
         <Footer viewMode={viewMode} />
       </main>
+      <div className="absolute top-0 left-0">
+        <LanguageDrawer />
+      </div>
     </ViewModeContext.Provider>
   );
 }

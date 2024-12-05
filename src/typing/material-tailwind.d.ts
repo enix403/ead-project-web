@@ -41,4 +41,5 @@ declare module "@material-tailwind/react" {
   export interface StepProps extends CorrectPlaceholder {}
   export interface TabsHeaderProps extends CorrectPlaceholder {}
   export interface TabProps extends CorrectPlaceholder {}
+  export interface TextareaProps extends CorrectPlaceholder {}
 }

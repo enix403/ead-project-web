@@ -31,6 +31,8 @@ import { Button } from "../Button/Button";
 import { atom, useAtom, useSetAtom } from "jotai";
 import { AllLinks, ViewMode } from "../AllLinks";
 
+import { languageDrawerAtom } from "../AppLayout/LanguageDrawer";
+
 export interface TopNavProps {
   pageTitle?: string;
   viewMode: ViewMode;
@@ -40,6 +42,7 @@ const drawerAtom = atom(false);
 
 function Contents({ pageTitle, viewMode }: TopNavProps) {
   const setDrawerOpen = useSetAtom(drawerAtom);
+  const setLanguageDrawerOpen = useSetAtom(languageDrawerAtom);
 
   let loggedIn = true;
 
@@ -70,7 +73,10 @@ function Contents({ pageTitle, viewMode }: TopNavProps) {
                 </MenuHandler>
                 <MenuList>
                   <MenuItem>Logout</MenuItem>
-                  <MenuItem className="flex justify-between items-center">
+                  <MenuItem
+                    onClick={() => setLanguageDrawerOpen(true)}
+                    className="flex justify-between items-center"
+                  >
                     Change language
                     <US title="United States" className="w-5" />
                   </MenuItem>
