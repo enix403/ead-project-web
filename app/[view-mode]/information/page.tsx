@@ -5,51 +5,233 @@ import { AppLayout, ViewModeContext } from "~/components/AppLayout/AppLayout";
 
 import ResumeIcon from "~/app/assets/icon-resumes.svg";
 
-import React, { PropsWithChildren, useContext } from "react";
+import React, { PropsWithChildren, useContext, useState } from "react";
 import { TitleMark } from "~/components/decorations";
 import { FrequentlyAskedQuestions } from "~/components/FrequentlyAskedQuestions";
 import { JobBanner } from "./JobBanner";
 import { IconCoinFilled, IconCoins, IconUserSearch } from "@tabler/icons-react";
+import { Button } from "~/components/Button/Button";
+import { Step, Stepper } from "@material-tailwind/react";
 
-function FeatureBlock({
-  Icon,
-  title,
-  children,
-}: { Icon: any; title: string } & PropsWithChildren) {
+function InfoStep1() {
   return (
-    <div className="flex flex-col items-center md:max-w-sm flex-1">
-      <div
-        className={clsx(
-          "bg-black text-white w-16 h-16 flex items-center justify-center",
-          "rounded-full"
-        )}
-      >
-        {Icon && <Icon size={40} className="w-7 scale-110" />}
-      </div>
+    <section className="mt-8 space-y-6">
+      <h1 className="text-4xl font-bold py-4 max-w-3xl">
+        Rights and Responsibilities of Employees and Employers
+      </h1>
 
-      <div
-        style={{
-          boxShadow: "0px 12px 15px 0px #09291E1A",
-        }}
-        className={clsx(
-          "self-stretch text-center space-y-2 py-8 px-7 mt-5 flex-1",
-          "border-[#E6E9F0] border rounded-lg"
-        )}
-      >
-        {/* <h2 className='text-xl font-semibold'>Free Resume Assessments</h2> */}
-        <h2 className="text-xl font-semibold">{title}</h2>
-        <p className="font-normal text-black/50">
-          {children ??
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur tristique mauris rhoncus odio aliquet, vitae."}
-        </p>
+      <h1 className="text-2xl font-bold pt-4">
+        Guide to Rights and Responsibilities
+      </h1>
+      <p>
+        A description of the rights that employees in the tourism sector are
+        entitled to (working hours, wages, leave, insurance rights) and their
+        obligations towards their employers.
+      </p>
+      <h1 className="text-2xl font-bold pt-4">
+        Work Regulations and Contracts
+      </h1>
+      <p>
+        A guide to the work regulations related to the tourism industry, what
+        employees and employers need to know to stay compliant with the law and
+        maintain a safe business environment
+      </p>
+      <h1 className="text-2xl font-bold pt-4">
+        Legislation and Regulations for Seasonal Workers
+      </h1>
+      <p>
+        Comprehensive information on the legislation related to seasonal work,
+        including minimum wages, overtime, etc.
+      </p>
+      <h1 className="text-2xl font-bold pt-4">Guide for Foreign Workers</h1>
+      <p>
+        Information for foreign workers looking to work in tourist areas,
+        covering visas, work permits, and rights
+      </p>
+      <h1 className="text-2xl font-bold pt-4">Insurance Policies</h1>
+      <p>
+        Insurance policies for employees and employers to cover them in case of
+        an accident or damage.
+      </p>
+    </section>
+  );
+}
+
+function InfoStep2() {
+  return (
+    <section className="mt-8 space-y-6">
+      <h1 className="text-4xl font-bold py-4 max-w-3xl">
+        Personnel Management and Recruitment
+      </h1>
+
+      <h1 className="text-2xl font-bold pt-4">Hiring Processes</h1>
+      <p>
+        Steps and procedures to better prepare for the hiring process, what to
+        expect, and how to prepare their CV.
+      </p>
+      <h1 className="text-2xl font-bold pt-4">
+        Creating the Right Profile for Employees
+      </h1>
+      <p>
+        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Inventore
+        error nam illum magni animi minima a pariatur est dolorum, quis fugiat
+        labore ipsum eligendi excepturi, magnam beatae. Aspernatur, harum rem?
+        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Provident,
+        fuga natus! Modi libero, commodi cupiditate nesciunt, quaerat debitis
+        fugit eos provident numquam fugiat possimus? Minima fugiat illo sunt
+        corrupti et?
+      </p>
+      <h1 className="text-2xl font-bold pt-4">Staff Recruitment Guide</h1>
+      <p>
+        Guidelines on how to select the right staff, how to evaluate potential
+        employees, and what to include in job advertisements
+      </p>
+      <h1 className="text-2xl font-bold pt-4">Hiring Foreign Workers</h1>
+      <p>
+        A guide for employers on the procedures for hiring foreign workers and
+        how to comply with the law
+      </p>
+      <h1 className="text-2xl font-bold pt-4">Managing Seasonal Staff</h1>
+      <p>
+        Tips on how to better manage seasonal employees, maintain high
+        productivity, and keep morale up during peak tourist periods
+      </p>
+      <h1 className="text-2xl font-bold pt-4">
+        Personnel Management and Organization Tools
+      </h1>
+      <p>
+        Software or online tools for better shift organization, payroll
+        management, and monitoring staff performance.
+      </p>
+      <h1 className="text-2xl font-bold pt-4">Payroll Calculation</h1>
+      <p>
+        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Odio facilis
+        repellendus error libero sunt quidem laboriosam consequuntur. Numquam
+        laboriosam minima ullam, et at, dicta totam molestiae eius odit sunt
+        eum. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nostrum
+        veritatis exercitationem labore aliquam aliquid repudiandae aspernatur
+        delectus ea magni illum distinctio assumenda omnis maiores doloribus
+        dicta, neque rem quod iure!
+      </p>
+    </section>
+  );
+}
+
+function InfoStep3() {
+  return (
+    <section className="mt-8 space-y-6">
+      <h1 className="text-4xl font-bold py-4 max-w-3xl">
+        Education and Career
+      </h1>
+
+      <h1 className="text-2xl font-bold pt-4">
+        Training Seminars and Certifications
+      </h1>
+      <p>
+        A list of recommended seminars and certifications important in the
+        tourism sector, such as health and safety certifications, serving,
+        languages, and specialized skills
+      </p>
+      <h1 className="text-2xl font-bold pt-4">Staff Training Programs</h1>
+      <p>Suggestions for training programs to help improve employee skills.</p>
+      <h1 className="text-2xl font-bold pt-4">Career Advice in Tourism</h1>
+      <p>
+        Tips on how to advance their career in the tourism industry (e.g., from
+        seasonal staff to permanent roles, from general staff to management
+        positions)
+      </p>
+      <h1 className="text-2xl font-bold pt-4">
+        Health and Safety Guide at the Workplace
+      </h1>
+      <p>
+        Basic rules for safety and health in tourist establishments (e.g.,
+        hotels, restaurants) that are essential for employers and employees.
+      </p>
+    </section>
+  );
+}
+
+function InfoStep4() {
+  return (
+    <section className="mt-8 space-y-6">
+      <h1 className="text-4xl font-bold py-4 max-w-3xl">
+        Information and Networking
+      </h1>
+
+      <h1 className="text-2xl font-bold pt-4">News and Trends in Tourism</h1>
+      <p>
+        Informative articles about the latest developments and trends in the
+        tourism sector.
+      </p>
+      <h1 className="text-2xl font-bold pt-4">
+        Professional Networks and Conferences
+      </h1>
+      <p>
+        A list of important conferences, professional associations, and networks
+        in the tourism sector, where they can connect with other professionals.
+      </p>
+      <h1 className="text-2xl font-bold pt-4">Interviews with Professionals</h1>
+      <p>
+        Interviews with successful employees and employers in tourism, sharing
+        their experiences.
+      </p>
+    </section>
+  );
+}
+
+function InfoStepper() {
+  const [stepIndex, setStepIndex] = useState(0);
+
+  function onNext() {
+    setStepIndex((x) => Math.min(steps.length - 1, x + 1));
+  }
+
+  function onPrevious() {
+    setStepIndex((x) => Math.max(0, x - 1));
+  }
+
+  let steps = [InfoStep1, InfoStep2, InfoStep3, InfoStep4];
+
+  let StepComponent = steps[stepIndex];
+
+  return (
+    <>
+      <Stepper className="mt-4" activeStep={stepIndex}>
+        {steps.map((_, index) => (
+          // @ts-ignore
+          <Step
+            className="cursor-pointer"
+            onClick={() => setStepIndex(index)}
+            key={index}
+          >
+            {index + 1}
+          </Step>
+        ))}
+      </Stepper>
+      <StepComponent />
+      <div className="flex gap-x-3 mt-8">
+        <Button
+          onClick={onPrevious}
+          disabled={stepIndex === 0}
+          variant="outlined"
+          fullRounded
+        >
+          Previous
+        </Button>
+        <Button
+          onClick={onNext}
+          disabled={stepIndex === steps.length - 1}
+          type="submit"
+          fullRounded
+        >
+          Next
+        </Button>
       </div>
-    </div>
+    </>
   );
 }
 
 function InformationPageContent() {
-  const viewMode = useContext(ViewModeContext);
-
   return (
     <div className="pb-40 pt-8">
       <div className="app-container max-w-5xl w-full mb-12">
@@ -68,109 +250,13 @@ function InformationPageContent() {
           tristique mauris rhoncus odio aliquet, vitae.
         </p>
 
-        <section className="mt-8 space-y-6">
-          <h1 className="text-2xl font-bold pt-4">
-            Information around seasonal work.
-          </h1>
-          <p>
-            Starting in 2019 in a small workshop in Toronto, a group of eight
-            passionate individuals came together with a shared vision—to build a
-            product that would transform how people connect with their careers.
-            We were not just colleagues but a team driven by a common goal: to
-            bridge the gap between employees and employers, and empower
-            individuals to excel in their professional journeys.
-          </p>
-          <p>
-            Our journey began with countless brainstorming sessions, fueled by
-            coffee and the desire to make a difference. Each of us brought
-            something unique to the table—ranging from expertise in software
-            development, user experience design, and data analytics to deep
-            insights into human resources and career development. This diverse
-            blend of skills and perspectives was our greatest strength, allowing
-            us to tackle the complexities of the modern workplace from multiple
-            angles.
-          </p>
-          <p>
-            We recognized early on that the traditional job market was evolving.
-            The days of static resumes and long-term employment with a single
-            company were fading. In their place, a more dynamic and fluid job
-            market was emerging—one where networking, continuous learning, and
-            adaptability were key to career success. Our mission became clear:
-            to create a platform that would not only connect people with job
-            opportunities but also provide them with the tools and resources to
-            thrive in an ever-changing work environment.
-          </p>
-        </section>
-
-        <div className="flex max-md:flex-col justify-center gap-x-3 gap-y-8 mt-8">
-          {viewMode === "employer" ? (
-            <FeatureBlock Icon={IconUserSearch} title="Find Employees">
-              Service to help find the best employee for your company
-            </FeatureBlock>
-          ) : (
-            <FeatureBlock Icon={ResumeIcon} title="Improve your CV">
-              Service for improving and creating a proper CV.
-            </FeatureBlock>
-          )}
-          <FeatureBlock Icon={IconCoins} title="Minimum wage" />
-          <FeatureBlock Icon={IconCoinFilled} title="Net wage" />
-        </div>
-      </div>
-      <JobBanner />
-      <div className="app-container max-w-5xl w-full">
-        <h1 className="text-4xl text-center mt-12 mb-8">
-          <span className="font-bold text-teal mr-1 relative bg-bdlue-600">
-            Frequently
-            <TitleMark className="absolute w-32 top-full -left-5 dd -translate-y-2.5" />
-          </span>
-          <span className="font-normal"> Asked Questions</span>
-        </h1>
-        <FrequentlyAskedQuestions
-          faqs={[
-            {
-              q: "What is the main purpose of this platform?",
-              a: `Our platform is designed to connect job seekers with employers while providing tools and resources to help individuals excel in their careers. Whether you're looking for your next job, seeking career advice, or wanting to grow your professional network, our platform has you covered.`,
-            },
-            {
-              q: "How does the platform help in career development?",
-              a: `We offer a range of features to support your career growth, including personalized job recommendations, skill development resources, career coaching, and networking opportunities. Our platform is tailored to help you navigate the complexities of today's job market and achieve your career goals.`,
-            },
-            {
-              q: "Who can use this platform?",
-              a: `Our platform is designed for both job seekers and employers. Whether you're a recent graduate, a seasoned professional, or a company looking to hire top talent, our platform is built to cater to your needs.`,
-            },
-            {
-              q: "How do I get started as a job seeker?",
-              a: `Getting started is simple. Sign up for an account, create a detailed profile showcasing your skills and experience, and start exploring job opportunities that match your interests. You can also access our career development tools and connect with other professionals on the platform.`,
-            },
-            {
-              q: "What benefits does this platform offer to employers?",
-              a: `Employers can use our platform to post job openings and search for qualified candidates. Our advanced search and matching algorithms ensure that you connect with the right talent quickly and efficiently. Additionally, our platform provides insights into employee engagement and career development trends.`,
-            },
-            {
-              q: "Is the platform free to use?",
-              a: `We offer a range of plans to suit different needs. A basic account is free, giving you access to essential features. For enhanced features such as advanced job matching, premium learning resources, and more, you can upgrade to one of our premium plans.`,
-            },
-            {
-              q: "How does the job matching process work?",
-              a: `Our job matching process uses a combination of artificial intelligence and data-driven insights to recommend jobs that align with your skills, experience, and career goals. The more you engage with the platform, the more accurate and personalized your recommendations will become.`,
-            },
-            {
-              q: "Can I use the platform to network with other professionals?",
-              a: `Yes, networking is a key component of our platform. You can connect with other professionals, join industry-specific groups, and participate in discussions that will help you expand your network and gain valuable insights into your field.`,
-            },
-            {
-              q: "How is my data protected on this platform?",
-              a: `We take data security very seriously. Our platform uses industry-standard encryption and security measures to protect your personal and professional information. We are committed to maintaining your privacy and ensuring that your data is safe.`,
-            },
-          ]}
-        />
+        <InfoStepper />
       </div>
     </div>
   );
 }
 
-export default function InformationPage({ params }: { params: any }) {
+export default function Information({ params }: { params: any }) {
   return (
     <AppLayout params={params}>
       <InformationPageContent />
