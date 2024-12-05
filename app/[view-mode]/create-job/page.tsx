@@ -11,7 +11,7 @@ import { QuestionsStep } from "./steps/QuestionsStep";
 import { Step, Stepper } from "@material-tailwind/react";
 
 export default function CreateJobPage({ params }: { params: any }) {
-  const [pageIndex, setPageIndex] = useState(0);
+  let [pageIndex, setPageIndex] = useState(0);
 
   function onNext() {
     setPageIndex((x) => Math.min(steps.length - 1, x + 1));
@@ -27,6 +27,8 @@ export default function CreateJobPage({ params }: { params: any }) {
     CompanyInfoStep,
     QuestionsStep,
   ];
+
+  pageIndex = 1;
 
   let StepComponent = steps[pageIndex];
 

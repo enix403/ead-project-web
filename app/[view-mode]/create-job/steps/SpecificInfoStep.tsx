@@ -3,6 +3,8 @@ import { Input, TextArea } from "~/components/Input/Input";
 import { Select } from "~/components/Select/Select";
 import { FormLabel } from "~/components/FormLabel/FormLabel";
 import { StepForm, StepProps } from "./common";
+import { Checkbox, Menu, MenuItem, MenuList } from "@material-tailwind/react";
+import { repeatNode } from "~/app/utils/markup";
 
 export function SpecificInfoStep({
   onNext,
@@ -23,8 +25,8 @@ export function SpecificInfoStep({
             <Select variant="light">
               <option>Full-Time</option>
               <option>Part-Time</option>
-              <option>Contract</option>
               <option>Internship</option>
+              <option>Specific dates</option>
             </Select>
           </FormLabel>
 
@@ -36,24 +38,53 @@ export function SpecificInfoStep({
             </Select>
           </FormLabel>
 
-          <FormLabel label="Required Qualification">
-            <TextArea
-              placeholder="Enter required qualifications"
-              className="h-20"
-            />
-          </FormLabel>
+          <div>
+            Required Qualifications
+            <div className="p-0 grid grid-cols-2 xl:grid-cols-5">
+              {repeatNode(10, (index) => (
+                <label className="flex cursor-pointer items-center gap-2 p-2">
+                  <Checkbox
+                    ripple={false}
+                    containerProps={{ className: "p-0" }}
+                    className="hover:before:content-none"
+                  />
+                  Qualification {index + 1}
+                </label>
+              ))}
+            </div>
+          </div>
 
-          <FormLabel label="Desirable Qualification">
-            <TextArea
-              placeholder="Enter desirable qualifications"
-              className="h-20"
-            />
-          </FormLabel>
+          <div>
+            Desirable Qualifications
+            <div className="p-0 grid grid-cols-2 xl:grid-cols-5">
+              {repeatNode(10, (index) => (
+                <label className="flex cursor-pointer items-center gap-2 p-2">
+                  <Checkbox
+                    ripple={false}
+                    containerProps={{ className: "p-0" }}
+                    className="hover:before:content-none"
+                  />
+                  Qualification {index + 1}
+                </label>
+              ))}
+            </div>
+          </div>
 
           <div className="flex gap-4 flex-col md:flex-row">
             <div className="flex-1">
               <FormLabel showAsterik label="Salary">
-                <Input required placeholder="Enter salary range" />
+                <div className="flex flex-1 w-full gap-x-1">
+                  <Select variant="light">
+                    <option>Monthly</option>
+                    <option>Hourly</option>
+                  </Select>
+                  <Input
+                    className="flex-1"
+                    required
+                    placeholder="Enter salary range"
+                  />
+                </div>
+                <p className="italic">Suggested = $16100</p>
               </FormLabel>
             </div>
             <div className="flex-1">
