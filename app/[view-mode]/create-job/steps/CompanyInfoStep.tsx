@@ -67,7 +67,11 @@ export function CompanyInfoStep({ onNext, onCancel, progressView }: StepProps) {
           </FormLabel>
 
           <FormLabel label="Company Description">
-            <TextArea placeholder="Describe your company" className="h-20" />
+            <TextArea
+              placeholder={`
+              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eaque quia deserunt enim accusamus temporibus et corporis sequi cumque quas nam soluta harum veritatis, modi incidunt dicta, tempora laborum asperiores molestiae!`.trim()}
+              className="h-20"
+            />
           </FormLabel>
 
           <FormLabel label="Website">
@@ -83,25 +87,26 @@ export function CompanyInfoStep({ onNext, onCancel, progressView }: StepProps) {
               </FormLabel>
             </div>
             <div className="flex-1">
-              <FormLabel showAsterik label="City">
-                <Input required placeholder="Enter city" />
+              <FormLabel showAsterik label="City / Island">
+                <Input required placeholder="Enter city / island" />
               </FormLabel>
             </div>
           </div>
 
-          <FormLabel showAsterik label="Street / Address">
-            <TextArea required placeholder="Enter Street / Address" className="h-20" />
+          <FormLabel showAsterik label="Area">
+            <TextArea
+              required
+              placeholder="Enter area"
+              className="h-20"
+            />
           </FormLabel>
 
           <div className="flex gap-4 flex-col md:flex-row">
             <FormLabel label="Find on Map" className="flex-[2]">
               <Input placeholder="Enter complete address" />
             </FormLabel>
-            <FormLabel label="Latitude" className="flex-1">
-              <Input />
-            </FormLabel>
-            <FormLabel label="Longitude" className="flex-1">
-              <Input />
+            <FormLabel label="Postal Code" showAsterik className="flex-1">
+              <Input required placeholder="Enter  postal code" />
             </FormLabel>
           </div>
 

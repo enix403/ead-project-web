@@ -6,6 +6,19 @@ import { StepForm, StepProps } from "./common";
 import { Checkbox, Menu, MenuItem, MenuList } from "@material-tailwind/react";
 import { repeatNode } from "~/app/utils/markup";
 
+function FormCheckbox({ label }: { label: string }) {
+  return (
+    <label className="flex cursor-pointer items-center gap-2 p-2 select-none">
+      <Checkbox
+        ripple={false}
+        containerProps={{ className: "p-0" }}
+        className="hover:before:content-none"
+      />
+      {label}
+    </label>
+  );
+}
+
 export function SpecificInfoStep({
   onNext,
   onCancel,
@@ -42,14 +55,10 @@ export function SpecificInfoStep({
             Required Qualifications
             <div className="p-0 grid grid-cols-2 xl:grid-cols-5">
               {repeatNode(10, (index) => (
-                <label className="flex cursor-pointer items-center gap-2 p-2">
-                  <Checkbox
-                    ripple={false}
-                    containerProps={{ className: "p-0" }}
-                    className="hover:before:content-none"
-                  />
-                  Qualification {index + 1}
-                </label>
+                <FormCheckbox
+                  key={index}
+                  label={`Qualification ${index + 1}`}
+                />
               ))}
             </div>
           </div>
@@ -58,14 +67,10 @@ export function SpecificInfoStep({
             Desirable Qualifications
             <div className="p-0 grid grid-cols-2 xl:grid-cols-5">
               {repeatNode(10, (index) => (
-                <label className="flex cursor-pointer items-center gap-2 p-2">
-                  <Checkbox
-                    ripple={false}
-                    containerProps={{ className: "p-0" }}
-                    className="hover:before:content-none"
-                  />
-                  Qualification {index + 1}
-                </label>
+                <FormCheckbox
+                  key={index}
+                  label={`Qualification ${index + 1}`}
+                />
               ))}
             </div>
           </div>
@@ -94,20 +99,31 @@ export function SpecificInfoStep({
             </div>
           </div>
 
-          <FormLabel label="Additional Benefits">
-            <TextArea
-              placeholder="List additional benefits (e.g., health insurance)"
-              className="h-20"
-            />
-          </FormLabel>
+          <div>
+            Additional Benefits
+            <div className="p-0 grid grid-cols-2 xl:grid-cols-5">
+              <FormCheckbox label="Performance bonuses" />
+              <FormCheckbox label="Gifts and allowances" />
+              <FormCheckbox label="Overtime" />
+              <FormCheckbox label="Commissions" />
+              <FormCheckbox label="Mobile phone" />
+              <FormCheckbox label="Company laptop" />
+              <FormCheckbox label="Extra vacation days" />
+              <FormCheckbox label="Parental leave" />
+              <FormCheckbox label="Training and seminars" />
+              <FormCheckbox label="Discounts on products or services" />
+            </div>
+          </div>
 
           <div className="flex gap-4 flex-col md:flex-row">
             <div className="flex-1">
               <FormLabel showAsterik label="Working Language">
                 <Select variant="light">
                   <option>English</option>
+                  <option>Italian</option>
                   <option>Spanish</option>
                   <option>French</option>
+                  <option>Greek</option>
                 </Select>
               </FormLabel>
             </div>
@@ -116,6 +132,7 @@ export function SpecificInfoStep({
                 <Select variant="light">
                   <option>Yes</option>
                   <option>No</option>
+                  <option>Housing allowance</option>
                 </Select>
               </FormLabel>
             </div>
@@ -127,22 +144,23 @@ export function SpecificInfoStep({
                 <Select variant="light">
                   <option>Provided</option>
                   <option>Not Provided</option>
+                  <option>One meal</option>
+                  <option>Two meal</option>
+                  <option>Monetary meal allowance per day</option>
                 </Select>
               </FormLabel>
             </div>
             <div className="flex-1">
               <FormLabel label="Means of Transport">
-                <TextArea placeholder="Describe transport" className="h-20" />
+                <Select variant="light">
+                  <option>Required</option>
+                  <option>Not required</option>
+                  <option>Moped provided</option>
+                  <option>Car provided</option>
+                </Select>
               </FormLabel>
             </div>
           </div>
-
-          <FormLabel label="Transfer">
-            <Select variant="light">
-              <option>Required</option>
-              <option>Not Required</option>
-            </Select>
-          </FormLabel>
 
           <div className="pt-6">
             <div className="flex gap-x-3">

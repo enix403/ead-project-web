@@ -28,7 +28,7 @@ export default function CreateJobPage({ params }: { params: any }) {
     QuestionsStep,
   ];
 
-  pageIndex = 1;
+  pageIndex = 2;
 
   let StepComponent = steps[pageIndex];
 
