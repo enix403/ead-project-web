@@ -1,13 +1,7 @@
 "use client";
 
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Typography,
-  Button,
-} from "@material-tailwind/react";
+import { Card, CardBody } from "@material-tailwind/react";
+import { IconMail, IconMap2, IconPhoneCall } from "@tabler/icons-react";
 
 import { AppLayout } from "~/components/AppLayout/AppLayout";
 
@@ -17,7 +11,7 @@ export default function UserProfile({ params }: { params: any }) {
       <div className="max-w-7xl mx-auto py-8 px-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Column */}
-          <Card className="border-2 shadow-md">
+          <Card shadow={false}>
             <CardBody>
               <div className="flex flex-col items-center">
                 <img
@@ -25,22 +19,40 @@ export default function UserProfile({ params }: { params: any }) {
                   src="https://flowbite.com/docs/images/people/profile-picture-1.jpg"
                   alt="Profile Picture"
                 />
-                <h2 className="text-2xl font-bold mt-4 text-teal">Yiannis M.</h2>
+                <h2 className="text-2xl font-bold mt-4 text-teal">
+                  Yiannis M.
+                </h2>
                 <p className="text-gray-500">Front-end Developer</p>
                 <p className="text-gray-500">San Francisco, USA</p>
               </div>
-              <div className="mt-6">
-                <p className="text-gray-700 mb-2">
-                  <strong>Email address:</strong> yourname@flowbite.com
+              {/*  */}
+              <div className="mt-6 divide-y-2">
+                <p className="text-gray-700 py-4">
+                  <p className="font-bold text-xl text-purple-400 flex gap-x-2 items-center mb-3">
+                    <IconMail size={28} />
+                    <span>Email address:</span>
+                  </p>
+                  <p>yourname@flowbite.com</p>
                 </p>
-                <p className="text-gray-700 mb-2">
-                  <strong>Home address:</strong> 92 Miles Drive, Newark, NJ
-                  07103, California, United States of America
+                <p className="text-gray-700 py-4">
+                  <p className="font-bold text-xl text-blue-400 flex gap-x-2 items-center mb-3">
+                    <IconMap2 size={28} />
+                    <span>Home address:</span>
+                  </p>
+                  <p>
+                    92 Miles Drive, Newark, NJ 07103, California, United States
+                    of America
+                  </p>
                 </p>
-                <p className="text-gray-700 mb-2">
-                  <strong>Phone number:</strong> +00 123 456 789 / +12 345 678
+                <p className="text-gray-700 py-4">
+                  <p className="font-bold text-xl text-pink-400 flex gap-x-2 items-center mb-3">
+                    <IconPhoneCall size={28} />
+                    <span>Phone number:</span>
+                  </p>
+                  <p>+00 123 456 789 / +12 345 678</p>
                 </p>
               </div>
+              {/*  */}
             </CardBody>
           </Card>
           {/* Right Column */}

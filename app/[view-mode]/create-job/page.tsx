@@ -28,8 +28,6 @@ export default function CreateJobPage({ params }: { params: any }) {
     QuestionsStep,
   ];
 
-  pageIndex = 2;
-
   let StepComponent = steps[pageIndex];
 
   let progressView = (
