@@ -5,6 +5,7 @@ import { TopNav, TopNavProps } from "~/components/TopNav/TopNav";
 import { Footer } from "~/components/Footer/Footer";
 import { ViewMode } from "../AllLinks";
 import { LanguageDrawer } from "./LanguageDrawer";
+import { CurrencyDrawer } from "./CurrencyDrawer";
 
 export const ViewModeContext = createContext<ViewMode>("employee");
 
@@ -26,6 +27,7 @@ export function AppLayout({ children, params, ...navProps }: AppLayoutProps) {
       </main>
       <div className="absolute top-0 left-0">
         <LanguageDrawer />
+        <CurrencyDrawer />
       </div>
     </ViewModeContext.Provider>
   );

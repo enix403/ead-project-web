@@ -12,10 +12,10 @@ import {
 import { atom, useAtom } from "jotai";
 import { Select } from "~/components/Select/Select";
 
-export const languageDrawerAtom = atom(false);
+export const currencyDrawerAtom = atom(false);
 
-export function LanguageDrawer() {
-  let [isOpen, setIsOpen] = useAtom(languageDrawerAtom);
+export function CurrencyDrawer() {
+  let [isOpen, setIsOpen] = useAtom(currencyDrawerAtom);
   const close = () => setIsOpen(false);
 
   return (
@@ -31,7 +31,7 @@ export function LanguageDrawer() {
       >
         <div className="flex items-center justify-between px-4 pb-2">
           <Typography variant="h5" color="blue-gray">
-            Change Language
+            Change Currency
           </Typography>
           <IconButton variant="text" color="blue-gray" onClick={close}>
             <svg
@@ -52,13 +52,11 @@ export function LanguageDrawer() {
         </div>
         <div className="flex flex-col gap-6 p-4">
           <Typography variant="h6" color="blue-gray" className="-mb-3">
-            Select Your Language
+            Select Your Currency
           </Typography>
           <Select>
-            <option>English</option>
-            <option>Spanish</option>
-            <option>German</option>
-            <option>French</option>
+            <option>EUR</option>
+            <option>USD</option>
           </Select>
           <Button onClick={close}>Confirm</Button>
         </div>
