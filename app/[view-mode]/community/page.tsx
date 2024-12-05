@@ -85,7 +85,7 @@ function PersonCard({
 
 function Content() {
   return (
-    <div className="pb-8 pt-3">
+    <div className="pb-8 pt-3 px-4">
       <div className="max-w-4xl mx-auto">
         <h3 className="mb-4 mt-5 text-2xl md:text-4xl font-semibold">
           Connect with new people and businesses
@@ -119,9 +119,16 @@ function Content() {
               <option>Internship</option>
             </Select>
           </FormLabel>
+          <FormLabel inline label="Search For" className="flex-1">
+            <Select className="flex-1">
+              <option>All</option>
+              <option>Individuals</option>
+              <option>Businesses</option>
+            </Select>
+          </FormLabel>
         </div>
 
-        <motion.div className="grid grid-cols-3 gap-5">
+        <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {repeatNode(9, (index) => (
             <PersonCard index={index} isFriend={[1, 2, 4].includes(index)} />
           ))}
