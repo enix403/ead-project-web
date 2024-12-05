@@ -8,6 +8,9 @@ import clsx from "clsx";
 import { FooterProps as HtmlFooterProps } from "react-html-props";
 import { combineVisualProps } from "../VisualComponent";
 import { AllLinks, ViewMode } from "../AllLinks";
+import { Button } from "@material-tailwind/react";
+import { languageDrawerAtom } from "../AppLayout/LanguageDrawer";
+import { useSetAtom } from "jotai";
 
 function SocialIcon({
   imageSrc: Icon,
@@ -31,12 +34,14 @@ export type FooterProps = HtmlFooterProps & {
 };
 
 export function Footer({ viewMode, ...props }: FooterProps) {
+  const setLanguageDrawerAtom = useSetAtom(languageDrawerAtom);
   return (
     <footer
       {...combineVisualProps(props, {
         className: [
           "bg-x-purple py-10 flex flex-col justify-center px-4 ph:items-center text-white",
           "max-w-screen overflow-x-auto",
+          "relative",
         ],
       })}
     >
@@ -63,6 +68,20 @@ export function Footer({ viewMode, ...props }: FooterProps) {
       <h3 className="mt-7 font-medium text-white opacity-75 text-center">
         Seasonistas
       </h3>
+
+      <div className="absolute right-0 bottom-0">
+        <div className="px-2 py-4">
+          <Button
+            onClick={() => setLanguageDrawerAtom(true)}
+            size="lg"
+            color="white"
+            variant="text"
+            className="flex items-center gap-2 !px-4 !py-4"
+          >
+            Choose language
+          </Button>
+        </div>
+      </div>
     </footer>
   );
 }

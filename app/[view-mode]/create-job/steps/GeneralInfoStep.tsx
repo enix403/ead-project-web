@@ -41,7 +41,7 @@ export function GeneralInfoStep({ onNext, onCancel }: StepCallbacks) {
       </h4>
 
       <div className="bg-teal/5 p-7 mt-7 rounded-xl space-y-6">
-        <FormLabel label="Job Title">
+        <FormLabel showAsterik label="Job Title">
           <Input placeholder="Title" />
         </FormLabel>
         <FormLabel label="Job Description">
@@ -51,7 +51,7 @@ export function GeneralInfoStep({ onNext, onCancel }: StepCallbacks) {
           />
         </FormLabel>
 
-        <FormLabel label="Job Category">
+        <FormLabel showAsterik label="Job Category">
           <Select
             variant="light"
             value={selectedJobIndex}
@@ -66,7 +66,7 @@ export function GeneralInfoStep({ onNext, onCancel }: StepCallbacks) {
             ))}
           </Select>
         </FormLabel>
-        <FormLabel label="Specialisms">
+        <FormLabel showAsterik label="Specialisms">
           <Select
             variant="light"
             value={selectedRoleIndex}

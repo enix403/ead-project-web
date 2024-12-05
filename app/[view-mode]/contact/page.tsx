@@ -61,7 +61,7 @@ const ContactInput = (props: InputProps) => (
   <input
     size={1}
     {...combineVisualProps(props, {
-      className: "pt-1 pb-3 outline-none border-b border-gray-line-3"
+      className: "px-2 py-2 rounded outline-none border border-gray-line-3"
     })}
   />
 );
@@ -77,7 +77,7 @@ function FormSection() {
           <ContactInput placeholder='Enter your email address' />
         </FormLabel>
       </div>
-      <FormLabel label='Your Message' className='mt-24'>
+      <FormLabel label='Your Message' className='mt-8'>
         <ContactInput placeholder='Hi, I think we need a website for our products at Company X. How soon can you hop on to discuss this?' />
       </FormLabel>
 

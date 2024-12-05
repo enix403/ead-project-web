@@ -16,12 +16,28 @@ import Image from "next/image";
 
 import { AppLayout } from "~/components/AppLayout/AppLayout";
 import { TitleMark } from "~/components/decorations";
-import { Button } from "~/components/Button/Button";
 import clsx from "clsx";
-import Link from "next/link";
 
-import { FrequentlyAskedQuestions } from "./FrequentlyAskedQuestions";
+import { FrequentlyAskedQuestions } from "~/components/FrequentlyAskedQuestions";
 import { OurTeam } from "./OurTeam";
+import { IconBrandInstagram, IconMailFilled } from "@tabler/icons-react";
+
+function ContactInfoBlock({ Icon, title }: { Icon: any; title: string }) {
+  return (
+    <div className='flex flex-col items-center max-w-sm'>
+      <div
+        className={clsx(
+          "border-black/20 border w-14 h-14 flex items-center justify-center",
+          "rounded-full"
+        )}
+      >
+        <Icon size={27} className='text-teal' />
+      </div>
+      {/* <h2 className='text-xl font-semibold'>{title}</h2> */}
+      <h2 className='text-md text-black/50 mt-4 font-semibold'>{title}</h2>
+    </div>
+  );
+}
 
 function StatBlock({ title, desc }: { title: string; desc: string }) {
   return (
@@ -96,10 +112,10 @@ function TopSection() {
         {/* Title */}
         <h1 className="text-4xl text-center">
           <span className="font-bold text-teal mr-1 relative bg-bdlue-600">
-            About
+            Who
             <TitleMark className="absolute w-32 top-full -left-5 dd -translate-y-2.5" />
           </span>
-          <span className="font-normal">Us</span>
+          <span className="font-normal"> we are</span>
         </h1>
 
         {/* Subtitle */}
@@ -146,34 +162,61 @@ function TopSection() {
             vehement irresistibly fussy.
           </p>
         </section>
+        <h1 className="text-3xl font-semibold mt-12 text-center md:text-left">
+          Our Mission
+        </h1>
+
+        <section className="space-y-8 mt-4 text-black/50 text-md text-center md:text-left">
+          <p>
+            Far much that one rank beheld bluebird after outside ignobly
+            allegedly more when oh arrogantly vehement irresistibly fussy
+            penguin insect additionally wow absolutely crud meretriciously
+            hastily dalmatian a glowered inset one echidna cassowary some parrot
+            and much as goodness some froze the sullen much connected bat
+            wonderfully on instantaneously eel valiantly petted this along
+            across highhandedly much.
+          </p>
+          <p>
+            Repeatedly dreamed alas opossum but dramatically despite
+            expeditiously that jeepers loosely yikes that as or eel underneath
+            kept and slept compactly far purred sure abidingly up above fitting
+            to strident wiped set waywardly far the and pangolin horse approving
+            paid chuckled cassowary oh above a much opposite far much
+            hypnotically more therefore wasp less that hey apart well like while
+            superbly orca and far hence one.Far much that one rank beheld
+            bluebird after outside ignobly allegedly more when oh arrogantly
+            vehement irresistibly fussy.
+          </p>
+        </section>
+
+        <h1 className="text-3xl font-semibold mt-12 text-center md:text-left">
+          Our Values
+        </h1>
+
+        <section className="space-y-8 mt-4 text-black/50 text-md text-center md:text-left">
+          <p>
+            Far much that one rank beheld bluebird after outside ignobly
+            allegedly more when oh arrogantly vehement irresistibly fussy
+            penguin insect additionally wow absolutely crud meretriciously
+            hastily dalmatian a glowered inset one echidna cassowary some parrot
+            and much as goodness some froze the sullen much connected bat
+            wonderfully on instantaneously eel valiantly petted this along
+            across highhandedly much.
+          </p>
+          <p>
+            Repeatedly dreamed alas opossum but dramatically despite
+            expeditiously that jeepers loosely yikes that as or eel underneath
+            kept and slept compactly far purred sure abidingly up above fitting
+            to strident wiped set waywardly far the and pangolin horse approving
+            paid chuckled cassowary oh above a much opposite far much
+            hypnotically more therefore wasp less that hey apart well like while
+            superbly orca and far hence one.Far much that one rank beheld
+            bluebird after outside ignobly allegedly more when oh arrogantly
+            vehement irresistibly fussy.
+          </p>
+        </section>
       </div>
     </>
-  );
-}
-
-/* ============================================== */
-
-function JobBanner() {
-  return (
-    <section className="bg-teal/80 py-20 text-center text-white">
-      <div className="app-container">
-        <h1 className="text-3xl font-extrabold">Your Dream Jobs Are Waiting</h1>
-        <p className="font-semibold mt-2">
-          Over 1 million interactions, 50,000 success stories Make yours now.
-        </p>
-
-        <div className="flex max-ph:flex-cold justify-center mt-5 gap-2">
-          <Link href="/job-user">
-            <Button fullRounded theme="white">
-              Search Job
-            </Button>
-          </Link>
-          <Button fullRounded theme="white" variant="outlined">
-            Apply Job Now
-          </Button>
-        </div>
-      </div>
-    </section>
   );
 }
 
@@ -213,15 +256,14 @@ function FeatureBlock({ Icon, title }: { Icon: any; title: string }) {
 
 function BottomSection() {
   return (
-    <div className="app-container w-full pt-14 pb-12">
+    <div className="app-container w-full">
       {/* Title */}
       <h1 className="text-4xl text-center">
-        <span className="font-normal">Our</span>
         <span className="font-bold text-teal mr-1 relative bg-bdlue-600">
-          Working
+          What we
           <TitleMark className="absolute w-48 top-full -left-8 dd -translate-y-1.5" />
         </span>
-        <span className="font-normal">Process</span>
+        <span className="font-normal"> do</span>
       </h1>
 
       {/* Subtitle */}
@@ -231,10 +273,43 @@ function BottomSection() {
       </p>
 
       {/* Features */}
-      <div className="flex max-md:flex-col justify-center gap-x-3 gap-y-8 mt-8">
+      <div className="flex max-md:flex-col justify-center gap-x-3 gap-y-8 mt-16">
         <FeatureBlock Icon={ResumeIcon} title="Free Resume Assessments" />
         <FeatureBlock Icon={JobIcon} title="Job Fit Scoring" />
         <FeatureBlock Icon={HelpIcon} title="Help Every Step of the Way" />
+      </div>
+
+      <h1 className="text-3xl font-semibold mt-12 text-center md:text-left">
+        Social responsibility
+      </h1>
+
+      <section className="space-y-8 mt-4 text-black/50 text-md text-center md:text-left">
+        <p>
+          Far much that one rank beheld bluebird after outside ignobly allegedly
+          more when oh arrogantly vehement irresistibly fussy penguin insect
+          additionally wow absolutely crud meretriciously hastily dalmatian a
+          glowered inset one echidna cassowary some parrot and much as goodness
+          some froze the sullen much connected bat wonderfully on
+          instantaneously eel valiantly petted this along across highhandedly
+          much.
+        </p>
+        <p>
+          Repeatedly dreamed alas opossum but dramatically despite expeditiously
+          that jeepers loosely yikes that as or eel underneath kept and slept
+          compactly far purred sure abidingly up above fitting to strident wiped
+          set waywardly far the and pangolin horse approving paid chuckled
+          cassowary oh above a much opposite far much hypnotically more
+          therefore wasp less that hey apart well like while superbly orca and
+          far hence one.Far much that one rank beheld bluebird after outside
+          ignobly allegedly more when oh arrogantly vehement irresistibly fussy.
+        </p>
+      </section>
+
+      {/* Follow */}
+      <h1 className="text-xl font-semibold mt-12 text-center">Follow us At</h1>
+      <div className="flex justify-center  gap-x-10 sm:gap-x-20 gap-y-12 mt-4">
+        <ContactInfoBlock Icon={IconBrandInstagram} title="@seasonistas" />
+        <ContactInfoBlock Icon={IconMailFilled} title="info@seasonistas.com" />
       </div>
     </div>
   );
@@ -247,7 +322,6 @@ export default function AboutUs({ params }: { params: any }) {
     <AppLayout params={params}>
       <TopSection />
       <OurTeam />
-      <JobBanner />
       <BottomSection />
 
       <div className="app-container w-full pb-20">
@@ -258,7 +332,46 @@ export default function AboutUs({ params }: { params: any }) {
           </span>
           <span className="font-normal"> Asked Questions</span>
         </h1>
-        <FrequentlyAskedQuestions />
+        <FrequentlyAskedQuestions
+          faqs={[
+            {
+              q: "What is the main purpose of this platform?",
+              a: `Our platform is designed to connect job seekers with employers while providing tools and resources to help individuals excel in their careers. Whether you're looking for your next job, seeking career advice, or wanting to grow your professional network, our platform has you covered.`,
+            },
+            {
+              q: "How does the platform help in career development?",
+              a: `We offer a range of features to support your career growth, including personalized job recommendations, skill development resources, career coaching, and networking opportunities. Our platform is tailored to help you navigate the complexities of today's job market and achieve your career goals.`,
+            },
+            {
+              q: "Who can use this platform?",
+              a: `Our platform is designed for both job seekers and employers. Whether you're a recent graduate, a seasoned professional, or a company looking to hire top talent, our platform is built to cater to your needs.`,
+            },
+            {
+              q: "How do I get started as a job seeker?",
+              a: `Getting started is simple. Sign up for an account, create a detailed profile showcasing your skills and experience, and start exploring job opportunities that match your interests. You can also access our career development tools and connect with other professionals on the platform.`,
+            },
+            {
+              q: "What benefits does this platform offer to employers?",
+              a: `Employers can use our platform to post job openings and search for qualified candidates. Our advanced search and matching algorithms ensure that you connect with the right talent quickly and efficiently. Additionally, our platform provides insights into employee engagement and career development trends.`,
+            },
+            {
+              q: "Is the platform free to use?",
+              a: `We offer a range of plans to suit different needs. A basic account is free, giving you access to essential features. For enhanced features such as advanced job matching, premium learning resources, and more, you can upgrade to one of our premium plans.`,
+            },
+            {
+              q: "How does the job matching process work?",
+              a: `Our job matching process uses a combination of artificial intelligence and data-driven insights to recommend jobs that align with your skills, experience, and career goals. The more you engage with the platform, the more accurate and personalized your recommendations will become.`,
+            },
+            {
+              q: "Can I use the platform to network with other professionals?",
+              a: `Yes, networking is a key component of our platform. You can connect with other professionals, join industry-specific groups, and participate in discussions that will help you expand your network and gain valuable insights into your field.`,
+            },
+            {
+              q: "How is my data protected on this platform?",
+              a: `We take data security very seriously. Our platform uses industry-standard encryption and security measures to protect your personal and professional information. We are committed to maintaining your privacy and ensuring that your data is safe.`,
+            },
+          ]}
+        />
       </div>
     </AppLayout>
   );

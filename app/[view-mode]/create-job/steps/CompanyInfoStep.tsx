@@ -55,11 +55,11 @@ export function CompanyInfoStep({ onNext, onCancel }: StepCallbacks) {
       </h1>
 
       <div className="bg-teal/5 p-7 mt-7 rounded-xl space-y-6">
-        <FormLabel label="Company Name">
+        <FormLabel showAsterik label="Company Name">
           <Input placeholder="Enter company name" />
         </FormLabel>
 
-        <FormLabel label="Username">
+        <FormLabel showAsterik label="Username">
           <Input placeholder="Enter username" />
         </FormLabel>
 
@@ -75,18 +75,18 @@ export function CompanyInfoStep({ onNext, onCancel }: StepCallbacks) {
 
         <div className="flex gap-4 flex-col md:flex-row">
           <div className="flex-1">
-            <FormLabel label="Country">
+            <FormLabel showAsterik label="Country">
               <Input placeholder="Enter country" />
             </FormLabel>
           </div>
           <div className="flex-1">
-            <FormLabel label="City">
+            <FormLabel showAsterik label="City">
               <Input placeholder="Enter city" />
             </FormLabel>
           </div>
         </div>
 
-        <FormLabel label="Street / Address">
+        <FormLabel showAsterik label="Street / Address">
           <TextArea placeholder="Enter Street / Address" className="h-20" />
         </FormLabel>
 

@@ -81,7 +81,7 @@ function PrimaryTabs({ className }: DivProps) {
       >
         <PrimaryTabButton
           shortLabel={"All"}
-          label={viewMode === "employer" ? "All Jobs" : "All Profiles"}
+          label={viewMode === "employer" ? "All Profiles" : "All Jobs"}
           icon={<PIconBriefcase />}
         />
         <PrimaryTabButton
@@ -143,12 +143,12 @@ export default function HomeProposalsPage({ params }: { params: any }) {
         <div className="hidden md:block flex-1">
           <PageTitle />
           <PrimaryTabs className="mt-5" />
-          <ProposalsFilter className="mt-7" />
+          {/* <ProposalsFilter className="mt-7" /> */}
           <SearchControls className="mt-4" />
         </div>
         <div className="md:hidden block flex-1">
           <PrimaryTabs />
-          <ProposalsFilter className="mt-5" />
+          {/* <ProposalsFilter className="mt-5" /> */}
           <PageTitle className="mt-4" />
           <SearchControls className="mt-4" />
         </div>

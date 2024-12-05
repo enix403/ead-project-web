@@ -2,7 +2,6 @@ import "react-modern-drawer/dist/index.css";
 
 import Logo from "./assets/logo-big.png";
 import MessageIcon from "./assets/message.svg";
-import BellIcon from "./assets/notification.svg";
 import ProfileImage from "~/app/assets/profile-1.webp";
 
 import { US } from "country-flag-icons/react/3x2";
@@ -20,16 +19,14 @@ import {
 
 import clsx from "clsx";
 import Link from "next/link";
-import {
-  IconMenu2,
-  IconSettings,
-  IconSettingsFilled,
-  IconX,
-} from "@tabler/icons-react";
+import { IconMenu2, IconX } from "@tabler/icons-react";
 import { Button } from "../Button/Button";
 
 import { atom, useAtom, useSetAtom } from "jotai";
 import { AllLinks, ViewMode } from "../AllLinks";
+
+import { languageDrawerAtom } from "../AppLayout/LanguageDrawer";
+import { currencyDrawerAtom } from "../AppLayout/CurrencyDrawer";
 
 export interface TopNavProps {
   pageTitle?: string;
@@ -40,6 +37,8 @@ const drawerAtom = atom(false);
 
 function Contents({ pageTitle, viewMode }: TopNavProps) {
   const setDrawerOpen = useSetAtom(drawerAtom);
+  const setLanguageDrawerOpen = useSetAtom(languageDrawerAtom);
+  const setCurrencyDrawerOpen = useSetAtom(currencyDrawerAtom);
 
   let loggedIn = true;
 
@@ -52,40 +51,41 @@ function Contents({ pageTitle, viewMode }: TopNavProps) {
         <div className="flex gap-x-1 items-center">
           {loggedIn ? (
             <>
-              <Menu>
-                <MenuHandler>
-                  <IconButton variant="text">
-                    <IconSettingsFilled size={22} stroke={1} />
-                  </IconButton>
-                </MenuHandler>
-                <MenuList>
-                  <MenuItem>Logout</MenuItem>
-                  <MenuItem className="flex justify-between items-center">
-                    Change language
-                    <US title="United States" className="w-5" />
-                  </MenuItem>
-                  <MenuItem>Add card</MenuItem>
-                </MenuList>
-              </Menu>
               <Link href={`/${viewMode}/chat`}>
                 <IconButton variant="text">
                   <MessageIcon className="w-5" />
                 </IconButton>
               </Link>
-              {/* <IconButton variant="text">
-                <div className="relative">
-                  <BellIcon className="w-5" />
-                  <div className="w-2.5 h-2.5 bg-teal absolute rounded-full top-0 right-0 -translate-y-1/3" />
-                </div>
-              </IconButton> */}
 
-              <button>
-                <Image
-                  src={ProfileImage}
-                  alt=""
-                  className="w-8 h-8 rounded-full ml-2.5"
-                />
-              </button>
+              <Menu>
+                <MenuHandler>
+                  <button>
+                    <Image
+                      src={ProfileImage}
+                      alt=""
+                      className="w-8 h-8 rounded-full ml-2.5"
+                    />
+                  </button>
+                </MenuHandler>
+                <MenuList>
+                  <MenuItem>Logout</MenuItem>
+                  <MenuItem
+                    onClick={() => setLanguageDrawerOpen(true)}
+                    className="flex justify-between items-center"
+                  >
+                    Change language
+                    <US title="United States" className="w-5" />
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => setCurrencyDrawerOpen(true)}
+                    className="flex justify-between items-center"
+                  >
+                    Change currency
+                    <span className="text-xs font-bold">EUR</span>
+                  </MenuItem>
+                  <MenuItem>Add card</MenuItem>
+                </MenuList>
+              </Menu>
             </>
           ) : (
             <Link href="/auth" className="hidden ph:block">
