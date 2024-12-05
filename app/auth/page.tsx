@@ -71,7 +71,7 @@ function EmployerForm() {
       <Button
         fullWidth
         className="mt-6"
-        onClick={() => router.push("/proposal")}
+        onClick={() => router.push("/")}
       >
         Sign Up
       </Button>

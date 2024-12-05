@@ -108,11 +108,11 @@ export function SpecificInfoStep({ onNext, onCancel }: StepCallbacks) {
 
         <div className="pt-6">
           <div className="flex gap-x-3">
-            <Button onClick={onNext} fullRounded>
-              Next
-            </Button>
             <Button onClick={onCancel} variant="outlined" fullRounded>
               Cancel
+            </Button>
+            <Button onClick={onNext} fullRounded>
+              Next
             </Button>
           </div>
         </div>
