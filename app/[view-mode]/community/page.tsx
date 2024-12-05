@@ -10,6 +10,7 @@ import { useContext } from "react";
 import { IconSearch } from "@tabler/icons-react";
 import { FormLabel } from "~/components/FormLabel/FormLabel";
 import { Select } from "~/components/Select/Select";
+import Link from "next/link";
 
 const variants = {
   visible: (i: number) => ({
@@ -62,7 +63,12 @@ function PersonCard({
           alt="avatar"
         />
       </Badge>
-      <h2 className="text-teal font-bold text-xl mt-3">Yiannis M.</h2>
+      <Link
+        href="user"
+        className="text-teal hover:underline font-bold text-xl mt-3"
+      >
+        Yiannis M.
+      </Link>
       <h2 className="text-gray-500 font-medium text-center max-w-[80%] !leading-4 mt-1.5">
         Chef - Mediterranean Cuisine, Experience in Hotel and Restaurant
       </h2>

@@ -3,6 +3,7 @@ import clsx from "clsx";
 import { Avatar, Badge, IconButton } from "@material-tailwind/react";
 import { Button } from "~/components/Button/Button";
 import { IconHeartFilled } from "@tabler/icons-react";
+import Link from "next/link";
 
 export function ProposalCard({
   isBestMatch,
@@ -52,7 +53,12 @@ export function ProposalCard({
         )}
       </header>
 
-      <h2 className="text-teal font-semibold mt-1">Yiannis M.</h2>
+      <Link
+        href="user"
+        className="text-teal hover:underline font-semibold mt-1"
+      >
+        Yiannis M.
+      </Link>
 
       <h3 className="font-semibold text-lg mt-3">
         Chef - Mediterranean Cuisine, Experience in Hotel and Restaurant
