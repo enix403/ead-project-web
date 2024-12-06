@@ -1,22 +1,23 @@
 User {
   auth
 
+  isBanned
   role: admin / employer / employee
 
   // Profile:
   bio
-  address_country
-  address_city
-  address_area
-  address_zip
+  addressCountry
+  addressCity
+  addressArea
+  addressZip
   phone
   experiences[] {
     title
     company
     description
-    start_date
-    end_date
-    currently_active
+    startDate
+    endDate
+    currentlyActive
   }
   skills[] string
 }
@@ -27,13 +28,6 @@ QueryMessage {
   body
 }
 
-----------------------
-
-GeneralInfo
-SpecificInfo
-CompanyInfo
-Questions
-
 JobPosting {
   // ===== General Info =====
   title
@@ -41,44 +35,64 @@ JobPosting {
   category
   specialism
 
-  // ===== Specific Info =====
+  // ===== Job Specific Info =====
   // Job
-  job_type: Full-Time / Part-Time / Internship / Specific dates
+  jobType: Full-Time / Part-Time / Internship / Specific dates
   // Experience
-  exp_level: entry / mid / senior
+  expLevel: entry / mid / senior
   // Qualification
-  qualifications_required[] string
-  qualifications_desired[] string
+  qualificationsRequired[] string
+  qualificationsDesired[] string
   // Salary
-  salary_mode: monthly / hourly
+  salaryMode: monthly / hourly
   salary
   // Periods of work
-  start_date
-  end_date
-  start_time
-  end_time
+  startDate
+  endDate
+  startTime
+  endTime
   // Other
   benefits[] string
-  working_language
+  workingLanguage
   residence: yes / no / allowance
-  food: yes / no / one_meal / two_meal / allowance
-  transport: required / not_required / moped_provided / car_provided
+  food: yes / no / oneMeal / twoMeal / allowance
+  transport: required / notRequired / mopedProvided / carProvided
 
   // ===== Company Info =====
-  company_name
-  company_username
-  company_description
-  company_website
-  company_logo_url
-  company_country
-  company_city
-  company_area
-  company_zip
-  company_map_address
-  company_date_posted
+  companyName
+  companyUsername
+  companyDescription
+  companyWebsite
+  companyLogoUrl
+  companyCountry
+  companyCity
+  companyArea
+  companyZip
+  companyMapAddress
 
   // ===== Questions =====
   questions[] string
+
+  // ===== Misc =====
+  postedAt
+  expireAt
+  isActive
+}
+
+JobApplication {
+  jobId
+  employeeId
+  appliedAt
+  isEmployerInterested
+  status: accepted / rejected / waiting
+}
+
+JobInvitation {
+  jobId
+  employeeId
+  invitedByUserId // could be admin or employer
+  invitedAt
+  status: accepted / rejected / waiting
 }
 
 ----------------------

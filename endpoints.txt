@@ -1,6 +1,29 @@
-Endpoint: /api/user/settings
+SCOPE: General
+
+Endpoint: /api/me/profile
+  Method: GET
+  Description: Get the current user's profile
+
   Method: PUT
-  Description: Allows the employee to update their profile (e.g., name, profile picture, bio, skills, location).
+  Description: Allows the user to update their profile (e.g., name, profile picture, bio, skills, location).
+
+Endpoint: /api/user/:userId
+  Method: GET
+  Description: View a user
+
+----------
+SCOPE: Employer
+
+Endpoint: /api/job/post
+  Method: POST
+  Description: Allows an employer to post a new job (job title, description, location, qualifications, etc.).
+
+Endpoint: /api/employer/my-postings
+  Method: GET
+  Description: Returns a list of jobs posted by the employer, including active and inactive job postings.
+
+----------
+SCOPE: Employee
 
 Endpoint: /api/job/search
   Method: GET
@@ -14,54 +37,71 @@ Endpoint: /api/job/:jobId/apply
   Method: POST
   Description: Allows the employee to apply for a job by submitting required information (cover letter, resume, etc.).
 
-Endpoint: /api/job/application-status/:applicationId
+Endpoint: /api/job/application/:applicationId
   Method: GET
-  Description: Shows the status of an employee’s job application (submitted, under review, etc.).
+  Description: View details of a specific application.
 
-Endpoint: /api/employee/:employeeId
+Endpoint: /api/employee/my-applications
   Method: GET
-  Description: Allows employees to view other employees' public profiles, including work history and current employment.
+  Description: List of applications created by an employee
 
-Endpoint: /api/company/:companyId/employees
-  Method: GET
-  Description: Fetches a list of employees who currently work or have worked for a specific employer.
-
-Endpoint: /api/job/post
-  Method: POST
-  Description: Allows an employer to post a new job (job title, description, location, qualifications, etc.).
-
-Endpoint: /api/job/post-template
-  Method: GET
-  Description: Allows employers to use a previous job posting as a template for a new one (if available).
-
-Endpoint: /api/job/my-postings
-  Method: GET
-  Description: Returns a list of jobs posted by the employer, including active and inactive job postings.
-
-Endpoint: /api/job/:jobId/mark-status
-  Method: PUT
-  Description: Allows an employer to mark a job posting as active or inactive.
+----------
+SCOPE: Employer
 
 Endpoint: /api/job/:jobId/applicants
   Method: GET
   Description: Fetches a list of employees who have applied for a specific job posting.
 
-Endpoint: /api/job/application/:applicationId
-  Method: GET
-  Description: Allows an employer to view details of a specific application.
+Endpoint: /api/job/:jobId/update-status
+  Method: PUT
+  Description: Mark a job posting as active or inactive.
 
-Endpoint: /api/employer/:employerId/employees
-  Method: GET
-  Description: Fetches a list of employees currently or previously working for the employer.
+----------
 
 Endpoint: /api/admin/users
   Method: GET
   Description: Fetches a list of all users (employees and employers) for administrative purposes.
 
-Endpoint: /api/admin/user/:userId/role
-  Method: PUT
-  Description: Allows the admin to update the role of a user (e.g., promoting an employee to an employer).
-
 Endpoint: /api/admin/user/:userId/ban
   Method: PUT
   Description: Allows the admin to deactivate or ban a user from the platform.
+
+=============
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Endpoint: /api/company/:companyId/employees
+  Method: GET
+  Description: Fetches a list of employees who currently work or have worked for a specific employer.
+
+Endpoint: /api/job/post-template
+  Method: GET
+  Description: Allows employers to use a previous job posting as a template for a new one (if available).
+
+Endpoint: /api/employer/:employerId/employees
+  Method: GET
+  Description: Fetches a list of employees currently or previously working for the employer.
+
+Endpoint: /api/admin/user/:userId/role
+  Method: PUT
+  Description: Allows the admin to update the role of a user (e.g., promoting an employee to an employer).
