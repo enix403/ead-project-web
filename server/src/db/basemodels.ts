@@ -1,6 +1,7 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
-interface IExperience {
+/*
+export interface IExperience {
   title: string;
   company: string;
   description?: string;
@@ -18,7 +19,7 @@ const experienceSchema = new Schema<IExperience>({
   currentlyActive: { type: Boolean, default: false },
 });
 
-interface IUser extends Document {
+export interface IUser extends Document {
   email: string;
   passwordHash: string;
   role: 'admin' | 'employer' | 'employee';
@@ -85,9 +86,11 @@ const userSchema = new Schema<IUser>({
 // prettier-ignore
 export const UserModel = mongoose.model<IUser>('User', userSchema);
 
+*/
+
 /* =============================== */
 
-interface IJobPosting extends Document {
+export interface IJobPosting extends Document {
   title: string;
   description?: string;
   category?: string;
@@ -127,7 +130,7 @@ interface IJobPosting extends Document {
   questions: string[];
 
   postedAt: Date;
-  expireAt: Date;
+  expireAt?: Date;
   isActive: boolean;
 }
 
@@ -190,7 +193,7 @@ export const JobPostingModel = mongoose.model<IJobPosting>('JobPosting', jobPost
 
 /* =============================== */
 
-interface IJobApplication extends Document {
+export interface IJobApplication extends Document {
   jobId: mongoose.Types.ObjectId;
   employeeId: mongoose.Types.ObjectId;
   appliedAt: Date;
@@ -225,7 +228,7 @@ export const JobApplicationModel = mongoose.model<IJobApplication>('JobApplicati
 
 /* =============================== */
 
-interface IJobInvitation extends Document {
+export interface IJobInvitation extends Document {
   jobId: mongoose.Types.ObjectId;
   employeeId: mongoose.Types.ObjectId;
   invitedByUserId: mongoose.Types.ObjectId;
