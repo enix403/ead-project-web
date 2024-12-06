@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model, Document } from 'mongoose';
 
 export interface IJobPosting extends Document {
   title: string;
@@ -99,4 +99,4 @@ const jobPostingSchema = new Schema<IJobPosting>({
 });
 
 // prettier-ignore
-export const JobPostingModel = model<IJobPosting>('JobPosting', jobPostingSchema);
+export const JobPostingModel = model('JobPosting', jobPostingSchema);

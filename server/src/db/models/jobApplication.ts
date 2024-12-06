@@ -1,4 +1,4 @@
-import { Schema, model, Types } from 'mongoose';
+import { Schema, model, Types, Document } from 'mongoose';
 
 export interface IJobApplication extends Document {
   jobId: Types.ObjectId;
@@ -31,4 +31,4 @@ const jobApplicationSchema = new Schema<IJobApplication>({
 });
 
 // prettier-ignore
-export const JobApplicationModel = model<IJobApplication>('JobApplication', jobApplicationSchema);
+export const JobApplicationModel = model('JobApplication', jobApplicationSchema);

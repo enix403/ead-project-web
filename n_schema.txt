@@ -109,8 +109,9 @@ type JobInvitation = {
 
 // ----------------------
 
-type QueryMessage = {
-  name: string;
-  email: string;
-  body: string;
-}
+Convert this into a typescript mongoose model (Typescript interface + mongoose schema + mongoose model)
+
+QueryMessage:
+  name: string (required)
+  email: string (required)
+  body: string (required)
