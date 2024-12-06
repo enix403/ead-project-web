@@ -50,7 +50,7 @@ export function GeneralInfoStep({ onNext, onCancel, progressView }: StepProps) {
             <TextArea
               required
               className="h-40"
-              defaultValue="Spent several years working on sheep on wall street. Had moderate success investing in Yugo`s on wall street. Managed a small team buying and selling sticks for farmers. Spent several years licensing licorice in west palm beach, FL. Developed several new methods for working banjos in the aftermarket. Spent a weekend importing banjos in west palm beach, Yugo`s on wall street. Managed a small team buying and selling sticks for farmers. Spent several years licensing licorice in west palm beach, FL. Developed several new methods for working banjos in the aftermarket. Spent a weekend importing banjos at west palm beach."
+              placeholder="Enter your job description"
             />
           </FormLabel>
 
