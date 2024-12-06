@@ -1,5 +1,3 @@
-SCOPE: General
-
 GET => /api/me/profile
 Allowed to: Logged in user
 Get the current user's profile
@@ -11,8 +9,6 @@ Update the current user's profile
 GET => /api/user/:userId
 Allowed to: Everyone
 Get any user's profile
-
-----------
 
 GET => /api/job/search
 Allowed to: Everyone
@@ -33,8 +29,6 @@ View details of a specific application.
 GET => /api/employee/my-applications
 Allowed to: Logged in employee
 Fetch a list of applications created by the employee.
-
-----------
 
 POST => /api/job/post
 Allowed to: Logged in employer
@@ -59,8 +53,6 @@ Allow the employer to update the decision of the application
 PUT => /api/job/application/:applicationId/mark-interested
 Allowed to: Logged in employer associated with the application (job poster)
 Allow the employer to mark if they are interested in the application.
-
-----------
 
 GET => /api/admin/users
 Allowed to: admin
