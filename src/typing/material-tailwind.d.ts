@@ -40,6 +40,7 @@ declare module "@material-tailwind/react" {
   export interface StepperProps extends CorrectPlaceholder {}
   export interface StepProps extends CorrectPlaceholder {}
   export interface TabsHeaderProps extends CorrectPlaceholder {}
+  export interface TabsBodyProps extends CorrectPlaceholder {}
   export interface TabProps extends CorrectPlaceholder {}
   export interface TextareaProps extends CorrectPlaceholder {}
   export interface CheckboxProps extends CorrectPlaceholder, CorrectCrossOrigin {}
