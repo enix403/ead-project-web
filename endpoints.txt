@@ -4,78 +4,62 @@ GET => /api/me/profile
 Get the current user's profile
 
 PUT => /api/me/profile
-Allows the user to update their profile (e.g., name, profile picture, bio, skills, location).
+Update the current user's profile
 
 GET => /api/user/:userId
-View a user
+Get any user's profile
 
 ----------
 SCOPE: Employer
 
 POST => /api/job/post
-Allows an employer to post a new job (job title, description, location, qualifications, etc.).
+Allows an employer to post a new job
 
 GET => /api/employer/my-postings
-Returns a list of jobs posted by the employer, including active and inactive job postings.
+Returns a list of jobs posted by the employer
 
 ----------
 SCOPE: Employee
 
 GET => /api/job/search
-Allows the employee to search for jobs using filters like job title, location, job type (full-time/part-time), etc.
+Allows the employee to search for jobs (using filters like job title, location, job type, etc.)
 
 GET => /api/job/:jobId
 Returns detailed information about a specific job posting.
 
 POST => /api/job/:jobId/apply
-Allows the employee to apply for a job by submitting required information (cover letter, resume, etc.).
+Allows the employee to apply for a job.
 
 GET => /api/job/application/:applicationId
 View details of a specific application.
 
+PUT => /api/job/application/:applicationId/update-status
+Allow the employer to update the status of the application
+
 GET => /api/employee/my-applications
-List of applications created by an employee
+Fetch a list of applications created by the employee.
 
 ----------
 SCOPE: Employer
 
 GET => /api/job/:jobId/applicants
-Fetches a list of employees who have applied for a specific job posting.
+Fetch a list of employees who have applied for a specific job posting.
 
 PUT => /api/job/:jobId/update-status
-Mark a job posting as active or inactive.
+Allow the employer to mark a job posting as active or inactive.
 
 ----------
 
 GET => /api/admin/users
 Fetches a list of all users (employees and employers) for administrative purposes.
 
-PUT => /api/admin/user/:userId/ban
-Allows the admin to deactivate or ban a user from the platform.
 
 =============
 
+PUT => /api/admin/user/:userId/ban
+Allows the admin to ban a user from the platform.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+=============
 
 GET => /api/company/:companyId/employees
 Fetches a list of employees who currently work or have worked for a specific employer.
