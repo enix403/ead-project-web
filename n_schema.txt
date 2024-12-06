@@ -1,0 +1,86 @@
+User {
+  auth
+
+  role: admin / employer / employee
+
+  // Profile:
+  bio
+  address_country
+  address_city
+  address_area
+  address_zip
+  phone
+  experiences[] {
+    title
+    company
+    description
+    start_date
+    end_date
+    currently_active
+  }
+  skills[] string
+}
+
+QueryMessage {
+  name
+  email
+  body
+}
+
+----------------------
+
+GeneralInfo
+SpecificInfo
+CompanyInfo
+Questions
+
+JobPosting {
+  // ===== General Info =====
+  title
+  description
+  category
+  specialism
+
+  // ===== Specific Info =====
+  // Job
+  job_type: Full-Time / Part-Time / Internship / Specific dates
+  // Experience
+  exp_level: entry / mid / senior
+  // Qualification
+  qualifications_required[] string
+  qualifications_desired[] string
+  // Salary
+  salary_mode: monthly / hourly
+  salary
+  // Periods of work
+  start_date
+  end_date
+  start_time
+  end_time
+  // Other
+  benefits[] string
+  working_language
+  residence: yes / no / allowance
+  food: yes / no / one_meal / two_meal / allowance
+  transport: required / not_required / moped_provided / car_provided
+
+  // ===== Company Info =====
+  company_name
+  company_username
+  company_description
+  company_website
+  company_logo_url
+  company_country
+  company_city
+  company_area
+  company_zip
+  company_map_address
+  company_date_posted
+
+  // ===== Questions =====
+  questions[] string
+}
+
+----------------------
+
+/api/user/settings: Update profile
