@@ -46,7 +46,7 @@ export function GeneralInfoStep({ onNext, onCancel, progressView }: StepProps) {
           <FormLabel showAsterik label="Job Title">
             <Input required placeholder="Title" />
           </FormLabel>
-          <FormLabel label="Job Description">
+          <FormLabel showAsterik label="Job Description">
             <TextArea
               required
               className="h-40"
