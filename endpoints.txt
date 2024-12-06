@@ -1,70 +1,57 @@
 SCOPE: General
 
-Endpoint: /api/me/profile
-  Method: GET
-  Description: Get the current user's profile
+GET => /api/me/profile
+Get the current user's profile
 
-  Method: PUT
-  Description: Allows the user to update their profile (e.g., name, profile picture, bio, skills, location).
+PUT => /api/me/profile
+Allows the user to update their profile (e.g., name, profile picture, bio, skills, location).
 
-Endpoint: /api/user/:userId
-  Method: GET
-  Description: View a user
+GET => /api/user/:userId
+View a user
 
 ----------
 SCOPE: Employer
 
-Endpoint: /api/job/post
-  Method: POST
-  Description: Allows an employer to post a new job (job title, description, location, qualifications, etc.).
+POST => /api/job/post
+Allows an employer to post a new job (job title, description, location, qualifications, etc.).
 
-Endpoint: /api/employer/my-postings
-  Method: GET
-  Description: Returns a list of jobs posted by the employer, including active and inactive job postings.
+GET => /api/employer/my-postings
+Returns a list of jobs posted by the employer, including active and inactive job postings.
 
 ----------
 SCOPE: Employee
 
-Endpoint: /api/job/search
-  Method: GET
-  Description: Allows the employee to search for jobs using filters like job title, location, job type (full-time/part-time), etc.
+GET => /api/job/search
+Allows the employee to search for jobs using filters like job title, location, job type (full-time/part-time), etc.
 
-Endpoint: /api/job/:jobId
-  Method: GET
-  Description: Returns detailed information about a specific job posting.
+GET => /api/job/:jobId
+Returns detailed information about a specific job posting.
 
-Endpoint: /api/job/:jobId/apply
-  Method: POST
-  Description: Allows the employee to apply for a job by submitting required information (cover letter, resume, etc.).
+POST => /api/job/:jobId/apply
+Allows the employee to apply for a job by submitting required information (cover letter, resume, etc.).
 
-Endpoint: /api/job/application/:applicationId
-  Method: GET
-  Description: View details of a specific application.
+GET => /api/job/application/:applicationId
+View details of a specific application.
 
-Endpoint: /api/employee/my-applications
-  Method: GET
-  Description: List of applications created by an employee
+GET => /api/employee/my-applications
+List of applications created by an employee
 
 ----------
 SCOPE: Employer
 
-Endpoint: /api/job/:jobId/applicants
-  Method: GET
-  Description: Fetches a list of employees who have applied for a specific job posting.
+GET => /api/job/:jobId/applicants
+Fetches a list of employees who have applied for a specific job posting.
 
-Endpoint: /api/job/:jobId/update-status
-  Method: PUT
-  Description: Mark a job posting as active or inactive.
+PUT => /api/job/:jobId/update-status
+Mark a job posting as active or inactive.
 
 ----------
 
-Endpoint: /api/admin/users
-  Method: GET
-  Description: Fetches a list of all users (employees and employers) for administrative purposes.
+GET => /api/admin/users
+Fetches a list of all users (employees and employers) for administrative purposes.
 
-Endpoint: /api/admin/user/:userId/ban
-  Method: PUT
-  Description: Allows the admin to deactivate or ban a user from the platform.
+PUT => /api/admin/user/:userId/ban
+Allows the admin to deactivate or ban a user from the platform.
 
 =============
 
@@ -90,18 +77,14 @@ Endpoint: /api/admin/user/:userId/ban
 
 
 
-Endpoint: /api/company/:companyId/employees
-  Method: GET
-  Description: Fetches a list of employees who currently work or have worked for a specific employer.
+GET => /api/company/:companyId/employees
+Fetches a list of employees who currently work or have worked for a specific employer.
 
-Endpoint: /api/job/post-template
-  Method: GET
-  Description: Allows employers to use a previous job posting as a template for a new one (if available).
+GET => /api/job/post-template
+Allows employers to use a previous job posting as a template for a new one (if available).
 
-Endpoint: /api/employer/:employerId/employees
-  Method: GET
-  Description: Fetches a list of employees currently or previously working for the employer.
+GET => /api/employer/:employerId/employees
+Fetches a list of employees currently or previously working for the employer.
 
-Endpoint: /api/admin/user/:userId/role
-  Method: PUT
-  Description: Allows the admin to update the role of a user (e.g., promoting an employee to an employer).
+PUT => /api/admin/user/:userId/role
+Allows the admin to update the role of a user (e.g., promoting an employee to an employer).
