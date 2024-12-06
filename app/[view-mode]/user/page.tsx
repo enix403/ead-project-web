@@ -13,7 +13,7 @@ import {
 import { IconMail, IconMap2, IconPhoneCall } from "@tabler/icons-react";
 
 import { Button } from "~/components/Button/Button";
-import { repeatNode } from "../utils/markup";
+import { repeatNode } from "~/app/utils/markup";
 import { AppLayout } from "~/components/AppLayout/AppLayout";
 
 export default function UserProfile({ params }: { params: any }) {
