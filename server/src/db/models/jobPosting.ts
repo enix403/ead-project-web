@@ -1,6 +1,6 @@
-import { Schema, model, Document } from 'mongoose';
+import { Schema, model, Document, Types } from 'mongoose';
 
-export interface IJobPosting extends Document {
+export interface IJobPosting extends Document<Types.ObjectId> {
   title: string;
   description?: string;
   category?: string;
@@ -42,6 +42,7 @@ export interface IJobPosting extends Document {
   postedAt: Date;
   expireAt?: Date;
   isActive: boolean;
+  posterId: Types.ObjectId;
 }
 
 const jobPostingSchema = new Schema<IJobPosting>({
@@ -96,6 +97,11 @@ const jobPostingSchema = new Schema<IJobPosting>({
   postedAt: { type: Date, default: Date.now },
   expireAt: Date,
   isActive: { type: Boolean, default: true },
+  posterId: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+  },
 });
 
 // prettier-ignore

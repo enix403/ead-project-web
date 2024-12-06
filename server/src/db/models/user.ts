@@ -1,10 +1,10 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Schema, Document, Types } from 'mongoose';
 
-export interface IUser extends Document {
+export interface IUser extends Document<Types.ObjectId> {
   username: string;
   email: string;
   password: string;
-  role: 'Employee' | 'Employer' | 'Admin';
+  role: 'employee' | 'employer' | 'admin';
   profilePicture?: string;
   bio?: string;
   location?: string;
@@ -23,7 +23,7 @@ const UserSchema: Schema<IUser> = new mongoose.Schema(
     password: { type: String, required: true, select: false },
     role: {
       type: String,
-      enum: ['Employee', 'Employer', 'Admin'],
+      enum: ['employee', 'employer', 'admin'],
       required: true,
     },
     profilePicture: {
@@ -38,8 +38,8 @@ const UserSchema: Schema<IUser> = new mongoose.Schema(
     bio: { type: String, maxlength: 200 },
     location: { type: String },
     skills: [{ type: String }],
-    companyName: { type: String }, 
-    isApproved: { type: Boolean, default: false }, 
+    companyName: { type: String },
+    isApproved: { type: Boolean, default: false },
     employees: [
       { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: [] },
     ],

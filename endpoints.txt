@@ -1,66 +1,74 @@
-GET => /api/me/profile
-Allowed to: Logged in user
-Get the current user's profile
+-------------
+[DONE]
 
-PUT => /api/me/profile
-Allowed to: Logged in user
-Update the current user's profile
-
-GET => /api/user/:userId
+GET /api/job/search
 Allowed to: Everyone
-Get any user's profile
+Description: Allows the employee to search for jobs (using filters like job title, location, job type, etc.)
 
-GET => /api/job/search
+GET /api/job/:jobId
 Allowed to: Everyone
-Allows the employee to search for jobs (using filters like job title, location, job type, etc.)
+Description: Returns detailed information about a specific job posting.
 
-GET => /api/job/:jobId
-Allowed to: Everyone
-Returns detailed information about a specific job posting.
-
-POST => /api/job/:jobId/apply
+POST /api/job/:jobId/apply
 Allowed to: Logged in employee
-Allows the employee to apply for a job.
+Description: Allows the employee to apply for a job.
 
-GET => /api/job/application/:applicationId
+GET /api/job/application/:applicationId
 Allowed to: Logged in employee and employer associated with the application (applicant and job poster)
-View details of a specific application.
+Description: View details of a specific application.
 
-GET => /api/employee/my-applications
+GET /api/employee/my-applications
 Allowed to: Logged in employee
-Fetch a list of applications created by the employee.
+Description: Fetch a list of applications created by the employee.
 
-POST => /api/job/post
+-------------
+
+
+POST /api/job/post
 Allowed to: Logged in employer
-Allows an employer to post a new job
+Description: Allows an employer to post a new job
 
-GET => /api/employer/my-postings
+GET /api/employer/my-postings
 Allowed to: Logged in employer
-Returns a list of jobs posted by the employer
+Description: Returns a list of jobs posted by the employer
 
-GET => /api/job/:jobId/applicants
+GET /api/job/:jobId/applicants
 Allowed to: Logged in employer associated with the job (job poster)
-Fetch a list of employees who have applied for a specific job posting.
+Description: Fetch a list of employees who have applied for a specific job posting.
 
-PUT => /api/job/:jobId/update-status
+PATCH /api/job/:jobId/update-status
 Allowed to: Logged in employer associated with the job (job poster)
-Allow the employer to mark a job posting as active or inactive.
+Description: Allow the employer to mark a job posting as active or inactive.
 
-PUT => /api/job/application/:applicationId/update-decision
+PATCH /api/job/application/:applicationId/update-decision
 Allowed to: Logged in employer associated with the application (job poster)
-Allow the employer to update the decision of the application
+Description: Allow the employer to update the decision of the application
 
-PUT => /api/job/application/:applicationId/mark-interested
+PATCH /api/job/application/:applicationId/mark-interested
 Allowed to: Logged in employer associated with the application (job poster)
-Allow the employer to mark if they are interested in the application.
+Description: Allow the employer to mark if they are interested in the application.
 
-GET => /api/admin/users
+-------------
+
+GET /api/me/profile
+Allowed to: Logged in user
+Description: Get the current user's profile
+
+PATCH /api/me/profile
+Allowed to: Logged in user
+Description: Update the current user's profile (complete or some fields)
+
+GET /api/user/:userId
+Allowed to: Everyone
+Description: Get any user's profile
+
+GET /api/admin/users
 Allowed to: admin
-Fetches a list of all users (employees and employers) for administrative purposes.
+Description: Fetches a list of all users (employees and employers) for administrative purposes.
 
-PUT => /api/admin/user/:userId/ban
+PATCH /api/admin/user/:userId/ban
 Allowed to: admin
-Allows the admin to ban a user from the platform.
+Description: Allows the admin to ban a user from the platform.
 
 =============
 =============
@@ -68,14 +76,14 @@ Allows the admin to ban a user from the platform.
 =============
 =============
 
-GET => /api/company/:companyId/employees
+GET /api/company/:companyId/employees
 Fetches a list of employees who currently work or have worked for a specific employer.
 
-GET => /api/job/post-template
+GET /api/job/post-template
 Allows employers to use a previous job posting as a template for a new one (if available).
 
-GET => /api/employer/:employerId/employees
+GET /api/employer/:employerId/employees
 Fetches a list of employees currently or previously working for the employer.
 
-PUT => /api/admin/user/:userId/role
+PATCH /api/admin/user/:userId/role
 Allows the admin to update the role of a user (e.g., promoting an employee to an employer).

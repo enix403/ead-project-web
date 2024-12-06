@@ -1,17 +1,23 @@
 import { Schema, model, Types, Document } from 'mongoose';
 
-export interface IJobApplication extends Document {
+export interface IJobApplication extends Document<Types.ObjectId> {
   jobId: Types.ObjectId;
+  jobPosterId: Types.ObjectId;
   employeeId: Types.ObjectId;
   appliedAt: Date;
 
-  answers: { question: string; answer: string }[];
+  answers: {
+    question: string;
+    answer: string;
+  }[];
+
   isEmployerInterested: boolean;
   decision: 'accepted' | 'rejected' | 'waiting';
 }
 
 const jobApplicationSchema = new Schema<IJobApplication>({
   jobId: { type: Schema.Types.ObjectId, ref: 'JobPosting', required: true },
+  jobPosterId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   employeeId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   appliedAt: { type: Date, default: Date.now },
 

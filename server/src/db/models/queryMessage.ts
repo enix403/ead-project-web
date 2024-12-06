@@ -1,6 +1,6 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model, Document, Types } from 'mongoose';
 
-export interface IQueryMessage extends Document {
+export interface IQueryMessage extends Document<Types.ObjectId> {
   name: string;
   email: string;
   body: string;

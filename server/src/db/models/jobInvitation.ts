@@ -1,6 +1,6 @@
 import { Schema, Types, model, Document } from 'mongoose';
 
-export interface IJobInvitation extends Document {
+export interface IJobInvitation extends Document<Types.ObjectId> {
   jobId: Types.ObjectId;
   employeeId: Types.ObjectId;
   invitedByUserId: Types.ObjectId;

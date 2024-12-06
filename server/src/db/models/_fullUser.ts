@@ -1,6 +1,6 @@
 /*
 
-import mongoose, { Document, Schema } from 'mongoose';
+import { model, Document, Schema, Types } from 'mongoose';
 
 export interface IExperience {
   title: string;
@@ -20,7 +20,7 @@ const experienceSchema = new Schema<IExperience>({
   currentlyActive: { type: Boolean, default: false },
 });
 
-export interface IUser extends Document {
+export interface IUser extends Document<Types.ObjectId> {
   email: string;
   passwordHash: string;
   role: 'admin' | 'employer' | 'employee';
@@ -85,6 +85,6 @@ const userSchema = new Schema<IUser>({
 });
 
 // prettier-ignore
-export const UserModel = mongoose.model<IUser>('User', userSchema);
+export const UserModel = model('User', userSchema);
 
 */
