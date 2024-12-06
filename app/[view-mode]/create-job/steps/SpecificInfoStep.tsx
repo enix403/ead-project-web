@@ -6,6 +6,12 @@ import { StepForm, StepProps } from "./common";
 import { Checkbox, Menu, MenuItem, MenuList } from "@material-tailwind/react";
 import { repeatNode } from "~/app/utils/markup";
 
+import 'rsuite/DateRangePicker/styles/index.css';
+import DateRangePicker from 'rsuite/DateRangePicker';
+
+import 'rsuite/TimeRangePicker/styles/index.css';
+import TimeRangePicker from 'rsuite/TimeRangePicker';
+
 function FormCheckbox({ label }: { label: string }) {
   return (
     <label className="flex cursor-pointer items-center gap-2 p-2 select-none">
@@ -76,7 +82,7 @@ export function SpecificInfoStep({
           </div>
 
           <div className="flex gap-4 flex-col md:flex-row">
-            <div className="flex-1">
+            <div className="flex-[1]">
               <FormLabel showAsterik label="Salary">
                 <div className="flex flex-1 w-full gap-x-1">
                   <Select variant="light">
@@ -89,12 +95,15 @@ export function SpecificInfoStep({
                     placeholder="Enter salary range"
                   />
                 </div>
-                <p className="italic">Suggested = $16100</p>
+                {/* <p className="italic">Suggested = $16100</p> */}
               </FormLabel>
             </div>
-            <div className="flex-1">
-              <FormLabel showAsterik label="Periods of Work">
-                <Input required placeholder="e.g., 9 AM - 5 PM" />
+            <div className="flex-[1]">
+              <FormLabel showAsterik label="Periods of Work" className="h-full">
+                <div className="flex flex-col sm:flex-row gap-4 flex-1">
+                  <DateRangePicker className="flex-1 [&>*]:!h-full" appearance="subtle" placeholder="Select dates" />
+                  <TimeRangePicker className="flex-1 [&>*]:!h-full" appearance="subtle" placeholder="Select times" />
+                </div>
               </FormLabel>
             </div>
           </div>

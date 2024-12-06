@@ -1,22 +1,38 @@
+import clsx from "clsx";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { ComponentProps } from "react";
 
 export type ViewMode = "employer" | "employee";
+
+function AppLink(props: ComponentProps<typeof Link>) {
+  const pathname = usePathname();
+
+  return (
+    <>
+      <Link
+        {...props}
+        className={clsx(pathname === props.href && "text-teal")}
+      />
+    </>
+  );
+}
 
 export function AllLinks({ viewMode }: { viewMode: ViewMode }) {
   return (
     <>
-      <Link href={`/${viewMode}/`}>Home</Link>
-      <Link href={`/${viewMode}/community`}>Community</Link>
+      <AppLink href={`/${viewMode}`}>Home</AppLink>
+      <AppLink href={`/${viewMode}/community`}>Community</AppLink>
       {viewMode === "employer" && (
         <>
-          <Link href={`/${viewMode}/create-job`}>Create job</Link>
-          <Link href={`/${viewMode}/postings`}>Postings</Link>
+          <AppLink href={`/${viewMode}/create-job`}>Create job</AppLink>
+          <AppLink href={`/${viewMode}/postings`}>Postings</AppLink>
         </>
       )}
-      <Link href={`/${viewMode}/information`}>Information</Link>
-      <Link href={`/${viewMode}/services`}>Services</Link>
-      <Link href={`/${viewMode}/about`}>About us</Link>
-      <Link href={`/${viewMode}/contact`}>Contact us</Link>
+      <AppLink href={`/${viewMode}/information`}>Information</AppLink>
+      <AppLink href={`/${viewMode}/services`}>Services</AppLink>
+      <AppLink href={`/${viewMode}/about`}>About us</AppLink>
+      <AppLink href={`/${viewMode}/contact`}>Contact us</AppLink>
     </>
   );
 }

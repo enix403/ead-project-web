@@ -4,7 +4,8 @@ import { ViewModeContext } from "~/components/AppLayout/AppLayout";
 
 import { useState, useContext } from "react";
 import { Button } from "~/components/Button/Button";
-import { Step, Stepper } from "@material-tailwind/react";
+import { Step, Stepper, Tab, TabPanel, Tabs, TabsHeader } from "@material-tailwind/react";
+import { TabsBody } from "@material-tailwind/react";
 
 function InfoStep1() {
   const viewMode = useContext(ViewModeContext);
@@ -193,86 +194,20 @@ function InfoStep4() {
 }
 
 export function InfoStepper() {
-  const [stepIndex, setStepIndex] = useState(0);
-
-  function onNext() {
-    setStepIndex((x) => Math.min(steps.length - 1, x + 1));
-  }
-
-  function onPrevious() {
-    setStepIndex((x) => Math.max(0, x - 1));
-  }
-
-  let steps = [InfoStep1, InfoStep2, InfoStep3, InfoStep4];
-
-  let StepComponent = steps[stepIndex];
-
   return (
-    <>
-      <Stepper className="mt-4" activeStep={stepIndex}>
-        {steps.map((_, index) => (
-          // @ts-ignore
-          <Step
-            className="cursor-pointer"
-            onClick={() => setStepIndex(index)}
-            key={index}
-          >
-            {index + 1}
-          </Step>
-        ))}
-      </Stepper>
-      <StepComponent />
-      <div className="flex gap-x-3 mt-8">
-        <Button
-          onClick={onPrevious}
-          disabled={stepIndex === 0}
-          variant="outlined"
-          fullRounded
-        >
-          Previous
-        </Button>
-        <Button
-          onClick={onNext}
-          disabled={stepIndex === steps.length - 1}
-          type="submit"
-          fullRounded
-        >
-          Next
-        </Button>
-      </div>
-    </>
+    <Tabs value="A" className="mb-6">
+      <TabsHeader>
+        <Tab value="A">Rights and Responsibilities</Tab>
+        <Tab value="B">Personnel Management</Tab>
+        <Tab value="C">Education and Career</Tab>
+        <Tab value="D">Information and Networking</Tab>
+      </TabsHeader>
+      <TabsBody  className="[&_*]:text-black">
+        <TabPanel value="A"><InfoStep1 /></TabPanel>
+        <TabPanel value="B"><InfoStep2 /></TabPanel>
+        <TabPanel value="C"><InfoStep3 /></TabPanel>
+        <TabPanel value="D"><InfoStep4 /></TabPanel>
+      </TabsBody>
+    </Tabs>
   );
 }
-
-// function InformationPageContent() {
-//   return (
-//     <div className="pb-40 pt-8">
-//       <div className="app-container max-w-5xl w-full mb-12">
-//         {/* Title */}
-//         <h1 className="text-4xl text-center">
-//           <span className="font-bold text-teal mr-1 relative bg-bdlue-600">
-//             Information
-//             <TitleMark className="absolute w-32 top-full -left-5 dd -translate-y-2.5" />
-//           </span>
-//           {/* <span className="font-normal"> we are</span> */}
-//         </h1>
-
-//         {/* Subtitle */}
-//         <p className="text-center text-xl font-normal text-black/50 mt-6 max-w-2xl mx-auto">
-//           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur
-//           tristique mauris rhoncus odio aliquet, vitae.
-//         </p>
-
-//         <InfoStepper />
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default function Information({ params }: { params: any }) {
-//   return (
-//     <AppLayout params={params}>
-//       <InformationPageContent />
-//     </AppLayout>
-//   );
-// }

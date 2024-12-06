@@ -101,9 +101,11 @@ function PostingCard({ active }: { active?: boolean }) {
 
       {display === "list" ? <ApplicantsList /> : <ApplicantsGrid />}
 
-      <div className="flex items-center gap-x-4 pt-4 mt-2  border-t border-gray-line-2">
-        <Button size="sm" color="red" variant="filled" className="text-sm">
+      <div className="flex items-center gap-x-4 pt-4 mt-2 border-t border-gray-line-2">
+        <Button size="sm" color="red" variant="filled" className="text-[0.9375rem]">
+          <span className="!capitalize">
           Make Inactive
+          </span>
         </Button>
       </div>
     </div>
