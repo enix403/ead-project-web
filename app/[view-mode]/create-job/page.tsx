@@ -31,10 +31,16 @@ export default function CreateJobPage({ params }: { params: any }) {
   let StepComponent = steps[pageIndex];
 
   let progressView = (
-    <Stepper className="mt-4" activeStep={pageIndex}>
+    <Stepper activeLineClassName="bg-teal" className="mt-4" activeStep={pageIndex}>
       {steps.map((_, index) => (
         // @ts-ignore
-        <Step key={index}>{index + 1}</Step>
+        <Step
+          key={index}
+          activeClassName="!bg-teal"
+          completedClassName="!bg-teal"
+        >
+          {index + 1}
+        </Step>
       ))}
     </Stepper>
   );
