@@ -305,3 +305,457 @@ router.get(
  *         description: Forbidden.
  */
 router.get('/api/employee/my-applications', getMyApplicationsController);
+
+/* ============================================== */
+/* ============================================== */
+/* ============================================== */
+/* =================== BASE 2 =================== */
+/* ============================================== */
+/* ============================================== */
+/* ============================================== */
+
+function ensureEmployer(req: Request, res: Response, next: () => void) {
+  if (!req.user || req.user.role !== 'employer') {
+    return res
+      .status(403)
+      .json({ message: 'Forbidden: Only employers are allowed' });
+  }
+  next();
+}
+
+const jobPostingSchema = Joi.object({
+  title: Joi.string().required(),
+  description: Joi.string().required(),
+  category: Joi.string().required(),
+  specialism: Joi.string().required(),
+  jobType: Joi.string()
+    .valid('fullTime', 'partTime', 'internship', 'specificDates')
+    .required(),
+  expLevelRequired: Joi.string().valid('entry', 'mid', 'senior').required(),
+  qualificationsRequired: Joi.array().items(Joi.string()).optional(),
+  qualificationsDesired: Joi.array().items(Joi.string()).optional(),
+  salaryMode: Joi.string().valid('monthly', 'hourly').required(),
+  salary: Joi.number().required(),
+  startDate: Joi.date().optional(),
+  endDate: Joi.date().optional(),
+  startTime: Joi.date().optional(),
+  endTime: Joi.date().optional(),
+  benefits: Joi.array().items(Joi.string()).optional(),
+  workingLanguage: Joi.string().required(),
+  residence: Joi.string().valid('yes', 'no', 'allowance').required(),
+  food: Joi.string()
+    .valid('yes', 'no', 'oneMeal', 'twoMeal', 'allowance')
+    .required(),
+  transport: Joi.string()
+    .valid('required', 'notRequired', 'mopedProvided', 'carProvided')
+    .required(),
+  companyUsername: Joi.string().optional(),
+  companyDescription: Joi.string().optional(),
+  companyWebsite: Joi.string().optional(),
+  companyLogoUrl: Joi.string().optional(),
+  questions: Joi.array().items(Joi.string()).optional(),
+});
+
+// POST /api/job/post
+async function postJobController(req: Request, res: Response) {
+  // TODO: check auth
+  const jobData = req.body;
+  const job = new JobPostingModel({
+    ...jobData,
+    posterId: req.user!._id,
+    postedAt: new Date(),
+    isActive: true,
+  });
+  await job.save();
+  res.status(201).json({ message: 'Job posted successfully', job });
+}
+
+/**
+ * @swagger
+ * /api/job/post:
+ *   post:
+ *     summary: Allows an employer to post a new job
+ *     description: Employers can create job postings.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/JobPosting'
+ *     responses:
+ *       201:
+ *         description: Job posted successfully
+ *       400:
+ *         description: Validation error
+ *       403:
+ *         description: Forbidden
+ */
+router.post(
+  '/api/job/post',
+  ensureEmployer,
+  validate(jobPostingSchema),
+  postJobController,
+);
+
+// GET /api/employer/my-postings
+async function getEmployerPostingsController(req: Request, res: Response) {
+  const postings = await JobPostingModel.find({ posterId: req.user!._id });
+  res.json(postings);
+}
+
+/**
+ * @swagger
+ * /api/employer/my-postings:
+ *   get:
+ *     summary: Returns a list of jobs posted by the employer
+ *     description: Retrieve jobs created by the authenticated employer.
+ *     responses:
+ *       200:
+ *         description: List of jobs
+ *       403:
+ *         description: Forbidden
+ */
+router.get(
+  '/api/employer/my-postings',
+  ensureEmployer,
+  getEmployerPostingsController,
+);
+
+// GET /api/job/:jobId/applicants
+async function getJobApplicantsController(req: Request, res: Response) {
+  const { jobId } = req.params;
+  const job = await JobPostingModel.findById(jobId);
+
+  if (!job || !job.posterId.equals(req.user!._id)) {
+    return res
+      .status(403)
+      .json({ message: 'Forbidden: Not authorized to view applicants' });
+  }
+
+  const applicants = await JobApplicationModel.find({ jobId });
+  res.json(applicants);
+}
+
+/**
+ * @swagger
+ * /api/job/{jobId}/applicants:
+ *   get:
+ *     summary: Fetch a list of employees who have applied for a specific job posting
+ *     parameters:
+ *       - in: path
+ *         name: jobId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: List of applicants
+ *       403:
+ *         description: Forbidden
+ */
+router.get(
+  '/api/job/:jobId/applicants',
+  ensureEmployer,
+  getJobApplicantsController,
+);
+
+// PATCH /api/job/:jobId/update-status
+async function updateJobStatusController(req: Request, res: Response) {
+  const { jobId } = req.params;
+  const { isActive } = req.body;
+
+  const job = await JobPostingModel.findById(jobId);
+  if (!job || !job.posterId.equals(req.user!._id)) {
+    return res
+      .status(403)
+      .json({ message: 'Forbidden: Not authorized to update this job' });
+  }
+
+  job.isActive = isActive;
+  await job.save();
+  res.json({ message: 'Job status updated', job });
+}
+
+/**
+ * @swagger
+ * /api/job/{jobId}/update-status:
+ *   patch:
+ *     summary: Allow the employer to mark a job posting as active or inactive
+ *     parameters:
+ *       - in: path
+ *         name: jobId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Job status updated
+ *       403:
+ *         description: Forbidden
+ */
+router.patch(
+  '/api/job/:jobId/update-status',
+  ensureEmployer,
+  updateJobStatusController,
+);
+
+// PATCH /api/job/application/:applicationId/update-decision
+async function updateApplicationDecisionController(
+  req: Request,
+  res: Response,
+) {
+  const { applicationId } = req.params;
+  const { decision } = req.body;
+
+  const application = await JobApplicationModel.findById(applicationId);
+  if (!application || !application.jobPosterId.equals(req.user!._id)) {
+    return res.status(403).json({
+      message: 'Forbidden: Not authorized to update this application',
+    });
+  }
+
+  application.decision = decision;
+  await application.save();
+  res.json({ message: 'Application decision updated', application });
+}
+
+/**
+ * @swagger
+ * /api/job/application/{applicationId}/update-decision:
+ *   patch:
+ *     summary: Allow the employer to update the decision of the application
+ *     parameters:
+ *       - in: path
+ *         name: applicationId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Application decision updated
+ *       403:
+ *         description: Forbidden
+ */
+router.patch(
+  '/api/job/application/:applicationId/update-decision',
+  ensureEmployer,
+  updateApplicationDecisionController,
+);
+
+// PATCH /api/job/application/:applicationId/mark-interested
+async function markApplicationInterestedController(
+  req: Request,
+  res: Response,
+) {
+  const { applicationId } = req.params;
+  const { isInterested } = req.body;
+
+  const application = await JobApplicationModel.findById(applicationId);
+  if (!application || !application.jobPosterId.equals(req.user!._id)) {
+    return res.status(403).json({
+      message: 'Forbidden: Not authorized to update this application',
+    });
+  }
+
+  application.isEmployerInterested = isInterested;
+  await application.save();
+  res.json({ message: 'Application interest marked', application });
+}
+
+/**
+ * @swagger
+ * /api/job/application/{applicationId}/mark-interested:
+ *   patch:
+ *     summary: Allow the employer to mark if they are interested in the application
+ *     parameters:
+ *       - in: path
+ *         name: applicationId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Application interest marked
+ *       403:
+ *         description: Forbidden
+ */
+router.patch(
+  '/api/job/application/:applicationId/mark-interested',
+  ensureEmployer,
+  markApplicationInterestedController,
+);
+
+/* ============================================== */
+/* ============================================== */
+/* ============================================== */
+/* =================== BASE 3 =================== */
+/* ============================================== */
+/* ============================================== */
+/* ============================================== */
+
+// Middleware to ensure the user is logged in
+function ensureLoggedIn(req: Request, res: Response, next: () => void) {
+  if (!req.user) {
+    return res.status(401).json({ message: 'Unauthorized: Please log in' });
+  }
+  next();
+}
+
+// Middleware to ensure the user is an admin
+function ensureAdmin(req: Request, res: Response, next: () => void) {
+  if (!req.user || req.user.role !== 'admin') {
+    return res
+      .status(403)
+      .json({ message: 'Forbidden: Only admins are allowed' });
+  }
+  next();
+}
+
+// Profile update schema for validation
+const profileUpdateSchema = Joi.object({
+  name: Joi.string().optional(),
+  email: Joi.string().email().optional(),
+  phoneNumber: Joi.string().optional(),
+  bio: Joi.string().optional(),
+});
+
+// GET /api/me/profile
+async function getCurrentUserProfileController(req: Request, res: Response) {
+  const user = await UserModel.findById(req.user!._id);
+  res.json(user);
+}
+
+/**
+ * @swagger
+ * /api/me/profile:
+ *   get:
+ *     summary: Get the current user's profile
+ *     description: Retrieve the profile information of the logged-in user.
+ *     responses:
+ *       200:
+ *         description: User profile data
+ *       401:
+ *         description: Unauthorized
+ */
+router.get('/api/me/profile', ensureLoggedIn, getCurrentUserProfileController);
+
+// PATCH /api/me/profile
+async function updateCurrentUserProfileController(req: Request, res: Response) {
+  await UserModel.findByIdAndUpdate(req.user!._id, req.body, { new: true });
+  res.json({ message: 'Profile updated successfully' });
+}
+
+/**
+ * @swagger
+ * /api/me/profile:
+ *   patch:
+ *     summary: Update the current user's profile
+ *     description: Allows the logged-in user to update their profile information.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/UserProfileUpdate'
+ *     responses:
+ *       200:
+ *         description: Profile updated successfully
+ *       400:
+ *         description: Validation error
+ *       401:
+ *         description: Unauthorized
+ */
+router.patch(
+  '/api/me/profile',
+  ensureLoggedIn,
+  validate(profileUpdateSchema),
+  updateCurrentUserProfileController,
+);
+
+// GET /api/user/:userId
+async function getUserProfileController(req: Request, res: Response) {
+  const { userId } = req.params;
+  const user = await UserModel.findById(userId);
+  if (!user) {
+    return res.status(404).json({ message: 'User not found' });
+  }
+  res.json(user);
+}
+
+/**
+ * @swagger
+ * /api/user/{userId}:
+ *   get:
+ *     summary: Get any user's profile
+ *     description: Retrieve public profile information of any user by user ID.
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: User profile data
+ *       404:
+ *         description: User not found
+ */
+router.get('/api/user/:userId', getUserProfileController);
+
+// GET /api/admin/users
+async function getAllUsersController(req: Request, res: Response) {
+  // TODO: add pagination if required
+  const users = await UserModel.find();
+  res.json(users);
+}
+
+/**
+ * @swagger
+ * /api/admin/users:
+ *   get:
+ *     summary: Fetch a list of all users
+ *     description: Retrieve a list of all users (employees and employers) for administrative purposes.
+ *     responses:
+ *       200:
+ *         description: List of users
+ *       403:
+ *         description: Forbidden
+ */
+router.get('/api/admin/users', ensureAdmin, getAllUsersController);
+
+// PATCH /api/admin/user/:userId/ban
+async function banUserController(req: Request, res: Response) {
+  const { userId } = req.params;
+  const user = await UserModel.findById(userId);
+  if (!user) {
+    return res.status(404).json({ message: 'User not found' });
+  }
+
+  // TODO: add the `isBanned` field to user and then
+  // uncomment this line
+  // user.isBanned = true;
+  await user.save();
+  res.json({ message: 'User banned successfully' });
+}
+
+/**
+ * @swagger
+ * /api/admin/user/{userId}/ban:
+ *   patch:
+ *     summary: Allows the admin to ban a user from the platform
+ *     description: Admin can ban a user by setting their account status to banned.
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: User banned successfully
+ *       404:
+ *         description: User not found
+ *       403:
+ *         description: Forbidden
+ */
+router.patch('/api/admin/user/:userId/ban', ensureAdmin, banUserController);

@@ -23,7 +23,6 @@ Description: Fetch a list of applications created by the employee.
 
 -------------
 
-
 POST /api/job/post
 Allowed to: Logged in employer
 Description: Allows an employer to post a new job
