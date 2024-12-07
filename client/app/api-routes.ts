@@ -1,11 +1,11 @@
 import ky from "ky";
 
 function unslashStart(str: string) {
-  return str.replace(/^\/+/, '');
+  return str.replace(/^\/+/, "");
 }
 
 function unslashEnd(str: string) {
-  return str.replace(/\/+$/, '');
+  return str.replace(/\/+$/, "");
 }
 
 export const API_BASE_URL: string = process.env.NEXT_PUBLIC_API_URL as any;
@@ -15,7 +15,7 @@ if (!API_BASE_URL) {
 }
 
 export const apiConn = ky.extend({
-  prefixUrl: unslashEnd(API_BASE_URL) + '/api',
+  prefixUrl: unslashEnd(API_BASE_URL),
   timeout: false,
 });
 
@@ -125,3 +125,8 @@ export const apiRoutes = {
   updateApplDecision: payloadDecl((applId: string) => `/api/job/application/${applId}/update-decision`,{ method: "PATCH" }),
   markApplInterested: payloadDecl((applId: string) => `/api/job/application/${applId}/mark-interested`, { method: "PATCH" }),
 } as const;
+
+if (typeof window !== "undefined") {
+  // @ts-ignore
+  window.apiRoutes = apiRoutes;
+}

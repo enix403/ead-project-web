@@ -221,7 +221,7 @@ const jobPostingSchema = Joi.object({
   qualificationsRequired: Joi.array().items(Joi.string()).optional(),
   qualificationsDesired: Joi.array().items(Joi.string()).optional(),
   salaryMode: Joi.string().valid('monthly', 'hourly').required(),
-  salary: Joi.number().required(),
+  salary: Joi.string().required(),
   startDate: Joi.date().optional(),
   endDate: Joi.date().optional(),
   startTime: Joi.date().optional(),
@@ -265,8 +265,8 @@ const jobPostingSchema = Joi.object({
  */
 router.post(
   '/api/job/post',
-  requireAuthenticated(['employer']),
-  validateJoi(jobPostingSchema),
+  // requireAuthenticated(['employer']),
+  // validateJoi(jobPostingSchema),
   postJobController,
 );
 

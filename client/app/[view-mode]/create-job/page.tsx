@@ -11,6 +11,7 @@ import { GeneralInfoStep } from "./steps/GeneralInfoStep";
 import { SpecificInfoStep } from "./steps/SpecificInfoStep";
 import { CompanyInfoStep } from "./steps/CompanyInfoStep";
 import { QuestionsStep } from "./steps/QuestionsStep";
+import { apiRoutes } from "~/app/api-routes";
 
 function useSelectionController() {
   const groupIdToStates = useRef<Record<string, Record<string, boolean>>>(
@@ -112,7 +113,7 @@ export default function CreateJobPage({ params }: { params: any }) {
     setPageIndex((x) => Math.max(0, x - 1));
   }
 
-  function postJob() {
+  async function postJob() {
     let values = getValues();
     let payload = {
       title: values["title"],
@@ -129,10 +130,11 @@ export default function CreateJobPage({ params }: { params: any }) {
       salaryMode: values["salaryMode"],
       salary: values["salary"],
 
-      // startDate
-      // endDate
-      // startTime
-      // endTime
+      // TODO: fix
+      startDate: new Date(),
+      endDate: new Date(),
+      startTime: new Date(),
+      endTime: new Date(),
 
       benefits: selCtrl.getGroupList("benefits"),
       workingLanguage: values["workingLanguage"],
@@ -159,7 +161,9 @@ export default function CreateJobPage({ params }: { params: any }) {
       // expireAt
     };
 
-    console.log(payload);
+    console.log("Posting: ", payload);
+    let result = await apiRoutes.postJob(payload);
+    console.log(result);
   }
 
   let steps = [
