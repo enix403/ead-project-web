@@ -8,7 +8,7 @@ import { getBind } from 'bind';
 import { connect as connectMongoDB } from 'db/connect';
 import { cyan, green, red, yellow } from 'colorette';
 import { appEnv } from 'config/app-env';
-import { appRoutes } from 'routes';
+import { createRootRouter } from 'routes';
 
 function createApp() {
   const app = express();
@@ -19,17 +19,10 @@ function createApp() {
     next();
   });
 
-  app.use(cors({
-    origin: ['http://147.79.78.149:3000', 'http://pocket-watcher.com', 'http://localhost:3000'], 
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],  
-    allowedHeaders: ['Content-Type', 'Authorization', 'Expires', 'Cache-Control', 'Pragma'],  
-  }));
-
+  app.use(cors());
   app.use(express.json());
 
-  // Register routes
-  app.use('/', appRoutes());
+  app.use(createRootRouter());
 
   // Handle 404 for undefined routes (after all routes are mounted)
   app.use((req, res) => {
