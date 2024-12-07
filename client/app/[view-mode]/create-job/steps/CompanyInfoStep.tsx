@@ -4,6 +4,7 @@ import { FormLabel } from "~/components/FormLabel/FormLabel";
 import { StepForm, StepProps } from "./common";
 
 function LogoInput() {
+  /* TODO: logo input */
   return (
     <div>
       <p className="mb-2">Logo</p>
@@ -47,7 +48,12 @@ function LogoInput() {
   );
 }
 
-export function CompanyInfoStep({ onNext, onCancel, progressView }: StepProps) {
+export function CompanyInfoStep({
+  onNext,
+  onCancel,
+  progressView,
+  register,
+}: StepProps) {
   return (
     <>
       <h1 className="font-semibold text-2xl text-center md:text-left">
@@ -59,15 +65,24 @@ export function CompanyInfoStep({ onNext, onCancel, progressView }: StepProps) {
       <StepForm onNext={onNext}>
         <div className="bg-teal/5 p-7 mt-7 rounded-xl space-y-6">
           <FormLabel showAsterik label="Company Name">
-            <Input required placeholder="Enter company name" />
+            <Input
+              {...register("companyName")}
+              required
+              placeholder="Enter company name"
+            />
           </FormLabel>
 
           <FormLabel showAsterik label="Username">
-            <Input required placeholder="Enter username" />
+            <Input
+              {...register("companyUsername")}
+              required
+              placeholder="Enter username"
+            />
           </FormLabel>
 
           <FormLabel label="Company Description">
             <TextArea
+              {...register("companyDescription")}
               placeholder={`
               Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eaque quia deserunt enim accusamus temporibus et corporis sequi cumque quas nam soluta harum veritatis, modi incidunt dicta, tempora laborum asperiores molestiae!`.trim()}
               className="h-20"
@@ -75,7 +90,10 @@ export function CompanyInfoStep({ onNext, onCancel, progressView }: StepProps) {
           </FormLabel>
 
           <FormLabel label="Website">
-            <Input placeholder="Enter company website URL" />
+            <Input
+              {...register("companyWebsite")}
+              placeholder="Enter company website URL"
+            />
           </FormLabel>
 
           <LogoInput />
@@ -83,35 +101,31 @@ export function CompanyInfoStep({ onNext, onCancel, progressView }: StepProps) {
           <div className="flex gap-4 flex-col md:flex-row">
             <div className="flex-1">
               <FormLabel showAsterik label="Country">
-                <Input required placeholder="Enter country" />
+                <Input {...register("companyCountry")} required placeholder="Enter country" />
               </FormLabel>
             </div>
             <div className="flex-1">
               <FormLabel showAsterik label="City / Island">
-                <Input required placeholder="Enter city / island" />
+                <Input {...register("companyCity")} required placeholder="Enter city / island" />
               </FormLabel>
             </div>
           </div>
 
           <FormLabel showAsterik label="Area">
-            <TextArea
-              required
-              placeholder="Enter area"
-              className="h-20"
-            />
+            <TextArea {...register("companyArea")} required placeholder="Enter area" className="h-20" />
           </FormLabel>
 
           <div className="flex gap-4 flex-col md:flex-row">
             <FormLabel label="Find on Map" className="flex-[2]">
-              <Input placeholder="Enter complete address" />
+              <Input {...register("companyMapAddress")} placeholder="Enter complete address" />
             </FormLabel>
             <FormLabel label="Postal Code" showAsterik className="flex-1">
-              <Input required placeholder="Enter  postal code" />
+              <Input {...register("companyZip")} required placeholder="Enter  postal code" />
             </FormLabel>
           </div>
 
           <FormLabel label="Date Posted">
-            <Input type="date" placeholder="Select the date posted" />
+            <Input {...register("postedAt")} type="date" placeholder="Select the date posted" />
           </FormLabel>
 
           <div className="pt-6">
