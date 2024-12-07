@@ -95,9 +95,10 @@ export async function postJobController(req: Request, res: Response) {
   const jobData = req.body;
   const job = new JobPostingModel({
     ...jobData,
-    posterId: req.user!._id,
-    postedAt: new Date(),
+    postedAt: jobData['postedAt'] || new Date(),
+    // expireAt: ...
     isActive: true,
+    posterId: req.user!._id,
   });
   await job.save();
   res.status(201).json({ message: 'Job posted successfully', job });

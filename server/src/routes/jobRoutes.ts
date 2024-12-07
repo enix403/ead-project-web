@@ -240,6 +240,7 @@ const jobPostingSchema = Joi.object({
   companyWebsite: Joi.string().optional(),
   companyLogoUrl: Joi.string().optional(),
   questions: Joi.array().items(Joi.string()).optional(),
+  postedAt: Joi.string(),
 });
 
 /**

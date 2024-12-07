@@ -40,10 +40,23 @@ function useSelectionController() {
     return groupIdToStates[groupId];
   }
 
+  function getGroupList(groupId: string) {
+    let states = getGroupStates(groupId);
+    let items = [];
+    for (const itemId in states) {
+      if (states[itemId]) {
+        items.push(itemId);
+      }
+    }
+
+    return items;
+  }
+
   return {
     register,
     getGroups,
     getGroupStates,
+    getGroupList,
   };
 }
 
@@ -88,11 +101,65 @@ export default function CreateJobPage({ params }: { params: any }) {
   window.qsBank = qsBank;
 
   function onNext() {
+    if (pageIndex == steps.length - 1) {
+      postJob();
+      return;
+    }
     setPageIndex((x) => Math.min(steps.length - 1, x + 1));
   }
 
   function onCancel() {
     setPageIndex((x) => Math.max(0, x - 1));
+  }
+
+  function postJob() {
+    let values = getValues();
+    let payload = {
+      title: values["title"],
+      description: values["description"],
+      category: values["category"],
+      specialism: values["specialism"],
+      jobType: values["jobType"],
+
+      expLevelRequired: values["expLevelRequired"],
+
+      qualificationsRequired: selCtrl.getGroupList("qualificationsRequired"),
+      qualificationsDesired: selCtrl.getGroupList("qualificationsDesired"),
+
+      salaryMode: values["salaryMode"],
+      salary: values["salary"],
+
+      // startDate
+      // endDate
+      // startTime
+      // endTime
+
+      benefits: selCtrl.getGroupList("benefits"),
+      workingLanguage: values["workingLanguage"],
+      residence: values["residence"],
+      food: values["food"],
+      transport: values["transport"],
+
+      companyName: values["companyName"],
+      companyUsername: values["companyUsername"],
+      companyDescription: values["companyDescription"],
+      companyWebsite: values["companyWebsite"],
+      // companyLogoUrl
+      companyCountry: values["companyCountry"],
+      companyCity: values["companyCity"],
+      companyArea: values["companyArea"],
+      companyZip: values["companyZip"],
+      companyMapAddress: values["companyMapAddress"],
+
+      questions: qsBank
+        .get()
+        .map((qItem) => qItem.question)
+        .filter((s) => s.length > 0),
+      postedAt: values["postedAt"],
+      // expireAt
+    };
+
+    console.log(payload);
   }
 
   let steps = [
