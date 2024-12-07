@@ -15,9 +15,7 @@ const router = express.Router();
 /* ======= Controllers ======= */
 /* =========================== */
 
-/**
- * Controller for searching jobs with filters.
- */
+// GET /api/job/search'
 async function searchJobController(req: Request, res: Response) {
   const { title, location, jobType } = req.query;
 
@@ -33,9 +31,7 @@ async function searchJobController(req: Request, res: Response) {
 
 /* ----------------------------------- */
 
-/**
- * Controller for retrieving job posting details.
- */
+// GET /api/job/:jobId
 async function getJobDetailsController(req: Request, res: Response) {
   const job = await JobPostingModel.findById(req.params.jobId);
   if (!job) return res.status(404).json({ message: 'Job not found' });
@@ -44,9 +40,7 @@ async function getJobDetailsController(req: Request, res: Response) {
 
 /* ----------------------------------- */
 
-/**
- * Controller for applying to a job.
- */
+// POST /api/job/:jobId/apply
 async function applyJobController(req: Request, res: Response) {
   const { jobId } = req.params;
 
@@ -71,9 +65,7 @@ async function applyJobController(req: Request, res: Response) {
 
 /* ----------------------------------- */
 
-/**
- * Controller for viewing job application details.
- */
+// GET /api/job/application/:applicationId
 async function getApplicationDetailsController(req: Request, res: Response) {
   const application = await JobApplicationModel.findById(
     req.params.applicationId,
@@ -84,10 +76,8 @@ async function getApplicationDetailsController(req: Request, res: Response) {
   if (!application)
     return res.status(404).json({ message: 'Application not found' });
 
-  const isAuthorized =
-    req.user &&
-    (req.user._id.equals(application.employeeId) ||
-      req.user._id.equals(application.jobPosterId)); // Simplified check
+  const isAuthorized = (req.user!._id.equals(application.employeeId) ||
+      req.user!._id.equals(application.jobPosterId)); // Simplified check
 
   if (!isAuthorized) return res.status(403).json({ message: 'Forbidden' });
 
@@ -96,9 +86,7 @@ async function getApplicationDetailsController(req: Request, res: Response) {
 
 /* ----------------------------------- */
 
-/**
- * Controller for fetching employee's job applications.
- */
+// GET /api/employee/my-applications
 async function getMyApplicationsController(req: Request, res: Response) {
   const applications = await JobApplicationModel.find({
     employeeId: req.user!._id,
@@ -431,6 +419,7 @@ const applicationIdSchema = Joi.object({
  */
 router.get(
   '/api/job/application/:applicationId',
+  requireAuthenticated(),
   validateJoi(applicationIdSchema),
   getApplicationDetailsController,
 );
