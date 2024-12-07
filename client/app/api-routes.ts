@@ -1,5 +1,13 @@
 import ky from "ky";
 
+function unslashStart(str: string) {
+  return str.replace(/^\/+/, '');
+}
+
+function unslashEnd(str: string) {
+  return str.replace(/\/+$/, '');
+}
+
 export const API_BASE_URL: string = process.env.NEXT_PUBLIC_API_URL as any;
 
 if (!API_BASE_URL) {
@@ -7,7 +15,7 @@ if (!API_BASE_URL) {
 }
 
 export const apiConn = ky.extend({
-  prefixUrl: API_BASE_URL,
+  prefixUrl: unslashEnd(API_BASE_URL) + '/api',
   timeout: false,
 });
 
@@ -49,6 +57,7 @@ function jsonDecl<UrlT extends string | ((...args: any) => string)>(
     url,
     invoke: (url, ...args: MaybeParameters<UrlT>) => {
       let urlString = typeof url === "string" ? url : url(...args);
+      urlString = unslashStart(urlString);
       return apiConn(urlString, {
         method: opts?.method ?? "GET",
       }).json<any>();
@@ -70,6 +79,7 @@ function payloadDecl<UrlT extends string | ((...args: any) => string)>(
     url,
     invoke: (url, payload: any, ...args: MaybeParameters<UrlT>) => {
       let urlString = typeof url === "string" ? url : url(...args);
+      urlString = unslashStart(urlString);
       return apiConn(urlString, {
         method: opts?.method ?? "POST",
         json: payload,
@@ -94,6 +104,24 @@ function wq<Q = Record<string, any>>(template: TemplateStringsArray) {
 
 /* ------------------------ */
 
+// prettier-ignore
 export const apiRoutes = {
-  postJob: payloadDecl(wq`/api/job/post`, { failMsg: "Failed to post job" }),
+  /* ========================== */
+  /* ======= Job Routes ======= */
+  /* ========================== */
+  // Queries
+  searchJobs: jsonDecl(wq`/api/job/search`),
+  getJob: jsonDecl((jobId: string) => `/api/job/${jobId}`),
+  getApplication: jsonDecl((applId: string) => `/api/job/application/${applId}`),
+  getMyApplications: jsonDecl(`/api/employee/my-applications`),
+  getMyPostings: jsonDecl(`/api/employer/my-postings`),
+  getJobApplicants: jsonDecl((jobId: string) => `/api/job/${jobId}/applicants`),
+
+  // Mutations
+  postJob: payloadDecl(`/api/job/post`),
+  deleteJob: payloadDecl((jobId: string) => `/api/job/${jobId}`, { method: "DELETE" }),
+  applyToJob: payloadDecl((jobId: string) => `/api/job/${jobId}/apply`),
+  updateJobStatus: payloadDecl((jobId: string) => `/api/job/${jobId}/update-status`, { method: "PATCH" }),
+  updateApplDecision: payloadDecl((applId: string) => `/api/job/application/${applId}/update-decision`,{ method: "PATCH" }),
+  markApplInterested: payloadDecl((applId: string) => `/api/job/application/${applId}/mark-interested`, { method: "PATCH" }),
 } as const;
