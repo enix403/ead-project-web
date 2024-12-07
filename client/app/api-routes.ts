@@ -19,33 +19,30 @@ function decl<
 >({
   url,
   invoke,
-  failureMessage,
+  failMsg,
 }: {
   url: UrlT;
   invoke: (url: UrlT, ...args: FuncArgs) => FuncRet;
-  failureMessage?: string;
+  failMsg?: string;
 }) {
   return async (...args: FuncArgs): Promise<any> => {
     try {
       return await invoke(url, ...args);
     } catch (e) {
-      let msg = failureMessage ?? "Request failed";
+      let msg = failMsg ?? "Request failed";
       console.log("API-CALL-ERR: " + msg, e);
       throw e;
     }
   };
 }
 
-/* type MaybeParameters<T> = T extends (...args: infer R) => any ? R : [];
+type MaybeParameters<T> = T extends (...args: infer R) => any ? R : [];
 
-export function jsonDecl<
-  UrlArgs extends any[],
-  UrlT extends string | ((...args: UrlArgs) => string),
->(
+function jsonDecl<UrlT extends string | ((...args: any) => string)>(
   url: UrlT,
   opts?: {
     method?: string;
-    failureMessage?: string;
+    failMsg?: string;
   }
 ) {
   return decl({
@@ -56,44 +53,36 @@ export function jsonDecl<
         method: opts?.method ?? "GET",
       }).json<any>();
     },
-    failureMessage: opts?.failureMessage,
+    failMsg: opts?.failMsg,
   });
 }
- */
+
 // const getJob = jsonDecl((jobId: string) => `/api/job/${jobId}`);
 
-
-/* export function payloadDecl<
-  UrlT extends string | ((...args: UrlArgs) => string),
-  UrlArgs extends any[] = []
->(
+function payloadDecl<UrlT extends string | ((...args: any) => string)>(
   url: UrlT,
   opts?: {
     method?: string;
-    failureMessage?: string;
+    failMsg?: string;
   }
 ) {
   return decl({
     url,
-    invoke: (url, payload: any, ...args: UrlArgs) => {
+    invoke: (url, payload: any, ...args: MaybeParameters<UrlT>) => {
       let urlString = typeof url === "string" ? url : url(...args);
       return apiConn(urlString, {
         method: opts?.method ?? "POST",
         json: payload,
       }).json<any>();
     },
-    failureMessage: opts?.failureMessage,
+    failMsg: opts?.failMsg,
   });
 }
- */
-// const one = payloadDecl("/api/job/post");
+
+// const postJob = payloadDecl((postCat: string) => "/api/job/post");
 
 /* ------------------------ */
 
 export const apiRoutes = {
-  postJob: decl({
-    url: "/api/job/post",
-    invoke: (url, payload) => apiConn.post(url, { json: payload }).json<any>(),
-    failureMessage: "Failed to post job",
-  }),
+  postJob: payloadDecl("/api/job/post", { failMsg: "Failed to post job" }),
 } as const;
