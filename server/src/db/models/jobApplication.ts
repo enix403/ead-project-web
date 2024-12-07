@@ -1,29 +1,40 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import { Schema, model, Types, Document } from 'mongoose';
 
-export interface IJobApplication extends Document {
-  job: mongoose.Types.ObjectId; // Refers to the job being applied for
-  applicant: mongoose.Types.ObjectId; // Refers to the employee who applied
-  resumeUrl: string;
-  coverLetter?: string;
-  status: 'Submitted' | 'Under Review' | 'Accepted' | 'Rejected';
-  createdAt?: Date;
+export interface IJobApplication extends Document<Types.ObjectId> {
+  jobId: Types.ObjectId;
+  jobPosterId: Types.ObjectId;
+  employeeId: Types.ObjectId;
+  appliedAt: Date;
+
+  answers: {
+    question: string;
+    answer: string;
+  }[];
+
+  isEmployerInterested: boolean;
+  decision: 'accepted' | 'rejected' | 'waiting';
 }
 
-const JobApplicationSchema: Schema<IJobApplication> = new mongoose.Schema(
-  {
-    job: { type: mongoose.Schema.Types.ObjectId, ref: 'Job', required: true }, // Refers to the job
-    applicant: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, // Refers to the employee
-    resumeUrl: { type: String, required: true }, // Link to the resume
-    coverLetter: { type: String },
-    status: {
-      type: String,
-      enum: ['Submitted', 'Under Review', 'Accepted', 'Rejected'],
-      default: 'Submitted',
-    },
-  },
-  {
-    timestamps: true,
-  }
-);
+const jobApplicationSchema = new Schema<IJobApplication>({
+  jobId: { type: Schema.Types.ObjectId, ref: 'JobPosting', required: true },
+  jobPosterId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+  employeeId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+  appliedAt: { type: Date, default: Date.now },
 
-export const JobApplicationModel = mongoose.model<IJobApplication>('JobApplication', JobApplicationSchema);
+  answers: [
+    {
+      question: String,
+      answer: String,
+    },
+  ],
+
+  isEmployerInterested: { type: Boolean, default: false },
+  decision: {
+    type: String,
+    enum: ['accepted', 'rejected', 'waiting'],
+    default: 'waiting',
+  },
+});
+
+// prettier-ignore
+export const JobApplicationModel = model('JobApplication', jobApplicationSchema);
