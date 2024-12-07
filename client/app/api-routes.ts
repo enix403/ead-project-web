@@ -81,8 +81,19 @@ function payloadDecl<UrlT extends string | ((...args: any) => string)>(
 
 // const postJob = payloadDecl((postCat: string) => "/api/job/post");
 
+function wq<Q = Record<string, any>>(template: TemplateStringsArray) {
+  let url = template.join("");
+  return (queryParams?: Q) => {
+    let query = "";
+    if (queryParams) {
+      query = "?" + new URLSearchParams(queryParams).toString();
+    }
+    return url + query;
+  };
+}
+
 /* ------------------------ */
 
 export const apiRoutes = {
-  postJob: payloadDecl("/api/job/post", { failMsg: "Failed to post job" }),
+  postJob: payloadDecl(wq`/api/job/post`, { failMsg: "Failed to post job" }),
 } as const;
