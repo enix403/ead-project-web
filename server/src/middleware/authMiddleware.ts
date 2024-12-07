@@ -18,9 +18,9 @@ const applyAuthToken = async (
   logger.warn('middleware checking token...');
 
   if (!token) {
-    res.status(401).send('No token provided.');
+    res.status(401).json({ message: 'No token provided.' });
     logger.warn(
-      `Unauthenticated access attempt: No token provided - "${token}" `,
+      `Unauthenticated access attempt: No token provided`,
     );
     return null;
   }
