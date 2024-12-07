@@ -1,4 +1,4 @@
-import express, { Request, Response, NextFunction } from 'express';
+import express, { Request, Response } from 'express';
 
 import Joi from 'joi';
 
@@ -7,59 +7,9 @@ import { JobPostingModel } from 'db/models/jobPosting';
 import { JobApplicationModel } from 'db/models/jobApplication';
 
 import { requireAuthenticated } from 'middleware/authMiddleware';
+import { validateJoi } from 'middleware/validateJoi';
 
 const router = express.Router();
-
-// Validation middleware
-function validate(schema: Joi.ObjectSchema) {
-  return (req: Request, res: Response, next: NextFunction) => {
-    const { error } = schema.validate({
-      ...req.body,
-      ...req.query,
-      ...req.params,
-    });
-    if (error) {
-      return res.status(400).json({ message: error.details[0].message });
-    }
-    next();
-  };
-}
-
-function tempCheckEmployer(req: Request, res: Response, next: () => void) {
-  if (!req.user || req.user.role !== 'employer') {
-    return res
-      .status(403)
-      .json({ message: 'Forbidden: Only employers are allowed' });
-  }
-  next();
-}
-
-function tempCheckEmployee(req: Request, res: Response, next: () => void) {
-  if (!req.user || req.user.role !== 'employee') {
-    return res
-      .status(403)
-      .json({ message: 'Forbidden: Only employees are allowed' });
-  }
-  next();
-}
-
-// Middleware to ensure the user is logged in
-function tempCheckLoggedIn(req: Request, res: Response, next: () => void) {
-  if (!req.user) {
-    return res.status(401).json({ message: 'Unauthorized: Please log in' });
-  }
-  next();
-}
-
-// Middleware to ensure the user is an admin
-function tempCheckAdmin(req: Request, res: Response, next: () => void) {
-  if (!req.user || req.user.role !== 'admin') {
-    return res
-      .status(403)
-      .json({ message: 'Forbidden: Only admins are allowed' });
-  }
-  next();
-}
 
 /* =========================== */
 /* ======= Controllers ======= */
@@ -358,7 +308,11 @@ const jobSearchSchema = Joi.object({
  *       400:
  *         description: Invalid request parameters.
  */
-router.get('/api/job/search', validate(jobSearchSchema), searchJobController);
+router.get(
+  '/api/job/search',
+  validateJoi(jobSearchSchema),
+  searchJobController,
+);
 
 /* ----------------------------------- */
 
@@ -385,7 +339,11 @@ const jobIdSchema = Joi.object({
  *       404:
  *         description: Job not found.
  */
-router.get('/api/job/:jobId', validate(jobIdSchema), getJobDetailsController);
+router.get(
+  '/api/job/:jobId',
+  validateJoi(jobIdSchema),
+  getJobDetailsController,
+);
 
 /* ----------------------------------- */
 
@@ -440,7 +398,7 @@ const jobApplicationSchema = Joi.object({
 router.post(
   '/api/job/:jobId/apply',
   requireAuthenticated(['employee']),
-  validate(jobApplicationSchema),
+  validateJoi(jobApplicationSchema),
   applyJobController,
 );
 
@@ -473,7 +431,7 @@ const applicationIdSchema = Joi.object({
  */
 router.get(
   '/api/job/application/:applicationId',
-  validate(applicationIdSchema),
+  validateJoi(applicationIdSchema),
   getApplicationDetailsController,
 );
 
@@ -555,7 +513,7 @@ const jobPostingSchema = Joi.object({
 router.post(
   '/api/job/post',
   requireAuthenticated(['employer']),
-  validate(jobPostingSchema),
+  validateJoi(jobPostingSchema),
   postJobController,
 );
 
@@ -733,7 +691,7 @@ router.get(
 router.patch(
   '/api/me/profile',
   requireAuthenticated(),
-  validate(profileUpdateSchema),
+  validateJoi(profileUpdateSchema),
   updateCurrentUserProfileController,
 );
 
