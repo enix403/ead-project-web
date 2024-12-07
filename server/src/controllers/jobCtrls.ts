@@ -97,7 +97,7 @@ export async function postJobController(req: Request, res: Response) {
   const job = new JobPostingModel({
     ...jobData,
     postedAt: jobData['postedAt'] || new Date(),
-    // expireAt: ...
+    expireAt: undefined, // No expiry for now
     isActive: true,
     // posterId: req.user!._id,
     posterId: new Types.ObjectId(),

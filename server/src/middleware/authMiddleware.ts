@@ -34,7 +34,7 @@ const applyAuthToken = async (
         else resolve(decoded as AccessTokenClaims);
       }),
     );
-     
+
   } catch (err) {}
 
   const user =
@@ -59,6 +59,11 @@ const applyAuthToken = async (
 };
 
 export function requireAuthenticated(allowedRoles?: string[]) {
+  // TODO: for now we are allowing everything. Remove it once
+  // the auth is setup in place on the client
+
+  return (req, res, next) => next();
+
   return handleAsync(async (req, res, next) => {
     const loggedInUser = await applyAuthToken(req, res);
 
