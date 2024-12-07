@@ -54,7 +54,10 @@ export async function applyJobController(req: Request, res: Response) {
 /* ----------------------------------- */
 
 // GET /api/job/application/:applicationId
-export async function getApplicationDetailsController(req: Request, res: Response) {
+export async function getApplicationDetailsController(
+  req: Request,
+  res: Response,
+) {
   const application = await JobApplicationModel.findById(
     req.params.applicationId,
   )
@@ -64,8 +67,9 @@ export async function getApplicationDetailsController(req: Request, res: Respons
   if (!application)
     return res.status(404).json({ message: 'Application not found' });
 
-  const isAuthorized = (req.user!._id.equals(application.employeeId) ||
-      req.user!._id.equals(application.jobPosterId)); // Simplified check
+  const isAuthorized =
+    req.user!._id.equals(application.employeeId) ||
+    req.user!._id.equals(application.jobPosterId); // Simplified check
 
   if (!isAuthorized) return res.status(403).json({ message: 'Forbidden' });
 
@@ -102,7 +106,10 @@ export async function postJobController(req: Request, res: Response) {
 /* ----------------------------------- */
 
 // GET /api/employer/my-postings
-export async function getEmployerPostingsController(req: Request, res: Response) {
+export async function getEmployerPostingsController(
+  req: Request,
+  res: Response,
+) {
   const postings = await JobPostingModel.find({ posterId: req.user!._id });
   res.json(postings);
 }
@@ -185,4 +192,19 @@ export async function markApplicationInterestedController(
   application.isEmployerInterested = isInterested;
   await application.save();
   res.json({ message: 'Application interest marked', application });
+}
+
+/* ----------------------------------- */
+
+// DELETE /api/job/:jobId
+export async function deleteJobPostingController(req: Request, res: Response) {
+  const { jobId } = req.params;
+  const job = await JobPostingModel.findById(jobId);
+
+  if (!job) {
+    return res.status(404).json({ message: 'Job posting not found' });
+  }
+
+  await JobPostingModel.findByIdAndDelete(jobId);
+  res.json({ message: 'Job posting deleted successfully' });
 }

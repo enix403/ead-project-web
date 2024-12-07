@@ -3,7 +3,10 @@ import { Request, Response } from 'express';
 import { UserModel } from 'db/models/user';
 
 // GET /api/me/profile
-export async function getCurrentUserProfileController(req: Request, res: Response) {
+export async function getCurrentUserProfileController(
+  req: Request,
+  res: Response,
+) {
   const user = await UserModel.findById(req.user!._id);
   res.json(user);
 }
@@ -11,7 +14,10 @@ export async function getCurrentUserProfileController(req: Request, res: Respons
 /* ----------------------------------- */
 
 // PATCH /api/me/profile
-export async function updateCurrentUserProfileController(req: Request, res: Response) {
+export async function updateCurrentUserProfileController(
+  req: Request,
+  res: Response,
+) {
   await UserModel.findByIdAndUpdate(req.user!._id, req.body, { new: true });
   res.json({ message: 'Profile updated successfully' });
 }
@@ -52,4 +58,25 @@ export async function banUserController(req: Request, res: Response) {
   // user.isBanned = true;
   await user.save();
   res.json({ message: 'User banned successfully' });
+}
+
+/* ----------------------------------- */
+
+// PATCH /api/admin/mark-account-approval
+export async function markAccountApprovalController(
+  req: Request,
+  res: Response,
+) {
+  const { userId, approvalStatus } = req.body;
+  const user = await UserModel.findById(userId);
+
+  if (!user) {
+    return res.status(404).json({ message: 'User not found' });
+  }
+
+  // TODO: add the `approvalStatus` field to user and then
+  // uncomment this line
+  // user.approvalStatus = approvalStatus;
+  await user.save();
+  res.json({ message: `User account ${approvalStatus} successfully` });
 }

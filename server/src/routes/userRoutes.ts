@@ -11,6 +11,7 @@ import {
   getUserProfileController,
   getAllUsersController,
   banUserController,
+  markAccountApprovalController,
 } from 'controllers/userCtrls';
 
 export const router = express.Router();
@@ -138,3 +139,40 @@ router.patch(
   requireAuthenticated(['admin']),
   banUserController,
 );
+
+/* ----------------------------------- */
+
+const accountApprovalSchema = Joi.object({
+  userId: Joi.string().required(),
+  approvalStatus: Joi.string().valid('approved', 'rejected').required(),
+});
+
+/**
+ * @swagger
+ * /api/admin/mark-account-approval:
+ *   patch:
+ *     summary: Allows the admin to approve or reject a user account after registration
+ *     description: Admin can mark a user account as approved or rejected.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/AccountApproval'
+ *     responses:
+ *       200:
+ *         description: User account updated successfully
+ *       400:
+ *         description: Validation error
+ *       404:
+ *         description: User not found
+ *       403:
+ *         description: Forbidden
+ */
+router.patch(
+  '/api/admin/mark-account-approval',
+  requireAuthenticated(['admin']),
+  validateJoi(accountApprovalSchema),
+  markAccountApprovalController,
+);
+

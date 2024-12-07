@@ -17,6 +17,7 @@ import {
   updateJobStatusController,
   updateApplicationDecisionController,
   markApplicationInterestedController,
+  deleteJobPostingController,
 } from 'controllers/jobCtrls';
 
 export const router = express.Router();
@@ -386,4 +387,32 @@ router.patch(
   '/api/job/application/:applicationId/mark-interested',
   requireAuthenticated(['employer']),
   markApplicationInterestedController,
+);
+
+/* ----------------------------------- */
+
+/**
+ * @swagger
+ * /api/job/{jobId}:
+ *   delete:
+ *     summary: Allows the admin to remove a job posting from the platform
+ *     description: Admin can delete any job posting by its ID.
+ *     parameters:
+ *       - in: path
+ *         name: jobId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Job posting deleted successfully
+ *       404:
+ *         description: Job posting not found
+ *       403:
+ *         description: Forbidden
+ */
+router.delete(
+  '/api/job/:jobId',
+  requireAuthenticated(['admin']),
+  deleteJobPostingController,
 );
