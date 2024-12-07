@@ -1,6 +1,6 @@
 import 'dotenv/config';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+ 
 function validateBoolean(x: any): boolean {
   if (typeof x === 'string' && x.toLowerCase() === 'true')
     //

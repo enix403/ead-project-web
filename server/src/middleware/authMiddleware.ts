@@ -34,7 +34,7 @@ const applyAuthToken = async (
         else resolve(decoded as AccessTokenClaims);
       }),
     );
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+     
   } catch (err) {}
 
   const user =

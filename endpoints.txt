@@ -69,6 +69,20 @@ PATCH /api/admin/user/:userId/ban
 Allowed to: admin
 Description: Allows the admin to ban a user from the platform.
 
+-------------
+
+DELETE /api/job/:jobId
+Allowed to: admin
+Description: Allows the admin to remove a job posting from the platform.
+
+PATCH /api/admin/mark-approval
+Allowed to: admin
+Description: Allows the admin to approve or reject a user account after registration.
+
+GET /api/admin/stats
+Allowed to: admin
+Description: Provides key metrics and statistics on platform usage (e.g., active users, jobs posted, applications submitted).
+
 =============
 =============
 =============
