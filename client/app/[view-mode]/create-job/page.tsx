@@ -42,7 +42,7 @@ function useSelectionController() {
 
   function getGroupList(groupId: string) {
     let states = getGroupStates(groupId);
-    let items = [];
+    let items: string[] = [];
     for (const itemId in states) {
       if (states[itemId]) {
         items.push(itemId);
