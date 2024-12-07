@@ -6,6 +6,8 @@ import { UserModel } from 'db/models/user';
 import { JobPostingModel } from 'db/models/jobPosting';
 import { JobApplicationModel } from 'db/models/jobApplication';
 
+import { requireAuthenticated } from 'middleware/authMiddleware';
+
 const router = express.Router();
 
 // Validation middleware
@@ -23,7 +25,7 @@ function validate(schema: Joi.ObjectSchema) {
   };
 }
 
-function ensureEmployer(req: Request, res: Response, next: () => void) {
+function tempCheckEmployer(req: Request, res: Response, next: () => void) {
   if (!req.user || req.user.role !== 'employer') {
     return res
       .status(403)
@@ -32,7 +34,7 @@ function ensureEmployer(req: Request, res: Response, next: () => void) {
   next();
 }
 
-function ensureEmployee(req: Request, res: Response, next: () => void) {
+function tempCheckEmployee(req: Request, res: Response, next: () => void) {
   if (!req.user || req.user.role !== 'employee') {
     return res
       .status(403)
@@ -42,7 +44,7 @@ function ensureEmployee(req: Request, res: Response, next: () => void) {
 }
 
 // Middleware to ensure the user is logged in
-function ensureLoggedIn(req: Request, res: Response, next: () => void) {
+function tempCheckLoggedIn(req: Request, res: Response, next: () => void) {
   if (!req.user) {
     return res.status(401).json({ message: 'Unauthorized: Please log in' });
   }
@@ -50,7 +52,7 @@ function ensureLoggedIn(req: Request, res: Response, next: () => void) {
 }
 
 // Middleware to ensure the user is an admin
-function ensureAdmin(req: Request, res: Response, next: () => void) {
+function tempCheckAdmin(req: Request, res: Response, next: () => void) {
   if (!req.user || req.user.role !== 'admin') {
     return res
       .status(403)
@@ -315,7 +317,6 @@ async function banUserController(req: Request, res: Response) {
 
 /* ----------------------------------- */
 
-
 /* ============================ */
 /* ========== Routes ========== */
 /* ============================ */
@@ -438,7 +439,7 @@ const jobApplicationSchema = Joi.object({
  */
 router.post(
   '/api/job/:jobId/apply',
-  ensureEmployee,
+  requireAuthenticated(['employee']),
   validate(jobApplicationSchema),
   applyJobController,
 );
@@ -492,7 +493,7 @@ router.get(
  */
 router.get(
   '/api/employee/my-applications',
-  ensureEmployee,
+  requireAuthenticated(['employee']),
   getMyApplicationsController,
 );
 
@@ -553,7 +554,7 @@ const jobPostingSchema = Joi.object({
  */
 router.post(
   '/api/job/post',
-  ensureEmployer,
+  requireAuthenticated(['employer']),
   validate(jobPostingSchema),
   postJobController,
 );
@@ -574,7 +575,7 @@ router.post(
  */
 router.get(
   '/api/employer/my-postings',
-  ensureEmployer,
+  requireAuthenticated(['employer']),
   getEmployerPostingsController,
 );
 
@@ -599,7 +600,7 @@ router.get(
  */
 router.get(
   '/api/job/:jobId/applicants',
-  ensureEmployer,
+  requireAuthenticated(['employer']),
   getJobApplicantsController,
 );
 
@@ -624,7 +625,7 @@ router.get(
  */
 router.patch(
   '/api/job/:jobId/update-status',
-  ensureEmployer,
+  requireAuthenticated(['employer']),
   updateJobStatusController,
 );
 
@@ -649,7 +650,7 @@ router.patch(
  */
 router.patch(
   '/api/job/application/:applicationId/update-decision',
-  ensureEmployer,
+  requireAuthenticated(['employer']),
   updateApplicationDecisionController,
 );
 
@@ -674,7 +675,7 @@ router.patch(
  */
 router.patch(
   '/api/job/application/:applicationId/mark-interested',
-  ensureEmployer,
+  requireAuthenticated(['employer']),
   markApplicationInterestedController,
 );
 
@@ -701,7 +702,11 @@ const profileUpdateSchema = Joi.object({
  *       401:
  *         description: Unauthorized
  */
-router.get('/api/me/profile', ensureLoggedIn, getCurrentUserProfileController);
+router.get(
+  '/api/me/profile',
+  requireAuthenticated(),
+  getCurrentUserProfileController,
+);
 
 /* ----------------------------------- */
 
@@ -727,7 +732,7 @@ router.get('/api/me/profile', ensureLoggedIn, getCurrentUserProfileController);
  */
 router.patch(
   '/api/me/profile',
-  ensureLoggedIn,
+  requireAuthenticated(),
   validate(profileUpdateSchema),
   updateCurrentUserProfileController,
 );
@@ -768,7 +773,11 @@ router.get('/api/user/:userId', getUserProfileController);
  *       403:
  *         description: Forbidden
  */
-router.get('/api/admin/users', ensureAdmin, getAllUsersController);
+router.get(
+  '/api/admin/users',
+  requireAuthenticated(['admin']),
+  getAllUsersController,
+);
 
 /* ----------------------------------- */
 
@@ -792,4 +801,8 @@ router.get('/api/admin/users', ensureAdmin, getAllUsersController);
  *       403:
  *         description: Forbidden
  */
-router.patch('/api/admin/user/:userId/ban', ensureAdmin, banUserController);
+router.patch(
+  '/api/admin/user/:userId/ban',
+  requireAuthenticated(['admin']),
+  banUserController,
+);
