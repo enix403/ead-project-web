@@ -1,14 +1,11 @@
 "use client";
 
-import { ViewModeContext } from "~/components/AppLayout/AppLayout";
-
-import { useState, useContext } from "react";
-import { Button } from "~/components/Button/Button";
-import { Step, Stepper, Tab, TabPanel, Tabs, TabsHeader } from "@material-tailwind/react";
+import { Tab, TabPanel, Tabs, TabsHeader } from "@material-tailwind/react";
 import { TabsBody } from "@material-tailwind/react";
+import { useViewMode } from "~/app/providers/auth-state";
 
 function InfoStep1() {
-  const viewMode = useContext(ViewModeContext);
+  const viewMode = useViewMode();
   return (
     <section className="mt-8 space-y-6">
       <h1 className="text-4xl font-bold py-4 max-w-3xl">
@@ -56,13 +53,8 @@ function InfoStep1() {
   );
 }
 
-/*
-{viewMode === "employee" && (<>
-</>)}
-*/
-
 function InfoStep2() {
-  const viewMode = useContext(ViewModeContext);
+  const viewMode = useViewMode();
 
   return (
     <section className="mt-8 space-y-6">

@@ -77,6 +77,12 @@ export function useAuthState() {
   };
 }
 
+// Temporary
+export function useViewMode() {
+  const { userRole } = useAuthState();
+  return userRole ?? "employee";
+}
+
 if (typeof window !== "undefined") {
   (window as any).getAuthState = getAuthState;
 }

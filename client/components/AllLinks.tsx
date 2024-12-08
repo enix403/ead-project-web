@@ -2,8 +2,7 @@ import clsx from "clsx";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ComponentProps } from "react";
-
-export type ViewMode = "employer" | "employee";
+import { useViewMode } from "~/app/providers/auth-state";
 
 function AppLink(props: ComponentProps<typeof Link>) {
   const pathname = usePathname();
@@ -18,21 +17,22 @@ function AppLink(props: ComponentProps<typeof Link>) {
   );
 }
 
-export function AllLinks({ viewMode }: { viewMode: ViewMode }) {
+export function AllLinks() {
+  const viewMode = useViewMode();
   return (
     <>
-      <AppLink href={`/${viewMode}`}>Home</AppLink>
-      <AppLink href={`/${viewMode}/community`}>Community</AppLink>
+      <AppLink href={`/`}>Home</AppLink>
+      <AppLink href={`/community`}>Community</AppLink>
       {viewMode === "employer" && (
         <>
-          <AppLink href={`/${viewMode}/create-job`}>Create job</AppLink>
-          <AppLink href={`/${viewMode}/postings`}>Postings</AppLink>
+          <AppLink href={`/create-job`}>Create job</AppLink>
+          <AppLink href={`/postings`}>Postings</AppLink>
         </>
       )}
-      <AppLink href={`/${viewMode}/information`}>Information</AppLink>
-      <AppLink href={`/${viewMode}/services`}>Services</AppLink>
-      <AppLink href={`/${viewMode}/about`}>About us</AppLink>
-      <AppLink href={`/${viewMode}/contact`}>Contact us</AppLink>
+      <AppLink href={`/information`}>Information</AppLink>
+      <AppLink href={`/services`}>Services</AppLink>
+      <AppLink href={`/about`}>About us</AppLink>
+      <AppLink href={`/contact`}>Contact us</AppLink>
     </>
   );
 }

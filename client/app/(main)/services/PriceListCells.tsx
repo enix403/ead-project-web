@@ -1,19 +1,11 @@
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  Typography,
-  Avatar,
-} from "@material-tailwind/react";
+import { Typography } from "@material-tailwind/react";
 import {
   IconFileInfo,
   IconMessage2Share,
   IconBoxMultiple5,
   IconWritingSign,
 } from "@tabler/icons-react";
-import clsx from "clsx";
-import { useContext } from "react";
-import { ViewModeContext } from "~/components/AppLayout/AppLayout";
+import { useViewMode } from "~/app/providers/auth-state";
 import { Button } from "~/components/Button/Button";
 
 export function Cell({ title, Icon }: { title: string; Icon: any }) {
@@ -35,7 +27,7 @@ export function Cell({ title, Icon }: { title: string; Icon: any }) {
 }
 
 export function PriceListCells() {
-  const viewMode = useContext(ViewModeContext);
+  const viewMode = useViewMode();
   return (
     <section className="flex mt-16 gap-4">
       {viewMode === "employer" ? (

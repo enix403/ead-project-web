@@ -1,16 +1,17 @@
 "use client";
 
 import clsx from "clsx";
-import { AppLayout, ViewModeContext } from "~/components/AppLayout/AppLayout";
+import { AppLayout } from "~/components/AppLayout/AppLayout";
 
 import ResumeIcon from "~/app/assets/icon-resumes.svg";
 
-import React, { PropsWithChildren, useContext } from "react";
+import React, { PropsWithChildren } from "react";
 import { TitleMark } from "~/components/decorations";
 import { FrequentlyAskedQuestions } from "~/components/FrequentlyAskedQuestions";
 import { JobBanner } from "./JobBanner";
 import { IconCoinFilled, IconCoins, IconUserSearch } from "@tabler/icons-react";
 import { InfoStepper } from "./InfoStepper";
+import { useViewMode } from "~/app/providers/auth-state";
 
 function FeatureBlock({
   Icon,
@@ -49,7 +50,7 @@ function FeatureBlock({
 }
 
 function InformationPageContent() {
-  const viewMode = useContext(ViewModeContext);
+  const viewMode = useViewMode();
 
   return (
     <div className="pb-40 pt-8">

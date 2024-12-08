@@ -11,13 +11,14 @@ import PIconBriefcase from "~/app/assets/p-briefcase.svg";
 import PIconPlus from "~/app/assets/p-plus.svg";
 import PIconEye from "~/app/assets/p-eye.svg";
 
-import { AppLayout, ViewModeContext } from "~/components/AppLayout/AppLayout";
+import { AppLayout } from "~/components/AppLayout/AppLayout";
 import { Button } from "~/components/Button/Button";
 import { Select } from "~/components/Select/Select";
 import { ProposalCard } from "~/components/ProposalCard";
 import { DivProps } from "react-html-props";
 import { Filters } from "./filters/Filters";
 import { apiRoutes } from "~/app/api-routes";
+import { useViewMode } from "~/app/providers/auth-state";
 
 function PageTitle(props: DivProps) {
   return (
@@ -62,7 +63,7 @@ function PrimaryTabButton({
 }
 
 function PrimaryTabs({ className }: DivProps) {
-  let viewMode = useContext(ViewModeContext);
+  let viewMode = useViewMode();
 
   return (
     <TabGroup

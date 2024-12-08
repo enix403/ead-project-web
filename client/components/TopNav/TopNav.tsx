@@ -23,7 +23,7 @@ import { IconMenu2, IconX } from "@tabler/icons-react";
 import { Button } from "../Button/Button";
 
 import { atom, useAtom, useSetAtom } from "jotai";
-import { AllLinks, ViewMode } from "../AllLinks";
+import { AllLinks } from "../AllLinks";
 
 import { languageDrawerAtom } from "../AppLayout/LanguageDrawer";
 import { currencyDrawerAtom } from "../AppLayout/CurrencyDrawer";
@@ -31,12 +31,11 @@ import { useAuthState } from "~/app/providers/auth-state";
 
 export interface TopNavProps {
   pageTitle?: string;
-  viewMode: ViewMode;
 }
 
 const drawerAtom = atom(false);
 
-function Contents({ pageTitle, viewMode }: TopNavProps) {
+function Contents({ pageTitle }: TopNavProps) {
   const setDrawerOpen = useSetAtom(drawerAtom);
   const setLanguageDrawerOpen = useSetAtom(languageDrawerAtom);
   const setCurrencyDrawerOpen = useSetAtom(currencyDrawerAtom);
@@ -47,13 +46,13 @@ function Contents({ pageTitle, viewMode }: TopNavProps) {
   return (
     <>
       <div className="flex justify-between items-center">
-        <Link href={`/${viewMode}`}>
+        <Link href={`/`}>
           <Image alt="" src={Logo} className="h-7 w-auto lg:h-10" />
         </Link>
         <div className="flex gap-x-1 items-center">
           {loggedIn ? (
             <>
-              <Link href={`/${viewMode}/chat`}>
+              <Link href={`/chat`}>
                 <IconButton variant="text">
                   <MessageIcon className="w-5" />
                 </IconButton>
@@ -115,7 +114,7 @@ function Contents({ pageTitle, viewMode }: TopNavProps) {
             "wl:flex hidden"
           )}
         >
-          <AllLinks viewMode={viewMode} />
+          <AllLinks />
         </div>
         <h1 className="text-2xl font-semibold wl:hidden max-ph:hidden block">
           {pageTitle}
@@ -123,7 +122,7 @@ function Contents({ pageTitle, viewMode }: TopNavProps) {
       </div>
 
       <div className="absolute top-0 left-0">
-        <MobileDrawer loggedIn={loggedIn} viewMode={viewMode} />
+        <MobileDrawer loggedIn={loggedIn} />
       </div>
     </>
   );
@@ -131,10 +130,8 @@ function Contents({ pageTitle, viewMode }: TopNavProps) {
 
 export function MobileDrawer({
   loggedIn,
-  viewMode,
 }: {
   loggedIn: boolean;
-  viewMode: ViewMode;
 }) {
   const [isOpen, setIsOpen] = useAtom(drawerAtom);
 
@@ -161,7 +158,7 @@ export function MobileDrawer({
         </div>
 
         <div className="flex flex-col gap-y-3 mt-8 hover:[&>a]:underline">
-          <AllLinks viewMode={viewMode} />
+          <AllLinks />
         </div>
 
         {!loggedIn && (
