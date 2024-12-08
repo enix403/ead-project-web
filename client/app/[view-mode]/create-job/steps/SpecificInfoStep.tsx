@@ -3,19 +3,24 @@ import { Input, TextArea } from "~/components/Input/Input";
 import { Select } from "~/components/Select/Select";
 import { FormLabel } from "~/components/FormLabel/FormLabel";
 import { StepForm, StepProps } from "./common";
-import { Checkbox, Menu, MenuItem, MenuList } from "@material-tailwind/react";
+import { Checkbox } from "@material-tailwind/react";
 import { repeatNode } from "~/app/utils/markup";
 
-import 'rsuite/DateRangePicker/styles/index.css';
-import DateRangePicker from 'rsuite/DateRangePicker';
+import "rsuite/DateRangePicker/styles/index.css";
+import DateRangePicker from "rsuite/DateRangePicker";
 
-import 'rsuite/TimeRangePicker/styles/index.css';
-import TimeRangePicker from 'rsuite/TimeRangePicker';
+import "rsuite/TimeRangePicker/styles/index.css";
+import TimeRangePicker from "rsuite/TimeRangePicker";
+import type { InputProps } from "react-html-props";
 
-function FormCheckbox({ label }: { label: string }) {
+function FormCheckbox({
+  label,
+  ...rest
+}: { label: string } & Omit<InputProps, "color">) {
   return (
     <label className="flex cursor-pointer items-center gap-2 p-2 select-none">
       <Checkbox
+        {...rest}
         ripple={false}
         containerProps={{ className: "p-0" }}
         className="hover:before:content-none"
@@ -29,6 +34,8 @@ export function SpecificInfoStep({
   onNext,
   onCancel,
   progressView,
+  register,
+  selCtrl,
 }: StepProps) {
   return (
     <>
@@ -41,43 +48,51 @@ export function SpecificInfoStep({
       <StepForm onNext={onNext}>
         <div className="bg-teal/5 p-7 mt-7 rounded-xl space-y-6">
           <FormLabel showAsterik label="Job Type">
-            <Select variant="light">
-              <option>Full-Time</option>
-              <option>Part-Time</option>
-              <option>Internship</option>
-              <option>Specific dates</option>
+            <Select selectProps={register("jobType")} variant="light">
+              <option value="fullTime">Full-Time</option>
+              <option value="partTime">Part-Time</option>
+              <option value="internship">Internship</option>
+              <option value="specificDates">Specific dates</option>
             </Select>
           </FormLabel>
 
           <FormLabel showAsterik label="Experience Level">
-            <Select variant="light">
-              <option>Entry Level</option>
-              <option>Mid Level</option>
-              <option>Senior Level</option>
+            <Select selectProps={register("expLevelRequired")} variant="light">
+              <option value="entry">Entry Level</option>
+              <option value="mid">Mid Level</option>
+              <option value="senior">Senior Level</option>
             </Select>
           </FormLabel>
 
           <div>
             Required Qualifications
             <div className="p-0 grid grid-cols-2 xl:grid-cols-5">
-              {repeatNode(10, (index) => (
-                <FormCheckbox
-                  key={index}
-                  label={`Qualification ${index + 1}`}
-                />
-              ))}
+              {repeatNode(10, (index) => {
+                const qualName = `Qualification ${index + 1}`;
+                return (
+                  <FormCheckbox
+                    {...selCtrl.register("qualificationsRequired", qualName)}
+                    key={index}
+                    label={qualName}
+                  />
+                );
+              })}
             </div>
           </div>
 
           <div>
             Desirable Qualifications
             <div className="p-0 grid grid-cols-2 xl:grid-cols-5">
-              {repeatNode(10, (index) => (
-                <FormCheckbox
-                  key={index}
-                  label={`Qualification ${index + 1}`}
-                />
-              ))}
+              {repeatNode(10, (index) => {
+                const qualName = `Qualification ${index + 1}`;
+                return (
+                  <FormCheckbox
+                    {...selCtrl.register("qualificationsDesired", qualName)}
+                    key={index}
+                    label={qualName}
+                  />
+                );
+              })}
             </div>
           </div>
 
@@ -85,11 +100,12 @@ export function SpecificInfoStep({
             <div className="flex-[1]">
               <FormLabel showAsterik label="Salary">
                 <div className="flex flex-1 w-full gap-x-1">
-                  <Select variant="light">
-                    <option>Monthly</option>
-                    <option>Hourly</option>
+                  <Select selectProps={register("salaryMode")} variant="light">
+                    <option value="monthly">Monthly</option>
+                    <option value="hourly">Hourly</option>
                   </Select>
                   <Input
+                    {...register("salary")}
                     className="flex-1"
                     required
                     placeholder="Enter salary range"
@@ -101,8 +117,18 @@ export function SpecificInfoStep({
             <div className="flex-[1]">
               <FormLabel showAsterik label="Periods of Work" className="h-full">
                 <div className="flex flex-col sm:flex-row gap-4 flex-1">
-                  <DateRangePicker className="flex-1 [&>*]:!h-full" appearance="subtle" placeholder="Select dates" />
-                  <TimeRangePicker className="flex-1 [&>*]:!h-full" appearance="subtle" placeholder="Select times" />
+                  {/* TODO: Date picker */}
+                  <DateRangePicker
+                    className="flex-1 [&>*]:!h-full"
+                    appearance="subtle"
+                    placeholder="Select dates"
+                  />
+                  {/* TODO: Date picker */}
+                  <TimeRangePicker
+                    className="flex-1 [&>*]:!h-full"
+                    appearance="subtle"
+                    placeholder="Select times"
+                  />
                 </div>
               </FormLabel>
             </div>
@@ -111,23 +137,31 @@ export function SpecificInfoStep({
           <div>
             Additional Benefits
             <div className="p-0 grid grid-cols-2 xl:grid-cols-5">
-              <FormCheckbox label="Performance bonuses" />
-              <FormCheckbox label="Gifts and allowances" />
-              <FormCheckbox label="Overtime" />
-              <FormCheckbox label="Commissions" />
-              <FormCheckbox label="Mobile phone" />
-              <FormCheckbox label="Company laptop" />
-              <FormCheckbox label="Extra vacation days" />
-              <FormCheckbox label="Parental leave" />
-              <FormCheckbox label="Training and seminars" />
-              <FormCheckbox label="Discounts on products or services" />
+              {[
+                "Performance bonuses",
+                "Gifts and allowances",
+                "Overtime",
+                "Commissions",
+                "Mobile phone",
+                "Company laptop",
+                "Extra vacation days",
+                "Parental leave",
+                "Training and seminars",
+                "Discounts on products or services",
+              ].map((benefitName) => (
+                <FormCheckbox
+                  key={benefitName}
+                  {...selCtrl.register("benefits", benefitName)}
+                  label={benefitName}
+                />
+              ))}
             </div>
           </div>
 
           <div className="flex gap-4 flex-col md:flex-row">
             <div className="flex-1">
               <FormLabel showAsterik label="Working Language">
-                <Select variant="light">
+                <Select selectProps={register("workingLanguage")} variant="light">
                   <option>English</option>
                   <option>Italian</option>
                   <option>Spanish</option>
@@ -138,10 +172,10 @@ export function SpecificInfoStep({
             </div>
             <div className="flex-1">
               <FormLabel showAsterik label="Residence">
-                <Select variant="light">
-                  <option>Yes</option>
-                  <option>No</option>
-                  <option>Housing allowance</option>
+                <Select selectProps={register("residence")} variant="light">
+                  <option value="yes">Yes</option>
+                  <option value="no">No</option>
+                  <option value="allowance">Housing allowance</option>
                 </Select>
               </FormLabel>
             </div>
@@ -150,22 +184,22 @@ export function SpecificInfoStep({
           <div className="flex gap-4 flex-col md:flex-row">
             <div className="flex-1">
               <FormLabel showAsterik label="Food">
-                <Select variant="light">
-                  <option>Provided</option>
-                  <option>Not Provided</option>
-                  <option>One meal</option>
-                  <option>Two meal</option>
-                  <option>Monetary meal allowance per day</option>
+                <Select selectProps={register("food")} variant="light">
+                  <option value="yes">Provided</option>
+                  <option value="no">Not Provided</option>
+                  <option value="oneMeal">One meal</option>
+                  <option value="twoMeal">Two meal</option>
+                  <option value="allowance">Monetary meal allowance per day</option>
                 </Select>
               </FormLabel>
             </div>
             <div className="flex-1">
               <FormLabel label="Means of Transport">
-                <Select variant="light">
-                  <option>Required</option>
-                  <option>Not required</option>
-                  <option>Moped provided</option>
-                  <option>Car provided</option>
+                <Select selectProps={register("transport")} variant="light">
+                  <option value="required">Required</option>
+                  <option value="notRequired">Not required</option>
+                  <option value="mopedProvided">Moped provided</option>
+                  <option value="carProvided">Car provided</option>
                 </Select>
               </FormLabel>
             </div>

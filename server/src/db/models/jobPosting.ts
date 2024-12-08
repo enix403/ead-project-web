@@ -13,7 +13,7 @@ export interface IJobPosting extends Document<Types.ObjectId> {
   qualificationsDesired: string[];
 
   salaryMode: 'monthly' | 'hourly';
-  salary: number;
+  salary: string;
 
   startDate?: Date;
   endDate?: Date;
@@ -62,7 +62,7 @@ const jobPostingSchema = new Schema<IJobPosting>({
   qualificationsDesired: [String],
 
   salaryMode: { type: String, enum: ['monthly', 'hourly'] },
-  salary: Number,
+  salary: { type: String, required: true },
 
   startDate: Date,
   endDate: Date,

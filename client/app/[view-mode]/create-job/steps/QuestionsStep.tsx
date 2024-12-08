@@ -2,17 +2,21 @@ import { Button } from "~/components/Button/Button";
 import { Input, TextArea } from "~/components/Input/Input";
 import { StepProps } from "./common";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type QuestionEntry = {
   id: number;
   question: string;
 };
 
-function QuestionsForm() {
+function QuestionsForm({ qsBank }: Pick<StepProps, "qsBank">) {
   const [questions, setQuestions] = useState<QuestionEntry[]>([
     { id: 1, question: "" },
   ]);
+
+  useEffect(() => {
+    qsBank.set(questions);
+  }, [questions, qsBank]);
 
   const addQuestion = () => {
     setQuestions([...questions, { id: questions.length + 1, question: "" }]);
@@ -57,7 +61,12 @@ function QuestionsForm() {
   );
 }
 
-export function QuestionsStep({ onNext, onCancel, progressView }: StepProps) {
+export function QuestionsStep({
+  onNext,
+  onCancel,
+  progressView,
+  qsBank,
+}: StepProps) {
   return (
     <>
       <h1 className="font-semibold text-2xl text-center md:text-left">
@@ -67,7 +76,7 @@ export function QuestionsStep({ onNext, onCancel, progressView }: StepProps) {
       {progressView}
 
       <div className="bg-teal/5 p-7 mt-7 rounded-xl space-y-6">
-        <QuestionsForm />
+        <QuestionsForm qsBank={qsBank} />
 
         <div className="pt-6">
           <div className="flex gap-x-3">

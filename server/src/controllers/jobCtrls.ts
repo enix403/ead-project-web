@@ -1,4 +1,5 @@
-import express, { Request, Response } from 'express';
+import { Request, Response } from 'express';
+import { Types } from 'mongoose'
 
 import { JobPostingModel } from 'db/models/jobPosting';
 import { JobApplicationModel } from 'db/models/jobApplication';
@@ -95,9 +96,11 @@ export async function postJobController(req: Request, res: Response) {
   const jobData = req.body;
   const job = new JobPostingModel({
     ...jobData,
-    posterId: req.user!._id,
-    postedAt: new Date(),
+    postedAt: jobData['postedAt'] || new Date(),
+    expireAt: undefined, // No expiry for now
     isActive: true,
+    // posterId: req.user!._id,
+    posterId: new Types.ObjectId(),
   });
   await job.save();
   res.status(201).json({ message: 'Job posted successfully', job });

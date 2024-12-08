@@ -1,52 +1,90 @@
-import mongoose, { Schema, Document, Types } from 'mongoose';
+import { model, Document, Schema, Types } from 'mongoose';
 
-export interface IUser extends Document<Types.ObjectId> {
-  username: string;
-  email: string;
-  password: string;
-  role: 'employee' | 'employer' | 'admin';
-  profilePicture?: string;
-  bio?: string;
-  location?: string;
-  skills?: string[]; // Only for Employees
-  companyName?: string; // Only for Employers
-  isApproved?: boolean; // Only for Employers, whether admin has approved the employer
-  employees?: mongoose.Types.ObjectId[]; // Employers can see employees
-  createdAt?: Date;
-  updatedAt?: Date;
+/* ===================== */
+
+export interface IExperience {
+  title: string;
+  company: string;
+  description?: string;
+  startDate: Date;
+  endDate?: Date;
+  currentlyActive: boolean;
 }
 
-const UserSchema: Schema<IUser> = new mongoose.Schema(
-  {
-    username: { type: String, required: true },
-    email: { type: String, required: true, unique: true, index: true },
-    password: { type: String, required: true, select: false },
-    role: {
-      type: String,
-      enum: ['employee', 'employer', 'admin'],
-      required: true,
-    },
-    profilePicture: {
-      type: String,
-      validate: {
-        validator: function (v: string) {
-          return /^https?:\/\/.+\.(jpg|jpeg|png|webp|avif|svg)$/.test(v);
-        },
-        message: 'Invalid URL for profile picture.',
-      },
-    },
-    bio: { type: String, maxlength: 200 },
-    location: { type: String },
-    skills: [{ type: String }],
-    companyName: { type: String },
-    isApproved: { type: Boolean, default: false },
-    employees: [
-      { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: [] },
-    ],
-  },
-  {
-    timestamps: true,
-  }
-);
+const experienceSchema = new Schema<IExperience>({
+  title: { type: String, required: true },
+  company: { type: String, required: true },
+  description: String,
+  startDate: { type: Date, required: true },
+  endDate: Date,
+  currentlyActive: { type: Boolean, default: false },
+});
 
-export const UserModel = mongoose.model<IUser>('User', UserSchema);
+/* ===================== */
+
+export interface IUser extends Document<Types.ObjectId> {
+  email: string;
+  passwordHash: string;
+  role: 'admin' | 'employer' | 'employee';
+
+  fullName: string;
+  gender: 'male' | 'female' | 'notSpecified';
+  profilePictureUrl?: string;
+  bio?: string;
+  addressCountry?: string;
+  addressCity?: string;
+  addressArea?: string;
+  addressZip?: string;
+  phone?: string;
+  experiences: IExperience[];
+  skills: string[];
+
+  companyName?: string;
+  companyPhone?: string;
+  companyCountry?: string;
+  companyCity?: string;
+  companyArea?: string;
+  companyZip?: string;
+  companyIndustry?: string;
+
+  isBanned: boolean;
+}
+
+const userSchema = new Schema<IUser>({
+  email: { type: String, required: true, unique: true },
+  passwordHash: { type: String, required: true },
+  role: {
+    type: String,
+    enum: ['admin', 'employer', 'employee'],
+    required: true,
+  },
+
+  fullName: { type: String, required: true },
+  gender: {
+    type: String,
+    enum: ['male', 'female', 'notSpecified'],
+    required: true,
+  },
+  profilePictureUrl: String,
+  bio: String,
+  addressCountry: String,
+  addressCity: String,
+  addressArea: String,
+  addressZip: String,
+  phone: String,
+  experiences: [experienceSchema],
+  skills: [String],
+
+  companyName: String,
+  companyPhone: String,
+  companyCountry: String,
+  companyCity: String,
+  companyArea: String,
+  companyZip: String,
+  companyIndustry: String,
+
+  isBanned: { type: Boolean, default: false },
+});
+
+// prettier-ignore
+export const UserModel = model('User', userSchema);

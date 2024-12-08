@@ -217,15 +217,20 @@ const jobPostingSchema = Joi.object({
   jobType: Joi.string()
     .valid('fullTime', 'partTime', 'internship', 'specificDates')
     .required(),
+
   expLevelRequired: Joi.string().valid('entry', 'mid', 'senior').required(),
+
   qualificationsRequired: Joi.array().items(Joi.string()).optional(),
   qualificationsDesired: Joi.array().items(Joi.string()).optional(),
+
   salaryMode: Joi.string().valid('monthly', 'hourly').required(),
-  salary: Joi.number().required(),
+  salary: Joi.string().required(),
+
   startDate: Joi.date().optional(),
   endDate: Joi.date().optional(),
   startTime: Joi.date().optional(),
   endTime: Joi.date().optional(),
+
   benefits: Joi.array().items(Joi.string()).optional(),
   workingLanguage: Joi.string().required(),
   residence: Joi.string().valid('yes', 'no', 'allowance').required(),
@@ -235,11 +240,20 @@ const jobPostingSchema = Joi.object({
   transport: Joi.string()
     .valid('required', 'notRequired', 'mopedProvided', 'carProvided')
     .required(),
+
+  companyName: Joi.string().optional(),
   companyUsername: Joi.string().optional(),
   companyDescription: Joi.string().optional(),
   companyWebsite: Joi.string().optional(),
   companyLogoUrl: Joi.string().optional(),
+  companyCountry: Joi.string().optional(),
+  companyCity: Joi.string().optional(),
+  companyArea: Joi.string().optional(),
+  companyZip: Joi.string().optional(),
+  companyMapAddress: Joi.string().optional(),
+
   questions: Joi.array().items(Joi.string()).optional(),
+  postedAt: Joi.date().allow("").optional(),
 });
 
 /**
