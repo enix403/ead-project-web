@@ -45,7 +45,7 @@ router.post(
       ),
     );
 
-    return reply(res, { token });
+    return reply(res, { token, user });
   }),
 );
 

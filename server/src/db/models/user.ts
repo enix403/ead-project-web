@@ -50,41 +50,52 @@ export interface IUser extends Document<Types.ObjectId> {
   isBanned: boolean;
 }
 
-const userSchema = new Schema<IUser>({
-  email: { type: String, required: true, unique: true },
-  passwordHash: { type: String, required: true },
-  role: {
-    type: String,
-    enum: ['admin', 'employer', 'employee'],
-    required: true,
+const userSchema = new Schema<IUser>(
+  {
+    email: { type: String, required: true, unique: true },
+    passwordHash: { type: String, required: true },
+    role: {
+      type: String,
+      enum: ['admin', 'employer', 'employee'],
+      required: true,
+    },
+
+    fullName: { type: String, required: true },
+    gender: {
+      type: String,
+      enum: ['male', 'female', 'notSpecified'],
+      default: 'notSpecified',
+    },
+    profilePictureUrl: String,
+    bio: String,
+    addressCountry: String,
+    addressCity: String,
+    addressArea: String,
+    addressZip: String,
+    phone: String,
+    experiences: { type: [experienceSchema], default: [] },
+    skills: { type: [String], default: [] },
+
+    companyName: String,
+    companyPhone: String,
+    companyCountry: String,
+    companyCity: String,
+    companyArea: String,
+    companyZip: String,
+    companyIndustry: String,
+
+    isBanned: { type: Boolean, default: false },
   },
-
-  fullName: { type: String, required: true },
-  gender: {
-    type: String,
-    enum: ['male', 'female', 'notSpecified'],
-    default: 'notSpecified',
+  {
+    toJSON: {
+      transform(doc, ret, options) {
+        // Remove passwordHash from any JSON response
+        delete ret.passwordHash;
+        return ret;
+      },
+    },
   },
-  profilePictureUrl: String,
-  bio: String,
-  addressCountry: String,
-  addressCity: String,
-  addressArea: String,
-  addressZip: String,
-  phone: String,
-  experiences: { type: [experienceSchema], default: [] },
-  skills: { type: [String], default: [] },
-
-  companyName: String,
-  companyPhone: String,
-  companyCountry: String,
-  companyCity: String,
-  companyArea: String,
-  companyZip: String,
-  companyIndustry: String,
-
-  isBanned: { type: Boolean, default: false },
-});
+);
 
 // prettier-ignore
 export const UserModel = model('User', userSchema);

@@ -1,45 +1,59 @@
 import { getDefaultStore, useAtom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 
-const accessTokenAtom = atomWithStorage<string | null>("accessToken", null);
+export type AuthStateData = {
+  token: string;
+  userRole: "admin" | "employer" | "employee";
+};
+
+const stateAtom = atomWithStorage<AuthStateData | null>(
+  "authStateData-v1",
+  null
+);
 
 export function getAuthState() {
   const store = getDefaultStore();
-  const token = store.get(accessTokenAtom);
-  const isLoggedIn = Boolean(token);
+  const stateData = store.get(stateAtom);
 
-  function login(token: string) {
-    store.set(accessTokenAtom, token);
+  function login(token: string, user: any) {
+    store.set(stateAtom, {
+      token,
+      userRole: user.role as any,
+    });
   }
 
   function logout() {
-    store.set(accessTokenAtom, null);
+    store.set(stateAtom, null);
   }
 
   return {
-    token,
-    isLoggedIn,
     login,
     logout,
+    isLoggedIn: Boolean(stateData),
+    token: stateData?.token,
+    userRole: stateData?.userRole,
   };
 }
 
 export function useAuthState() {
-  const [token, setToken] = useAtom(accessTokenAtom);
-  const isLoggedIn = Boolean(token);
+  const [stateData, setStateData] = useAtom(stateAtom);
 
-  function login(token: string) {
-    setToken(token);
+  function login(token: string, user: any) {
+    setStateData({
+      token,
+      userRole: user.role as any,
+    });
   }
 
   function logout() {
-    setToken(null);
+    setStateData(null);
   }
 
   return {
-    token,
-    isLoggedIn,
     login,
     logout,
+    isLoggedIn: Boolean(stateData),
+    token: stateData?.token,
+    userRole: stateData?.userRole,
   };
 }

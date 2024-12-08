@@ -20,8 +20,8 @@ function LoginFormContent() {
     setLoading(true);
     apiRoutes
       .login(payload)
-      .then(({ token }) => {
-        authState.login(token);
+      .then(({ token, user }) => {
+        authState.login(token, user);
       })
       .catch(() => toast.error("Failed to login"))
       .finally(() => setLoading(false));
