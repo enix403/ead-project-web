@@ -9,6 +9,7 @@ import { connect as connectMongoDB } from 'db/connect';
 import { cyan, green, red, yellow } from 'colorette';
 import { appEnv } from 'config/app-env';
 import { createRootRouter } from 'routes';
+import { ApplicationError } from 'experimental/errors';
 
 function createApp() {
   const app = express();
@@ -38,6 +39,13 @@ function createApp() {
       res: express.Response,
       next: express.NextFunction,
     ) => {
+
+      if (err instanceof ApplicationError) {
+        return res.status(err.statusCode).json({
+          error: err.message,
+        });
+      }
+
       if (err) {
         logger.error(`500 - Server Error - ${err.message}`);
         return res
