@@ -5,40 +5,12 @@ import GoogleIcon from "~/app/assets/google.svg";
 
 import Image from "next/image";
 
-import { Input, IconButton } from "@material-tailwind/react";
-import { IconEye, IconEyeClosed } from "@tabler/icons-react";
-import { ComponentProps, useState } from "react";
+import { useState } from "react";
 import { Button } from "~/components/Button/Button";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
-const AppInput = (props: ComponentProps<typeof Input>) => (
-  <Input {...props} color="blue-gray" className="!text-black" />
-);
-
-const PasswordInput = (props: ComponentProps<typeof Input>) => {
-  const [see, setSee] = useState(false);
-
-  let Icon = see ? IconEyeClosed : IconEye;
-
-  return (
-    <AppInput
-      {...props}
-      tabIndex={-1}
-      type={see ? "text" : "password"}
-      icon={
-        <IconButton
-          onClick={() => setSee((prev) => !prev)}
-          variant="text"
-          size="sm"
-          className="relative -top-1.5 right-1.5 !text-black/60"
-        >
-          <Icon size={20} stroke={1} />
-        </IconButton>
-      }
-    />
-  );
-};
+import { AuthInput, PasswordInput } from "../common";
 
 function LoginNote() {
   return (
@@ -57,13 +29,13 @@ function EmployerForm() {
   return (
     <>
       <div className="space-y-4">
-        <AppInput label="Company Name" />
-        <AppInput label="Company Address" />
-        <AppInput label="Contact Person Name" />
-        <AppInput label="Contact Email" />
-        <AppInput label="Contact Phone Number" />
-        <AppInput label="Contact Phone Number" />
-        <AppInput label="Industry" />
+        <AuthInput label="Company Name" />
+        <AuthInput label="Company Address" />
+        <AuthInput label="Contact Person Name" />
+        <AuthInput label="Contact Email" />
+        <AuthInput label="Contact Phone Number" />
+        <AuthInput label="Contact Phone Number" />
+        <AuthInput label="Industry" />
         <PasswordInput label="Password" />
         <PasswordInput label="Confirm Password" />
       </div>
@@ -86,9 +58,9 @@ function CandidateForm() {
   return (
     <>
       <div className="space-y-4">
-        <AppInput label="Your Name" />
-        <AppInput label="Date Of Birth" type="date" />
-        <AppInput label="Email" />
+        <AuthInput label="Your Name" />
+        <AuthInput label="Date Of Birth" type="date" />
+        <AuthInput label="Email" />
         <PasswordInput label="Password" />
         <PasswordInput label="Confirm Password" />
       </div>
@@ -117,7 +89,7 @@ function CandidateForm() {
   );
 }
 
-function SignUpFormContent() {
+function RegisterFormContent() {
   type FormMode = "candidate" | "employer";
   const [currentMode, setCurrentMode] = useState<FormMode>("candidate");
 
@@ -156,12 +128,12 @@ function SignUpFormContent() {
   );
 }
 
-export default function SignUp() {
+export default function Register() {
   return (
     <div className="flex min-h-screen">
       <div className="flex-1 md:min-w-[30rem]">
         <div className="px-8 md:px-12 lg:px-20 xl:px-28 pt-12 md:pt-28 pb-14">
-          <SignUpFormContent />
+          <RegisterFormContent />
         </div>
       </div>
       <div className="max-w-[60%] hidden md:block p-3">

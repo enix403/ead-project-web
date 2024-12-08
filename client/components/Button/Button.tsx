@@ -2,19 +2,23 @@ import classes from "./Button.module.css";
 
 import type { ButtonProps as HtmlButtonProps } from "react-html-props";
 import { combineVisualProps } from "../VisualComponent";
+import { Spinner } from "@material-tailwind/react";
 
 export interface ButtonProps extends HtmlButtonProps {
   fullWidth?: boolean;
   fullRounded?: boolean;
   variant?: "outlined" | "filled" | "light" | "text";
-  theme?: "teal" | "white"
+  theme?: "teal" | "white";
+  loading?: boolean;
 }
 
 export function Button({
   fullWidth,
   fullRounded,
   variant = "filled",
-  theme = 'teal',
+  theme = "teal",
+  loading = false,
+  children,
   ...rest
 }: ButtonProps) {
   let variantClass: string;
@@ -28,7 +32,7 @@ export function Button({
   } else if (variant === "text") {
     variantClass = classes.btn_text;
   } else {
-    variantClass = ""
+    variantClass = "";
   }
 
   return (
@@ -36,12 +40,14 @@ export function Button({
       {...combineVisualProps(rest, {
         className: [
           classes.btn,
-          theme === 'white' && classes.btn_theme_white,
+          theme === "white" && classes.btn_theme_white,
           fullWidth && "w-full",
           fullRounded && "!rounded-full",
-          variantClass
-        ]
+          variantClass,
+        ],
       })}
-    />
+    >
+      {loading ? <Spinner color="blue-gray" /> : children}
+    </button>
   );
 }

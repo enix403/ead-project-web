@@ -107,6 +107,11 @@ function wq<Q = Record<string, any>>(template: TemplateStringsArray) {
 // prettier-ignore
 export const apiRoutes = {
   /* ========================== */
+  /* ========== Auth ========== */
+  /* ========================== */
+  login: payloadDecl(`/api/auth/login`),
+
+  /* ========================== */
   /* ======= Job Routes ======= */
   /* ========================== */
   // Queries
