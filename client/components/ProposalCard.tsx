@@ -6,10 +6,12 @@ import { IconHeartFilled } from "@tabler/icons-react";
 import Link from "next/link";
 
 export function ProposalCard({
+  job,
   isBestMatch,
   footer,
   showLikedButton = true,
 }: {
+  job?: any,
   isBestMatch?: boolean;
   footer?: ReactNode;
   showLikedButton?: boolean;
@@ -61,13 +63,15 @@ export function ProposalCard({
       </Link>
 
       <h3 className="font-semibold text-lg mt-3">
-        Chef - Mediterranean Cuisine, Experience in Hotel and Restaurant
-        Environments (5 Years)
+        {/* Chef - Mediterranean Cuisine, Experience in Hotel and Restaurant */}
+        {/* Environments (5 Years) */}
+        {job?.title}
       </h3>
       <p className="text-black/70 mt-1">
-        Hello ! I have worked in similar positions and know the challenges of
+        {/* Hello ! I have worked in similar positions and know the challenges of
         the job very well. Please take a look at my resume and I`m at your
-        disposal.
+        disposal. */}
+        {job?.description}
       </p>
 
       {footer ?? (

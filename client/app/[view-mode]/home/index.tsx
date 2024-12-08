@@ -1,22 +1,22 @@
 "use client";
 
+import { Fragment, ReactNode, useContext, useState } from "react";
+import { Spinner } from "@material-tailwind/react";
+import { useQuery } from "@tanstack/react-query";
+import { IconAdjustmentsHorizontal, IconSearch } from "@tabler/icons-react";
+import { Tab, TabGroup, TabList } from "@headlessui/react";
+import clsx from "clsx";
+
 import PIconBriefcase from "~/app/assets/p-briefcase.svg";
 import PIconPlus from "~/app/assets/p-plus.svg";
 import PIconEye from "~/app/assets/p-eye.svg";
-import PIconPerson from "~/app/assets/p-person.svg";
 
-import { Fragment, ReactNode, useContext, useState } from "react";
-import clsx from "clsx";
 import { AppLayout, ViewModeContext } from "~/components/AppLayout/AppLayout";
 import { Button } from "~/components/Button/Button";
-import { IconAdjustmentsHorizontal, IconSearch } from "@tabler/icons-react";
-import { Tab, TabGroup, TabList } from "@headlessui/react";
 import { Select } from "~/components/Select/Select";
 import { ProposalCard } from "~/components/ProposalCard";
-import { ProposalsFilter } from "./ProposalsFilter";
 import { DivProps } from "react-html-props";
 import { Filters } from "./filters/Filters";
-import { useQuery } from "@tanstack/react-query";
 import { apiRoutes } from "~/app/api-routes";
 
 function PageTitle(props: DivProps) {
@@ -163,9 +163,16 @@ export default function HomeProposalsPage({ params }: { params: any }) {
         </div>
 
         <div className="mt-4 grid wl:grid-cols-2 gap-6">
-          {jobs.map((job, index) => (
-            <ProposalCard key={job._id} isBestMatch={index == 0} />
-          ))}
+          {isLoading ? (
+            <div className="flex items-center gap-x-2 py-3">
+              <Spinner color="green" />
+              <span>Loading...</span>
+            </div>
+          ) : (
+            jobs.map((job, index) => (
+              <ProposalCard key={job._id} job={job} isBestMatch={index == 0} />
+            ))
+          )}
         </div>
         <Button variant="outlined" className="mx-auto mt-8 mb-4" fullRounded>
           Load More
