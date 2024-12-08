@@ -99,8 +99,7 @@ export async function postJobController(req: Request, res: Response) {
     postedAt: jobData['postedAt'] || new Date(),
     expireAt: undefined, // No expiry for now
     isActive: true,
-    // posterId: req.user!._id,
-    posterId: new Types.ObjectId(),
+    posterId: req.user!._id,
   });
   await job.save();
   res.status(201).json({ message: 'Job posted successfully', job });

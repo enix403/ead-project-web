@@ -19,9 +19,7 @@ const applyAuthToken = async (
 
   if (!token) {
     res.status(401).json({ message: 'No token provided.' });
-    logger.warn(
-      `Unauthenticated access attempt: No token provided`,
-    );
+    logger.warn(`Unauthenticated access attempt: No token provided`);
     return null;
   }
 
@@ -34,7 +32,6 @@ const applyAuthToken = async (
         else resolve(decoded as AccessTokenClaims);
       }),
     );
-
   } catch (err) {}
 
   const user =
@@ -59,11 +56,6 @@ const applyAuthToken = async (
 };
 
 export function requireAuthenticated(allowedRoles?: string[]) {
-  // TODO: for now we are allowing everything. Remove it once
-  // the auth is setup in place on the client
-
-  return (req, res, next) => next();
-
   return handleAsync(async (req, res, next) => {
     const loggedInUser = await applyAuthToken(req, res);
 
