@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { Step, Stepper } from "@material-tailwind/react";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -89,6 +90,9 @@ function useQuestionsBank() {
 export type QuestionsBank = ReturnType<typeof useQuestionsBank>;
 
 export default function CreateJobPage() {
+  const [isLoading, setLoading] = useState(false);
+  const router = useRouter();
+
   let [pageIndex, setPageIndex] = useState(0);
   const { register, getValues } = useForm<any>();
 
@@ -106,6 +110,8 @@ export default function CreateJobPage() {
   window.qsBank = qsBank;
 
   function onNext() {
+    if (isLoading) return;
+
     if (pageIndex == steps.length - 1) {
       postJob();
       return;
@@ -114,6 +120,8 @@ export default function CreateJobPage() {
   }
 
   function onCancel() {
+    if (isLoading) return;
+
     setPageIndex((x) => Math.max(0, x - 1));
   }
 
@@ -167,13 +175,20 @@ export default function CreateJobPage() {
 
     console.log("Posting: ", payload);
 
-    let result = await toast.promise(apiRoutes.postJob(payload), {
-      loading: "Creating post...",
-      success: 'Post created successfully',
-      error: 'Error occured',
-    });
+    setLoading(true);
+    try {
+      let result = await toast.promise(apiRoutes.postJob(payload), {
+        loading: "Creating post...",
+        success: "Post created successfully",
+        error: "Error occured",
+      });
+      console.log(result);
 
-    console.log(result);
+      router.push('/postings');
+
+    } catch {
+      setLoading(false);
+    }
   }
 
   let steps = [
