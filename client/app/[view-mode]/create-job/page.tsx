@@ -4,6 +4,10 @@ import { Step, Stepper } from "@material-tailwind/react";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import type { InputProps } from "react-html-props";
+import toast from "react-hot-toast";
+
+// @ts-ignore
+if (typeof window !== "undefined") window.toast = toast;
 
 import { AppLayout } from "~/components/AppLayout/AppLayout";
 
@@ -146,7 +150,7 @@ export default function CreateJobPage({ params }: { params: any }) {
       companyUsername: values["companyUsername"],
       companyDescription: values["companyDescription"],
       companyWebsite: values["companyWebsite"],
-      // companyLogoUrl
+      companyLogoUrl: "", // TODO: fix
       companyCountry: values["companyCountry"],
       companyCity: values["companyCity"],
       companyArea: values["companyArea"],
@@ -157,12 +161,18 @@ export default function CreateJobPage({ params }: { params: any }) {
         .get()
         .map((qItem) => qItem.question)
         .filter((s) => s.length > 0),
+
       postedAt: values["postedAt"],
-      // expireAt
     };
 
     console.log("Posting: ", payload);
-    let result = await apiRoutes.postJob(payload);
+
+    let result = await toast.promise(apiRoutes.postJob(payload), {
+      loading: "Creating post...",
+      success: 'Post created successfully',
+      error: 'Error occured',
+    });
+
     console.log(result);
   }
 

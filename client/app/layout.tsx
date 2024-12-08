@@ -3,7 +3,9 @@ import "./styles/tailwind-reset.css";
 import "./styles/global.css";
 
 import { Urbanist } from "next/font/google";
-import { CustomProvider as RSuiteProvider } from 'rsuite';
+import { CustomProvider as RSuiteProvider } from "rsuite";
+
+import { Toaster } from "react-hot-toast";
 
 const urbanist = Urbanist({ subsets: ["latin"] });
 
@@ -20,9 +22,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={urbanist.className}>
-        <RSuiteProvider>
-          {children}
-        </RSuiteProvider>
+        <Toaster
+          toastOptions={{
+            style: {
+              borderRadius: "10px",
+              background: "#333",
+              color: "#fff",
+            },
+          }}
+        />
+        <RSuiteProvider>{children}</RSuiteProvider>
       </body>
     </html>
   );
