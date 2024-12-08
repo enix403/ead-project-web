@@ -1,4 +1,5 @@
 import ky from "ky";
+import { getAuthState } from "./providers/auth-state";
 
 function unslashStart(str: string) {
   return str.replace(/^\/+/, "");
@@ -17,6 +18,17 @@ if (!API_BASE_URL) {
 export const apiConn = ky.extend({
   prefixUrl: unslashEnd(API_BASE_URL),
   timeout: false,
+  hooks: {
+    beforeRequest: [
+      (request) => {
+        let { isLoggedIn, token } = getAuthState();
+        if (isLoggedIn) {
+          request.headers.set("Authorization", `Bearer: ${token}`);
+        }
+        return request;
+      },
+    ],
+  },
 });
 
 function decl<

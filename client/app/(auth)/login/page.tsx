@@ -9,17 +9,19 @@ import { apiRoutes } from "~/app/api-routes";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useState } from "react";
+import { useAuthState } from "~/app/providers/auth-state";
 
 function LoginFormContent() {
   const [loading, setLoading] = useState(false);
   const { register, handleSubmit } = useForm<any>();
+  const authState = useAuthState();
 
   async function handleLogin(payload: any) {
     setLoading(true);
     apiRoutes
       .login(payload)
-      .then((result) => {
-        console.log(result);
+      .then(({ token }) => {
+        authState.login(token);
       })
       .catch(() => toast.error("Failed to login"))
       .finally(() => setLoading(false));

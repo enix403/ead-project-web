@@ -1,6 +1,11 @@
 import { Input, IconButton } from "@material-tailwind/react";
 import { IconEye, IconEyeClosed } from "@tabler/icons-react";
 import { ComponentProps, forwardRef, useState } from "react";
+import { getAuthState } from "../providers/auth-state";
+
+if (typeof window !== 'undefined') {
+  (window as any).getAuthState = getAuthState;
+}
 
 export const AuthInput = forwardRef(
   (props: ComponentProps<typeof Input>, ref: any) => (
