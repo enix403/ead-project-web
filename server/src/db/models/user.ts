@@ -63,7 +63,7 @@ const userSchema = new Schema<IUser>({
   gender: {
     type: String,
     enum: ['male', 'female', 'notSpecified'],
-    required: true,
+    default: 'notSpecified',
   },
   profilePictureUrl: String,
   bio: String,
@@ -72,8 +72,8 @@ const userSchema = new Schema<IUser>({
   addressArea: String,
   addressZip: String,
   phone: String,
-  experiences: [experienceSchema],
-  skills: [String],
+  experiences: { type: [experienceSchema], default: [] },
+  skills: { type: [String], default: [] },
 
   companyName: String,
   companyPhone: String,

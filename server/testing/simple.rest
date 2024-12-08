@@ -1,0 +1,34 @@
+@baseUrl = http://localhost:4201/api
+
+###
+
+GET {{baseUrl}}/health
+Authorization: Bearer {{accessToken}}
+
+###
+# -------------------------
+
+POST {{baseUrl}}/auth/register
+
+{
+  "email": "user2@gmail.com",
+  "password": "pass",
+  "role": "employer",
+  "fullName": "User 2"
+}
+
+###
+# -------------------------
+
+# @name login
+POST {{baseUrl}}/auth/login
+
+{
+  "email": "user1@gmail.com",
+  "password": "pass"
+}
+###
+@accessToken = {{login.response.body.$.token}}
+
+###
+# -------------------------

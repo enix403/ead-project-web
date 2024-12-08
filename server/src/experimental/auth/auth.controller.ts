@@ -9,11 +9,19 @@ import { appEnv } from 'config/app-env';
 
 import { comparePassword, hashPassword } from './hashing';
 import { reply } from 'experimental/app-reply';
+import joi from 'joi';
+import { validateJoi } from 'middleware/validateJoi';
 
-const router = express.Router();
+export const router = express.Router();
 
 router.post(
   '/api/auth/login',
+  validateJoi(
+    joi.object({
+      email: joi.string().required(),
+      password: joi.string().required(),
+    }),
+  ),
   ah(async (req, res) => {
     const { email, password } = req.body;
 
@@ -23,7 +31,7 @@ router.post(
       user == null ||
       !(await comparePassword(password, user.passwordHash || ''))
     ) {
-      throw new ApplicationError('Invalid email or password', 200);
+      throw new ApplicationError('Invalid email or password', 401);
     }
 
     let token = await new Promise<string>((resolve, reject) =>
@@ -43,20 +51,29 @@ router.post(
 
 router.post(
   '/api/auth/register',
+  validateJoi(
+    joi.object({
+      email: joi.string().required(),
+      password: joi.string().required(),
+      role: joi.string().valid('employer', 'employee').required(),
+      fullName: joi.string().required(),
+    }),
+  ),
   ah(async (req, res) => {
-    const { password, role, ...restData } = req.body;
+    const { email, password, role, ...restData } = req.body;
 
-    if (!['employer', 'employee'].includes(role))
-      throw new ApplicationError('Invaid role');
+    const existingUser = await UserModel.findOne({ email });
+    if (existingUser) throw new ApplicationError('Email already registered');
 
     const passwordHash = await hashPassword(password);
 
     await UserModel.create({
       ...restData,
-      role,
+      email,
       passwordHash,
+      role,
     });
 
-    return reply(res, "Registered");
+    return reply(res, 'Registered');
   }),
 );

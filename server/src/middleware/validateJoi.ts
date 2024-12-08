@@ -10,7 +10,8 @@ export function validateJoi(schema: Joi.ObjectSchema) {
       ...req.params,
     });
     if (error) {
-      return res.status(400).json({ message: error });
+      delete error['_original'];
+      return res.status(400).json(error);
     }
     next();
   };

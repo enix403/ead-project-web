@@ -48,9 +48,11 @@ function createApp() {
 
       if (err) {
         logger.error(`500 - Server Error - ${err.message}`);
-        return res
+        res
           .status(500)
           .json({ message: 'An internal server error occurred' });
+
+        throw err;
       }
       next();
     },
