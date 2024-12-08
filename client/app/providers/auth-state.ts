@@ -6,14 +6,33 @@ export type AuthStateData = {
   userRole: "admin" | "employer" | "employee";
 };
 
+const PERSISTANT_STORE_NAME = "authStateData-v1";
+
 const stateAtom = atomWithStorage<AuthStateData | null>(
-  "authStateData-v1",
+  PERSISTANT_STORE_NAME,
   null
 );
 
 export function getAuthState() {
   const store = getDefaultStore();
-  const stateData = store.get(stateAtom);
+  let stateData = store.get(stateAtom);
+
+  if (stateData == null) {
+    let rawDataJson = localStorage.getItem(PERSISTANT_STORE_NAME);
+    if (rawDataJson) {
+      try {
+        const parsed = JSON.parse(rawDataJson);
+        if ("token" in parsed && "userRole" in parsed) {
+          stateData = {
+            token: parsed["token"],
+            userRole: parsed["userRole"],
+          };
+        }
+      } catch {
+        stateData = null;
+      }
+    }
+  }
 
   function login(token: string, user: any) {
     store.set(stateAtom, {
@@ -29,7 +48,7 @@ export function getAuthState() {
   return {
     login,
     logout,
-    isLoggedIn: Boolean(stateData),
+    isLoggedIn: Boolean(stateData?.token),
     token: stateData?.token,
     userRole: stateData?.userRole,
   };
@@ -52,8 +71,12 @@ export function useAuthState() {
   return {
     login,
     logout,
-    isLoggedIn: Boolean(stateData),
+    isLoggedIn: Boolean(stateData?.token),
     token: stateData?.token,
     userRole: stateData?.userRole,
   };
+}
+
+if (typeof window !== "undefined") {
+  (window as any).getAuthState = getAuthState;
 }
