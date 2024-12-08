@@ -1,23 +1,23 @@
 "use client";
 
+import { useForm } from "react-hook-form";
+import { useState } from "react";
+import Image from "next/image";
+import toast from "react-hot-toast";
+
 import HeroImg from "~/app/assets/auth-hero.jpg";
 
-import Image from "next/image";
-import { Button } from "~/components/Button/Button";
-import { AuthInput, PasswordInput } from "../common";
 import { apiRoutes } from "~/app/api-routes";
-import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
-import { useState } from "react";
 import { useAuthState } from "~/app/providers/auth-state";
-import { useRouter } from "next/navigation";
+import { Button } from "~/components/Button/Button";
+
+import { AuthInput, PasswordInput } from "../common";
 
 function LoginFormContent() {
   const [loading, setLoading] = useState(false);
   const { register, handleSubmit } = useForm<any>();
 
   const authState = useAuthState();
-  // const router = useRouter();
 
   async function handleLogin(payload: any) {
     setLoading(true);

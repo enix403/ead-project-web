@@ -1,20 +1,24 @@
-'use client';
+"use client";
 
 import { PropsWithChildren, useLayoutEffect, useRef } from "react";
 import { getAuthState, useAuthState } from "./auth-state";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 export default function AuthGuard({ children }: PropsWithChildren) {
   const router = useRouter();
-  // const reactiveAuthState = useAuthState();
+  const pathname = usePathname();
+  console.log("pathname", pathname);
+  const reactiveAuthState = useAuthState();
 
   useLayoutEffect(() => {
     const { isLoggedIn } = getAuthState();
     if (!isLoggedIn) {
       router.replace("/login");
+    } else if (isLoggedIn && pathname == "/login") {
+      router.replace("/home");
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reactiveAuthState.isLoggedIn]);
 
   return children;
 }
