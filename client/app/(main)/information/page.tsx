@@ -173,9 +173,9 @@ function InformationPageContent() {
   );
 }
 
-export default function InformationPage({ params }: { params: any }) {
+export default function InformationPage() {
   return (
-    <AppLayout params={params}>
+    <AppLayout>
       <InformationPageContent />
     </AppLayout>
   );

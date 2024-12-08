@@ -46,7 +46,7 @@ function Contents({ pageTitle }: TopNavProps) {
   return (
     <>
       <div className="flex justify-between items-center">
-        <Link href={`/`}>
+        <Link href={`/home`}>
           <Image alt="" src={Logo} className="h-7 w-auto lg:h-10" />
         </Link>
         <div className="flex gap-x-1 items-center">
@@ -89,7 +89,7 @@ function Contents({ pageTitle }: TopNavProps) {
               </Menu>
             </>
           ) : (
-            <Link href="/auth" className="hidden ph:block">
+            <Link href="/login" className="hidden ph:block">
               <Button className="!px-4 !py-1.5 text-sm">
                 Register / Login
               </Button>

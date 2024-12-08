@@ -6,9 +6,9 @@ import { LanguageDrawer } from "./LanguageDrawer";
 import { CurrencyDrawer } from "./CurrencyDrawer";
 
 type AppLayoutProps = PropsWithChildren &
-  TopNavProps & { params: Record<string, string> };
+  TopNavProps;
 
-export function AppLayout({ children, params, ...navProps }: AppLayoutProps) {
+export function AppLayout({ children, ...navProps }: AppLayoutProps) {
   return (
     <>
       <main className="min-h-screen flex flex-col">

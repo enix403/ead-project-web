@@ -6,9 +6,9 @@ import React from "react";
 import { TitleMark } from "~/components/decorations";
 import { PriceListCells } from "./PriceListCells";
 
-export default function ServicesPage({ params }: { params: any }) {
+export default function ServicesPage() {
   return (
-    <AppLayout params={params}>
+    <AppLayout>
       <div className="pb-40 pt-8">
         <div className="app-container max-w-5xl w-full mb-12">
           {/* Title */}

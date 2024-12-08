@@ -16,9 +16,9 @@ import { Button } from "~/components/Button/Button";
 import { repeatNode } from "~/app/utils/markup";
 import { AppLayout } from "~/components/AppLayout/AppLayout";
 
-export default function UserProfile({ params }: { params: any }) {
+export default function UserProfile() {
   return (
-    <AppLayout params={params}>
+    <AppLayout>
       <div className="app-container max-w-6xl w-full mt-8 grid grid-cols-3 gap-6">
         {/* Left Sidebar (Main Profile Section) */}
         <div className="col-span-2">

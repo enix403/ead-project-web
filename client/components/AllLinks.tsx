@@ -21,7 +21,7 @@ export function AllLinks() {
   const viewMode = useViewMode();
   return (
     <>
-      <AppLink href={`/`}>Home</AppLink>
+      <AppLink href={`/home`}>Home</AppLink>
       <AppLink href={`/community`}>Community</AppLink>
       {viewMode === "employer" && (
         <>

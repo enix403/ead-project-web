@@ -88,7 +88,7 @@ function useQuestionsBank() {
 
 export type QuestionsBank = ReturnType<typeof useQuestionsBank>;
 
-export default function CreateJobPage({ params }: { params: any }) {
+export default function CreateJobPage() {
   let [pageIndex, setPageIndex] = useState(0);
   const { register, getValues } = useForm<any>();
 
@@ -205,7 +205,7 @@ export default function CreateJobPage({ params }: { params: any }) {
   );
 
   return (
-    <AppLayout pageTitle="Jobs" params={params}>
+    <AppLayout pageTitle="Jobs">
       <div className="flex-1 flex items-start">
         <div className="flex-1 px-7 py-8">
           <StepComponent

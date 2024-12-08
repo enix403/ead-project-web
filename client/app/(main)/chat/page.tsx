@@ -108,9 +108,9 @@ function ChatContent() {
   );
 }
 
-export default function ChatPage({ params }: { params: any }) {
+export default function ChatPage() {
   return (
-    <AppLayout params={params}>
+    <AppLayout>
       <ChatContent />
     </AppLayout>
   );

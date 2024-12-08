@@ -88,9 +88,9 @@ function FormSection() {
   );
 }
 
-export default function ContactUs({ params }: { params: any }) {
+export default function ContactUs() {
   return (
-    <AppLayout params={params}>
+    <AppLayout>
       <div className='app-container w-full pt-14 pb-20'>
         <TopSection />
         <FormSection />

@@ -138,9 +138,9 @@ function Content() {
   );
 }
 
-export default function Community({ params }: { params: any }) {
+export default function Community() {
   return (
-    <AppLayout params={params}>
+    <AppLayout>
       <Content />
     </AppLayout>
   );
