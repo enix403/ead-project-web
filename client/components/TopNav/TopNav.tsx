@@ -27,6 +27,7 @@ import { AllLinks, ViewMode } from "../AllLinks";
 
 import { languageDrawerAtom } from "../AppLayout/LanguageDrawer";
 import { currencyDrawerAtom } from "../AppLayout/CurrencyDrawer";
+import { useAuthState } from "~/app/providers/auth-state";
 
 export interface TopNavProps {
   pageTitle?: string;
@@ -39,6 +40,7 @@ function Contents({ pageTitle, viewMode }: TopNavProps) {
   const setDrawerOpen = useSetAtom(drawerAtom);
   const setLanguageDrawerOpen = useSetAtom(languageDrawerAtom);
   const setCurrencyDrawerOpen = useSetAtom(currencyDrawerAtom);
+  const { logout } = useAuthState();
 
   let loggedIn = true;
 
@@ -68,7 +70,7 @@ function Contents({ pageTitle, viewMode }: TopNavProps) {
                   </button>
                 </MenuHandler>
                 <MenuList>
-                  <MenuItem>Logout</MenuItem>
+                  <MenuItem onClick={() => logout()}>Logout</MenuItem>
                   <MenuItem
                     onClick={() => setLanguageDrawerOpen(true)}
                     className="flex justify-between items-center"

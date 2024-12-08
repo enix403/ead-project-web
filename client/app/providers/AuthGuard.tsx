@@ -7,7 +7,6 @@ import { usePathname, useRouter } from "next/navigation";
 export default function AuthGuard({ children }: PropsWithChildren) {
   const router = useRouter();
   const pathname = usePathname();
-  console.log("pathname", pathname);
   const reactiveAuthState = useAuthState();
 
   useLayoutEffect(() => {
