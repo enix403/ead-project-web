@@ -16,6 +16,8 @@ import { ProposalCard } from "~/components/ProposalCard";
 import { ProposalsFilter } from "./ProposalsFilter";
 import { DivProps } from "react-html-props";
 import { Filters } from "./filters/Filters";
+import { useQuery } from "@tanstack/react-query";
+import { apiRoutes } from "~/app/api-routes";
 
 function PageTitle(props: DivProps) {
   return (
@@ -137,6 +139,13 @@ function SearchControls(props: DivProps) {
 }
 
 export default function HomeProposalsPage({ params }: { params: any }) {
+  const { isLoading, data: jobs } = useQuery<any[]>({
+    queryKey: ["searchJobs"],
+    queryFn: () => apiRoutes.searchJobs(),
+    initialData: [],
+    placeholderData: [],
+  });
+
   return (
     <AppLayout pageTitle="Proposals" params={params}>
       <div className="app-container py-8 w-full">
@@ -154,10 +163,9 @@ export default function HomeProposalsPage({ params }: { params: any }) {
         </div>
 
         <div className="mt-4 grid wl:grid-cols-2 gap-6">
-          <ProposalCard isBestMatch />
-          <ProposalCard />
-          <ProposalCard />
-          <ProposalCard />
+          {jobs.map((job, index) => (
+            <ProposalCard key={job._id} isBestMatch={index == 0} />
+          ))}
         </div>
         <Button variant="outlined" className="mx-auto mt-8 mb-4" fullRounded>
           Load More
