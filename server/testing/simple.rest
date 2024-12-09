@@ -24,7 +24,7 @@ POST {{baseUrl}}/auth/register
 POST {{baseUrl}}/auth/login
 
 {
-  "email": "user1@gmail.com",
+  "email": "user2@gmail.com",
   "password": "pass"
 }
 ###
@@ -32,3 +32,6 @@ POST {{baseUrl}}/auth/login
 
 ###
 # -------------------------
+
+GET {{baseUrl}}/employer/my-postings
+Authorization: Bearer {{accessToken}}

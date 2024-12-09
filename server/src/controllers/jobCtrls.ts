@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { Types } from 'mongoose'
+import { Types } from 'mongoose';
 
 import { JobPostingModel } from 'db/models/jobPosting';
 import { JobApplicationModel } from 'db/models/jobApplication';
@@ -112,7 +112,15 @@ export async function getEmployerPostingsController(
   req: Request,
   res: Response,
 ) {
-  const postings = await JobPostingModel.find({ posterId: req.user!._id });
+  const postings = await JobPostingModel.find({
+    posterId: req.user!._id,
+  }).populate({
+    path: 'applications',
+    populate: {
+      path: 'employeeId',
+    },
+  });
+
   res.json(postings);
 }
 

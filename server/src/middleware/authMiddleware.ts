@@ -15,8 +15,6 @@ const applyAuthToken = async (
 ): Promise<IUser | null> => {
   const token = req.header('Authorization')?.split(' ')[1];
 
-  logger.warn('middleware checking token...');
-
   if (!token) {
     res.status(401).json({ message: 'No token provided.' });
     logger.warn(`Unauthenticated access attempt: No token provided`);
