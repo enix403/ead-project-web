@@ -17,7 +17,7 @@ export function JobPostingCard({
       user={posting?.poster}
       title={posting?.title}
       subtitle={posting?.description}
-      tag={isBestMatch ? "Best Match" : null}
+      tag={isBestMatch && "Best Match"}
       withFavouriteToggle
       isFavourite={isFavourite}
       setIsFavourite={setIsFavourite}

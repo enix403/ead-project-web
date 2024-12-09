@@ -70,7 +70,7 @@ export function HomePostings() {
           <span>Loading...</span>
         </div>
       ) : (
-        postings.map((posting, index) => (
+        postings.map((posting) => (
           <JobPostingCard
             key={posting._id}
             posting={posting}
