@@ -1,13 +1,13 @@
 @baseUrl = http://localhost:4201/api
 
 ###
-
+# @name QueryHealth
 GET {{baseUrl}}/health
 Authorization: Bearer {{accessToken}}
 
 ###
 # -------------------------
-
+# @name CmdRegister
 POST {{baseUrl}}/auth/register
 
 {
@@ -19,8 +19,7 @@ POST {{baseUrl}}/auth/register
 
 ###
 # -------------------------
-
-# @name login
+# @name CmdLogin
 POST {{baseUrl}}/auth/login
 
 {
@@ -28,38 +27,39 @@ POST {{baseUrl}}/auth/login
   "password": "pass"
 }
 ###
-@accessToken = {{login.response.body.$.token}}
+@accessToken = {{CmdLogin.response.body.$.token}}
 
 ###
 # -------------------------
-
+# @name QueryEmployerPostings
 GET {{baseUrl}}/employer/my-postings
 Authorization: Bearer {{accessToken}}
 
 ###
 # -------------------------
+# @name CmdUpdateJobActiveStatus
+PATCH {{baseUrl}}/job/674f55d17c5310d7dab48b36/update-status
+Authorization: Bearer {{accessToken}}
 
-# PATCH {{baseUrl}}/job/674f55d17c5310d7dab48b36/update-status
-# Authorization: Bearer {{accessToken}}
-
-# {
-#   "isActive": true
-# }
+{
+  "isActive": true
+}
 
 ###
 # -------------------------
-
+# @name QueryCommunity
 GET {{baseUrl}}/community
 Authorization: Bearer {{accessToken}}
 
 ###
 # -------------------------
-
+# @name QueryPostings
 GET {{baseUrl}}/job/search
 Authorization: Bearer {{accessToken}}
 
 ###
 # -------------------------
+# @name CmdMarkPostingFavourite
 PATCH {{baseUrl}}/mark-posting-favourite
 Authorization: Bearer {{accessToken}}
 
@@ -70,6 +70,18 @@ Authorization: Bearer {{accessToken}}
 
 ###
 # -------------------------
-
+# @name QueryPostingFavourites
 GET {{baseUrl}}/posting-favourites
 Authorization: Bearer {{accessToken}}
+
+
+###
+# -------------------------
+# @name CmdEmployeeApplyToPosting
+POST {{baseUrl}}/job/apply
+Authorization: Bearer {{accessToken}}
+
+{
+  "postingId": "674f55d17c5310d7dab48b36",
+  "answers": []
+}

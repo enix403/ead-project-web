@@ -1,4 +1,5 @@
 import express from 'express';
+import ah from 'express-async-handler';
 
 import Joi from 'joi';
 
@@ -98,59 +99,23 @@ router.get(
 
 /* ----------------------------------- */
 
-const jobApplicationSchema = Joi.object({
-  jobId: Joi.string().hex().length(24).required(),
-  answers: Joi.array()
-    .items(
-      Joi.object({
-        question: Joi.string().required(),
-        answer: Joi.string().required(),
-      }),
-    )
-    .required(),
-});
-
-/**
- * @swagger
- * /api/job/{jobId}/apply:
- *   post:
- *     summary: Apply to a job
- *     description: Allows an employee to apply for a specific job.
- *     parameters:
- *       - in: path
- *         name: jobId
- *         required: true
- *         schema:
- *           type: string
- *         description: ID of the job to apply to.
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               answers:
- *                 type: array
- *                 items:
- *                   type: object
- *                   properties:
- *                     question:
- *                       type: string
- *                     answer:
- *                       type: string
- *                 description: List of answers to job-related questions.
- *     responses:
- *       201:
- *         description: Job application created successfully.
- *       403:
- *         description: Forbidden.
- */
 router.post(
-  '/api/job/:jobId/apply',
+  '/api/job/apply',
   requireAuthenticated(['employee']),
-  validateJoi(jobApplicationSchema),
-  applyJobController,
+  validateJoi(
+    Joi.object({
+      postingId: Joi.string().hex().length(24).required(),
+      answers: Joi.array()
+        .items(
+          Joi.object({
+            question: Joi.string().required(),
+            answer: Joi.string().required(),
+          }),
+        )
+        .required(),
+    }),
+  ),
+  ah(applyJobController),
 );
 
 /* ----------------------------------- */
@@ -241,19 +206,19 @@ const jobPostingSchema = Joi.object({
     .valid('required', 'notRequired', 'mopedProvided', 'carProvided')
     .required(),
 
-  companyName: Joi.string().allow("").optional(),
-  companyUsername: Joi.string().allow("").optional(),
-  companyDescription: Joi.string().allow("").optional(),
-  companyWebsite: Joi.string().allow("").optional(),
-  companyLogoUrl: Joi.string().allow("").optional(),
-  companyCountry: Joi.string().allow("").optional(),
-  companyCity: Joi.string().allow("").optional(),
-  companyArea: Joi.string().allow("").optional(),
-  companyZip: Joi.string().allow("").optional(),
-  companyMapAddress: Joi.string().allow("").optional(),
+  companyName: Joi.string().allow('').optional(),
+  companyUsername: Joi.string().allow('').optional(),
+  companyDescription: Joi.string().allow('').optional(),
+  companyWebsite: Joi.string().allow('').optional(),
+  companyLogoUrl: Joi.string().allow('').optional(),
+  companyCountry: Joi.string().allow('').optional(),
+  companyCity: Joi.string().allow('').optional(),
+  companyArea: Joi.string().allow('').optional(),
+  companyZip: Joi.string().allow('').optional(),
+  companyMapAddress: Joi.string().allow('').optional(),
 
   questions: Joi.array().items(Joi.string()).optional(),
-  postedAt: Joi.date().allow("").optional(),
+  postedAt: Joi.date().allow('').optional(),
 });
 
 /**

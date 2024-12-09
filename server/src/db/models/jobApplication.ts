@@ -1,7 +1,7 @@
 import { Schema, model, Types, Document } from 'mongoose';
 
 export interface IJobApplication extends Document<Types.ObjectId> {
-  jobId: Types.ObjectId;
+  postingId: Types.ObjectId;
   jobPosterId: Types.ObjectId;
   employeeId: Types.ObjectId;
   appliedAt: Date;
@@ -17,7 +17,7 @@ export interface IJobApplication extends Document<Types.ObjectId> {
 
 const jobApplicationSchema = new Schema<IJobApplication>(
   {
-    jobId: { type: Schema.Types.ObjectId, ref: 'JobPosting', required: true },
+    postingId: { type: Schema.Types.ObjectId, ref: 'JobPosting', required: true },
     jobPosterId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     employeeId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     appliedAt: { type: Date, default: Date.now },
@@ -41,6 +41,20 @@ const jobApplicationSchema = new Schema<IJobApplication>(
     toObject: { virtuals: true },
   },
 );
+
+jobApplicationSchema.virtual('posting', {
+  ref: 'JobPosting',
+  localField: 'postingId',
+  foreignField: '_id',
+  justOne: true
+});
+
+jobApplicationSchema.virtual('poster', {
+  ref: 'User',
+  localField: 'jobPosterId',
+  foreignField: '_id',
+  justOne: true
+});
 
 jobApplicationSchema.virtual('applicant', {
   ref: 'User',

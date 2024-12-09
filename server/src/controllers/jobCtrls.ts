@@ -3,6 +3,7 @@ import { Types } from 'mongoose';
 
 import { JobPostingModel } from 'db/models/jobPosting';
 import { JobApplicationModel } from 'db/models/jobApplication';
+import { ApplicationError, NotFound } from 'experimental/errors';
 
 // GET /api/job/search'
 export async function searchJobController(req: Request, res: Response) {
@@ -29,24 +30,35 @@ export async function getJobDetailsController(req: Request, res: Response) {
 
 /* ----------------------------------- */
 
-// POST /api/job/:jobId/apply
+// POST /api/job/apply
 export async function applyJobController(req: Request, res: Response) {
-  const { jobId } = req.params;
+  const { postingId, answers } = req.body;
+  const employeeId = req.user!._id;
 
   // Fetch the job posting to retrieve the job poster's ID
-  const jobPosting = await JobPostingModel.findById(jobId);
-  if (!jobPosting) return res.status(404).json({ message: 'Job not found' });
+  const posting = await JobPostingModel.findById(postingId);
+  if (!posting) throw new NotFound();
+
+  const existingAppl = await JobApplicationModel.findOne({
+    employeeId,
+    postingId,
+  });
+  if (existingAppl) {
+    throw new ApplicationError('Already applied to this job');
+  }
 
   // Create the application with the job poster's ID
   const application = new JobApplicationModel({
-    jobId,
-    employeeId: req.user!._id,
-    jobPosterId: jobPosting.posterId,
+    postingId,
+    employeeId,
+    jobPosterId: posting.posterId,
+    answers,
+    decision: 'waiting',
     appliedAt: new Date(),
-    answers: req.body.answers,
   });
 
   await application.save();
+
   res
     .status(201)
     .json({ message: 'Application submitted successfully', application });
