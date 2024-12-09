@@ -128,6 +128,12 @@ export const apiRoutes = {
   /* ========================= */
   getCommunity: jsonDecl(wq`/api/community`),
 
+  /* ========================= */
+  /* ======= Favourites ====== */
+  /* ========================= */
+  getPostingFavourites: jsonDecl(`/api/posting-favourites`),
+  markPostingFavourite: payloadDecl(`/api/mark-posting-favourite`, { method: "PATCH" }),
+
   /* ========================== */
   /* ======= Job Routes ======= */
   /* ========================== */

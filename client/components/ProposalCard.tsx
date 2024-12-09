@@ -9,15 +9,17 @@ export function ProposalCard({
   job,
   isBestMatch,
   footer,
+  isFavourite,
+  setIsFavourite,
   showLikedButton = true,
 }: {
   job?: any,
   isBestMatch?: boolean;
   footer?: ReactNode;
+  isFavourite: boolean;
+  setIsFavourite: (fav: boolean) => void;
   showLikedButton?: boolean;
 }) {
-  const [fav, setFav] = useState(false);
-
   return (
     <div className="border-gray-line-2/50 border rounded-xl px-5 py-5">
       <header className="flex items-start">
@@ -46,10 +48,10 @@ export function ProposalCard({
           <IconButton
             className="ml-auto"
             variant="text"
-            onClick={() => setFav((prev) => !prev)}
+            onClick={() => setIsFavourite(!isFavourite)}
           >
             <IconHeartFilled
-              className={clsx(fav ? "text-x-ctrl-purple" : "text-gray-600/30")}
+              className={clsx(isFavourite ? "text-x-ctrl-purple" : "text-gray-600/30")}
             />
           </IconButton>
         )}

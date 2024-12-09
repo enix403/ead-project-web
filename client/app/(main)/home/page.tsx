@@ -1,11 +1,18 @@
 "use client";
 
-import { Fragment, ReactNode, useContext, useState } from "react";
+import {
+  Fragment,
+  ReactNode,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import { Spinner } from "@material-tailwind/react";
-import { useQuery } from "@tanstack/react-query";
+import { useQueries, useQuery } from "@tanstack/react-query";
 import { IconAdjustmentsHorizontal, IconSearch } from "@tabler/icons-react";
 import { Tab, TabGroup, TabList } from "@headlessui/react";
 import clsx from "clsx";
+import { produce } from 'immer';
 
 import PIconBriefcase from "~/app/assets/p-briefcase.svg";
 import PIconPlus from "~/app/assets/p-plus.svg";
@@ -140,12 +147,70 @@ function SearchControls(props: DivProps) {
 }
 
 export default function HomeProposalsPage() {
-  const { isLoading, data: jobs } = useQuery<any[]>({
+  /* const { isLoading, data: postings } = useQuery<any[]>({
     queryKey: ["searchJobs"],
     queryFn: () => apiRoutes.searchJobs(),
     initialData: [],
     placeholderData: [],
+  }); */
+
+  const combineQueries = useCallback((results) => {
+    const [favsQuery, postingsQuery] = results;
+    return {
+      isLoading: favsQuery.isLoading || postingsQuery.isLoading,
+      postings: postingsQuery.data,
+      serverPostingFavouriteMarks: favsQuery.data,
+    };
+  }, []);
+
+  const { isLoading, postings, serverPostingFavouriteMarks } = useQueries({
+    queries: [
+      {
+        queryKey: ["getPostingFavourites"],
+        queryFn: () => apiRoutes.getPostingFavourites(),
+        initialData: [],
+        placeholderData: [],
+      },
+      {
+        queryKey: ["searchJobs"],
+        queryFn: () => apiRoutes.searchJobs(),
+        initialData: [],
+        placeholderData: [],
+      },
+    ],
+    combine: combineQueries,
   });
+
+  const [favouriteIds, setFavouriteIds] = useState<any[]>([]);
+
+  useEffect(() => {
+    const ids = serverPostingFavouriteMarks.map((mark) => mark["postingId"]);
+    setFavouriteIds(ids);
+  }, [serverPostingFavouriteMarks]);
+
+  async function markFavourite(posting: string, isFavourite: boolean) {
+    const postingId = posting["_id"];
+
+    setFavouriteIds((currentFavouriteIds) =>
+      produce(currentFavouriteIds, (draft) => {
+        if (isFavourite) {
+          // Add the postingId if not already present
+          if (!draft.includes(postingId)) {
+            draft.push(postingId);
+          }
+        } else {
+          // Remove the postingId if already present
+          const index = draft.indexOf(postingId);
+          if (index !== -1) {
+            draft.splice(index, 1);
+          }
+        }
+      })
+    );
+
+    let result = await apiRoutes.markPostingFavourite({ postingId, isFavourite });
+    console.log(result);
+  }
 
   return (
     <AppLayout pageTitle="Proposals">
@@ -170,8 +235,16 @@ export default function HomeProposalsPage() {
               <span>Loading...</span>
             </div>
           ) : (
-            jobs.map((job, index) => (
-              <ProposalCard key={job._id} job={job} isBestMatch={index == 0} />
+            postings.map((posting, index) => (
+              <ProposalCard
+                key={posting._id}
+                job={posting}
+                // isBestMatch={index == 0}
+                isFavourite={favouriteIds.includes(posting["_id"])}
+                setIsFavourite={(isFavourite) =>
+                  markFavourite(posting, isFavourite)
+                }
+              />
             ))
           )}
         </div>
