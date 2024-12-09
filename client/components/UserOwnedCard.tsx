@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import Link from "next/link";
+import { ReactNode } from "react";
 import { Avatar, Badge, IconButton } from "@material-tailwind/react";
 import { IconHeartFilled } from "@tabler/icons-react";
 
@@ -12,7 +13,16 @@ export function UserOwnedCard({
   isFavourite = false,
   setIsFavourite = () => {},
   actions,
-}: any) {
+}: {
+  user?: any,
+  title?: ReactNode,
+  subtitle?: ReactNode,
+  tag?: ReactNode,
+  withFavouriteToggle?: boolean,
+  isFavourite?: boolean,
+  setIsFavourite?: (fav: boolean) => void;
+  actions?: ReactNode,
+}) {
   return (
     <div className="border-gray-line-2/50 border rounded-xl px-5 py-5">
       <header className="flex items-start">

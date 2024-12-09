@@ -2,7 +2,6 @@ import { Button } from "~/components/Button/Button";
 import { Input, TextArea } from "~/components/Input/Input";
 import { Select } from "~/components/Select/Select";
 import { FormLabel } from "~/components/FormLabel/FormLabel";
-import { JobPostingCard } from "~/components/JobPostingCard";
 import { StepForm, StepProps } from "./common";
 
 import allJobs from "../jobs.json";
@@ -10,15 +9,13 @@ import { ChangeEvent, useEffect, useState } from "react";
 
 function ProposalTemplateCard() {
   return (
-    <JobPostingCard
-      posting={{}}
-      showLikedButton={false}
-      footer={
-        <div className="mt-4 flex items-center gap-x-2 mb-4">
-          <Button fullRounded>Use this template</Button>
-        </div>
-      }
-    />
+    <div className="border-gray-line-2/50 border rounded-xl px-5 py-5">
+      <h3 className="font-semibold text-lg mt-3">Automation Engineer</h3>
+      <p className="text-black/70 mt-1">Automation Engineer Description</p>
+      <div className="mt-4 flex items-center gap-x-2 mb-4">
+        <Button fullRounded>Use this template</Button>
+      </div>
+    </div>
   );
 }
 

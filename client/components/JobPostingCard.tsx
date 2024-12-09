@@ -1,4 +1,3 @@
-import { ReactNode } from "react";
 import { Button } from "~/components/Button/Button";
 import { UserOwnedCard } from "./UserOwnedCard";
 
