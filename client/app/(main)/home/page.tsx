@@ -1,18 +1,12 @@
 "use client";
 
-import {
-  Fragment,
-  ReactNode,
-  useCallback,
-  useEffect,
-  useState,
-} from "react";
+import { Fragment, ReactNode, useCallback, useEffect, useState } from "react";
 import { Spinner } from "@material-tailwind/react";
 import { useQueries, useQuery } from "@tanstack/react-query";
 import { IconAdjustmentsHorizontal, IconSearch } from "@tabler/icons-react";
 import { Tab, TabGroup, TabList } from "@headlessui/react";
 import clsx from "clsx";
-import { produce } from 'immer';
+import { produce } from "immer";
 
 import PIconBriefcase from "~/app/assets/p-briefcase.svg";
 import PIconPlus from "~/app/assets/p-plus.svg";
@@ -147,43 +141,28 @@ function SearchControls(props: DivProps) {
 }
 
 export default function HomeProposalsPage() {
-  /* const { isLoading, data: postings } = useQuery<any[]>({
+  const favsQuery = useQuery<any[] | null>({
+    queryKey: ["getPostingFavourites"],
+    queryFn: () => apiRoutes.getPostingFavourites(),
+    initialData: null,
+    placeholderData: null,
+  });
+
+  const postingsQuery = useQuery<any[]>({
     queryKey: ["searchJobs"],
     queryFn: () => apiRoutes.searchJobs(),
     initialData: [],
     placeholderData: [],
-  }); */
-
-  const combineQueries = useCallback((results) => {
-    const [favsQuery, postingsQuery] = results;
-    return {
-      isLoading: favsQuery.isLoading || postingsQuery.isLoading,
-      postings: postingsQuery.data,
-      serverPostingFavouriteMarks: favsQuery.data,
-    };
-  }, []);
-
-  const { isLoading, postings, serverPostingFavouriteMarks } = useQueries({
-    queries: [
-      {
-        queryKey: ["getPostingFavourites"],
-        queryFn: () => apiRoutes.getPostingFavourites(),
-        initialData: [],
-        placeholderData: [],
-      },
-      {
-        queryKey: ["searchJobs"],
-        queryFn: () => apiRoutes.searchJobs(),
-        initialData: [],
-        placeholderData: [],
-      },
-    ],
-    combine: combineQueries,
   });
+
+  const isLoading = favsQuery.isLoading || postingsQuery.isLoading;
+  const postings = postingsQuery.data;
+  const serverPostingFavouriteMarks = favsQuery.data;
 
   const [favouriteIds, setFavouriteIds] = useState<any[]>([]);
 
   useEffect(() => {
+    if (serverPostingFavouriteMarks == null) return;
     const ids = serverPostingFavouriteMarks.map((mark) => mark["postingId"]);
     setFavouriteIds(ids);
   }, [serverPostingFavouriteMarks]);
@@ -208,7 +187,10 @@ export default function HomeProposalsPage() {
       })
     );
 
-    let result = await apiRoutes.markPostingFavourite({ postingId, isFavourite });
+    let result = await apiRoutes.markPostingFavourite({
+      postingId,
+      isFavourite,
+    });
     console.log(result);
   }
 
