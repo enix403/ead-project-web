@@ -76,8 +76,9 @@ export default function Community() {
               community.map((user, index) => (
                 <PersonCard
                   key={user["_id"]}
+                  user={user}
                   index={index}
-                  isFriend={[1, 2, 4].includes(index)}
+                  isFriend={false}
                 />
               ))
             )}

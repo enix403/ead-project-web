@@ -21,9 +21,11 @@ const variants = {
 };
 
 export function PersonCard({
+  user,
   index,
   isFriend = false,
 }: {
+  user: any;
   index: number;
   isFriend?: boolean;
 }) {
@@ -62,7 +64,7 @@ export function PersonCard({
         href="user"
         className="text-teal hover:underline font-bold text-xl mt-3"
       >
-        Yiannis M.
+        {user.fullName}
       </Link>
       <h2 className="text-gray-500 font-medium text-center max-w-[80%] !leading-4 mt-1.5">
         Chef - Mediterranean Cuisine, Experience in Hotel and Restaurant
