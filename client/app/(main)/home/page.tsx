@@ -1,12 +1,13 @@
 "use client";
 
-import { Fragment, ReactNode, useCallback, useEffect, useState } from "react";
-import { Spinner } from "@material-tailwind/react";
-import { useQueries, useQuery } from "@tanstack/react-query";
-import { IconAdjustmentsHorizontal, IconSearch } from "@tabler/icons-react";
-import { Tab, TabGroup, TabList } from "@headlessui/react";
 import clsx from "clsx";
 import { produce } from "immer";
+import { Fragment, ReactNode, useEffect, useState } from "react";
+import { DivProps } from "react-html-props";
+import { useQuery } from "@tanstack/react-query";
+import { Spinner } from "@material-tailwind/react";
+import { Tab, TabGroup, TabList } from "@headlessui/react";
+import { IconAdjustmentsHorizontal, IconSearch } from "@tabler/icons-react";
 
 import PIconBriefcase from "~/app/assets/p-briefcase.svg";
 import PIconPlus from "~/app/assets/p-plus.svg";
@@ -15,11 +16,12 @@ import PIconEye from "~/app/assets/p-eye.svg";
 import { AppLayout } from "~/components/AppLayout/AppLayout";
 import { Button } from "~/components/Button/Button";
 import { Select } from "~/components/Select/Select";
-import { ProposalCard } from "~/components/ProposalCard";
-import { DivProps } from "react-html-props";
-import { Filters } from "./filters/Filters";
+import { JobPostingCard } from "~/components/JobPostingCard";
+
 import { apiRoutes } from "~/app/api-routes";
 import { useViewMode } from "~/app/providers/auth-state";
+
+import { Filters } from "./filters/Filters";
 
 function PageTitle(props: DivProps) {
   return (
@@ -200,12 +202,10 @@ export default function HomeProposalsPage() {
         <div className="hidden md:block flex-1">
           <PageTitle />
           <PrimaryTabs className="mt-5" />
-          {/* <ProposalsFilter className="mt-7" /> */}
           <SearchControls className="mt-4" />
         </div>
         <div className="md:hidden block flex-1">
           <PrimaryTabs />
-          {/* <ProposalsFilter className="mt-5" /> */}
           <PageTitle className="mt-4" />
           <SearchControls className="mt-4" />
         </div>
@@ -218,7 +218,7 @@ export default function HomeProposalsPage() {
             </div>
           ) : (
             postings.map((posting, index) => (
-              <ProposalCard
+              <JobPostingCard
                 key={posting._id}
                 posting={posting}
                 // isBestMatch={index == 0}

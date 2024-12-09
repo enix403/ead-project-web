@@ -20,7 +20,7 @@ const variants = {
   hidden: { opacity: 0, y: 80 },
 };
 
-export function PersonCard({
+export function CommunityItemCard({
   user,
   index,
   isFriend = false,

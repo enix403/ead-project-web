@@ -2,15 +2,16 @@ import { Button } from "~/components/Button/Button";
 import { Input, TextArea } from "~/components/Input/Input";
 import { Select } from "~/components/Select/Select";
 import { FormLabel } from "~/components/FormLabel/FormLabel";
-import { ProposalCard } from "~/components/ProposalCard";
+import { JobPostingCard } from "~/components/JobPostingCard";
 import { StepForm, StepProps } from "./common";
 
 import allJobs from "../jobs.json";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 
 function ProposalTemplateCard() {
   return (
-    <ProposalCard
+    <JobPostingCard
+      posting={{}}
       showLikedButton={false}
       footer={
         <div className="mt-4 flex items-center gap-x-2 mb-4">

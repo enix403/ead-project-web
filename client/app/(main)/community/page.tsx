@@ -2,16 +2,17 @@
 
 import clsx from "clsx";
 import { motion } from "framer-motion";
+import { useQuery } from "@tanstack/react-query";
+import { Spinner } from "@material-tailwind/react";
+import { IconSearch } from "@tabler/icons-react";
 
 import { AppLayout } from "~/components/AppLayout/AppLayout";
-import { IconSearch } from "@tabler/icons-react";
 import { FormLabel } from "~/components/FormLabel/FormLabel";
 import { Select } from "~/components/Select/Select";
 
-import { PersonCard } from "./PersonCard";
-import { useQuery } from "@tanstack/react-query";
 import { apiRoutes } from "~/app/api-routes";
-import { Spinner } from "@material-tailwind/react";
+
+import { CommunityItemCard } from "./CommunityItemCard";
 
 export default function Community() {
   const { isLoading, data: community } = useQuery<any[]>({
@@ -74,7 +75,7 @@ export default function Community() {
               </div>
             ) : (
               community.map((user, index) => (
-                <PersonCard
+                <CommunityItemCard
                   key={user["_id"]}
                   user={user}
                   index={index}

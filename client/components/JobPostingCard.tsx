@@ -1,23 +1,24 @@
-import { ReactNode, useState } from "react";
 import clsx from "clsx";
-import { Avatar, Badge, IconButton } from "@material-tailwind/react";
-import { Button } from "~/components/Button/Button";
-import { IconHeartFilled } from "@tabler/icons-react";
 import Link from "next/link";
+import { ReactNode } from "react";
+import { Avatar, Badge, IconButton } from "@material-tailwind/react";
+import { IconHeartFilled } from "@tabler/icons-react";
 
-export function ProposalCard({
+import { Button } from "~/components/Button/Button";
+
+export function JobPostingCard({
   posting,
   isBestMatch,
   footer,
-  isFavourite,
+  isFavourite = false,
   setIsFavourite,
   showLikedButton = true,
 }: {
-  posting?: any,
+  posting: any,
   isBestMatch?: boolean;
   footer?: ReactNode;
-  isFavourite: boolean;
-  setIsFavourite: (fav: boolean) => void;
+  isFavourite?: boolean;
+  setIsFavourite?: (fav: boolean) => void;
   showLikedButton?: boolean;
 }) {
   return (
@@ -48,7 +49,7 @@ export function ProposalCard({
           <IconButton
             className="ml-auto"
             variant="text"
-            onClick={() => setIsFavourite(!isFavourite)}
+            onClick={() => setIsFavourite?.(!isFavourite)}
           >
             <IconHeartFilled
               className={clsx(isFavourite ? "text-x-ctrl-purple" : "text-gray-600/30")}
