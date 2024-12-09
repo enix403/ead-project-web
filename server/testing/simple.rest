@@ -35,3 +35,13 @@ POST {{baseUrl}}/auth/login
 
 GET {{baseUrl}}/employer/my-postings
 Authorization: Bearer {{accessToken}}
+
+###
+# -------------------------
+
+PATCH {{baseUrl}}/job/674f55d17c5310d7dab48b36/update-status
+Authorization: Bearer {{accessToken}}
+
+{
+  "isActive": true
+}

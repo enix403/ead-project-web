@@ -5,17 +5,23 @@ import {
   IconScanPosition,
 } from "@tabler/icons-react";
 import { atom, useAtom } from "jotai";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import Link from "next/link";
 import clsx from "clsx";
 
 import { ApplicantsList } from "./ApplicantsList";
 import { ApplicantsGrid } from "./ApplicantsGrid";
+import { apiRoutes } from "~/app/api-routes";
+import toast from "react-hot-toast";
+import { useQueryClient } from "@tanstack/react-query";
 
 const displayAtom = atom<"list" | "grid">("list");
 
 export function PostingCard({ posting }: { posting: any }) {
+  const [updatingStatus, setUpdatingStatus] = useState(false);
+
   const [display, setDisplay] = useAtom(displayAtom);
+  const queryClient = useQueryClient();
 
   const toggle = useCallback(
     () => setDisplay((x) => (x === "grid" ? "list" : "grid")),
@@ -25,24 +31,46 @@ export function PostingCard({ posting }: { posting: any }) {
   const DisplayIcon =
     display === "list" ? IconListDetails : IconLayoutDashboard;
 
-  const active = posting.isActive || false;
-  const applications = posting.applications || [];
+  async function updateStatus(isActive: boolean) {
+    // updateJobStatus
+    const responsePromise = apiRoutes.updateJobStatus(
+      { isActive },
+      posting._id
+    );
+
+    setUpdatingStatus(true);
+    try {
+      let result = await toast.promise(responsePromise, {
+        loading: "updatingStatus...",
+        success:
+          "Marked " + (isActive ? "active" : "inactive") + " successfully",
+        error: "Error occured",
+      });
+      console.log(result);
+      queryClient.invalidateQueries({ queryKey: ["getMyPostings"] });
+    } finally {
+      setUpdatingStatus(false);
+    }
+  }
+
+  let isActive = posting["isActive"] || false;
+  const applications = posting["applications"] || [];
 
   return (
     <div
       className={clsx(
         "rounded-xl px-5 py-5",
-        active ? "border-x-purple border-2" : "border border-gray-line-2/80"
+        isActive ? "border-x-purple border-2" : "border border-gray-line-2/80"
       )}
     >
       <div className="flex items-center justify-between gap-x-3">
         <span
           className={clsx(
-            "bg-x-purple text-white font-bold px-2 py-1.5 text-fine rounded-md",
-            !active && "invisible"
+            "text-white font-bold px-2 py-1.5 text-fine rounded-md",
+            isActive ? "bg-x-purple" : "bg-red-500"
           )}
         >
-          Active
+          {isActive ? "Active" : "Inactive"}
         </span>
         <Link href="create-job">
           <Button
@@ -84,11 +112,17 @@ export function PostingCard({ posting }: { posting: any }) {
       <div className="flex items-center gap-x-4 pt-4 mt-2 border-t border-gray-line-2">
         <Button
           size="sm"
-          color="red"
+          color={isActive ? "red" : "green"}
           variant="filled"
           className="text-[0.9375rem]"
+          disabled={updatingStatus}
+          onClick={() => {
+            updateStatus(!isActive);
+          }}
         >
-          <span className="!capitalize">Make Inactive</span>
+          <span className="!capitalize">
+            Make {isActive ? "Inactive" : "Active"}
+          </span>
         </Button>
       </div>
     </div>
