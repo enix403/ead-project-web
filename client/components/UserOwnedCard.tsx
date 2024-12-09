@@ -13,19 +13,34 @@ export function UserOwnedCard({
   isFavourite = false,
   setIsFavourite = () => {},
   actions,
+  layout = "default",
 }: {
-  user?: any,
-  title?: ReactNode,
-  subtitle?: ReactNode,
-  tag?: ReactNode,
-  withFavouriteToggle?: boolean,
-  isFavourite?: boolean,
+  user?: any;
+  title?: ReactNode;
+  subtitle?: ReactNode;
+  tag?: ReactNode;
+  withFavouriteToggle?: boolean;
+  isFavourite?: boolean;
   setIsFavourite?: (fav: boolean) => void;
-  actions?: ReactNode,
+  actions?: ReactNode;
+  layout?: "default" | "centered";
 }) {
+  const isCentered = layout === "centered";
+
   return (
-    <div className="border-gray-line-2/50 border rounded-xl px-5 py-5">
-      <header className="flex items-start">
+    <div
+      className={clsx(
+        "border-gray-line-2/50 border rounded-xl px-5 py-5",
+        "flex flex-col",
+        isCentered && "items-center"
+      )}
+    >
+      <header
+        className={clsx(
+          "flex items-start self-stretch relative",
+          isCentered && "justify-center"
+        )}
+      >
         <Badge
           placement="top-start"
           overlap="circular"
@@ -42,23 +57,29 @@ export function UserOwnedCard({
         </Badge>
 
         {tag && (
-          <div className="bg-x-ctrl-purple text-white font-bold px-2 py-1.5 text-fine ml-3 rounded-md">
+          <div
+            className={clsx(
+              "bg-x-ctrl-purple text-white font-bold px-2 py-1.5 text-fine ml-3 rounded-md",
+              isCentered && "absolute left-0 top-0"
+            )}
+          >
             {tag}
           </div>
         )}
 
         {withFavouriteToggle && (
-          <IconButton
-            className="ml-auto"
-            variant="text"
-            onClick={() => setIsFavourite?.(!isFavourite)}
-          >
-            <IconHeartFilled
-              className={clsx(
-                isFavourite ? "text-x-ctrl-purple" : "text-gray-600/30"
-              )}
-            />
-          </IconButton>
+          <div className="absolute right-0 top-0">
+            <IconButton
+              variant="text"
+              onClick={() => setIsFavourite?.(!isFavourite)}
+            >
+              <IconHeartFilled
+                className={clsx(
+                  isFavourite ? "text-x-ctrl-purple" : "text-gray-600/30"
+                )}
+              />
+            </IconButton>
+          </div>
         )}
       </header>
 
