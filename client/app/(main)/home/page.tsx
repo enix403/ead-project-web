@@ -22,6 +22,7 @@ import { apiRoutes } from "~/app/api-routes";
 import { useViewMode } from "~/app/providers/auth-state";
 
 import { Filters } from "./filters/Filters";
+import { UserOwnedCard } from "~/components/UserOwnedCard";
 
 function PageTitle(props: DivProps) {
   return (
