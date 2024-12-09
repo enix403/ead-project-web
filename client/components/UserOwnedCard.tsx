@@ -25,7 +25,7 @@ export function UserOwnedCard({
   actions?: ReactNode;
   layout?: "default" | "centered";
 }) {
-  const isCentered = layout === "centered";
+  let isCentered = layout === "centered";
 
   return (
     <div
@@ -90,8 +90,23 @@ export function UserOwnedCard({
         {user?.fullName ?? "[n/a]"}
       </Link>
 
-      {title && <h3 className="font-semibold text-lg mt-3">{title}</h3>}
-      {subtitle && <p className="text-black/70 mt-1">{subtitle}</p>}
+      {title && (
+        <h3
+          className={clsx(
+            "font-semibold text-lg mt-3",
+            isCentered && "text-center"
+          )}
+        >
+          {title}
+        </h3>
+      )}
+
+
+      {subtitle && (
+        <p className={clsx("text-black/70 mt-1", isCentered && "text-center")}>
+          {subtitle}
+        </p>
+      )}
 
       {actions && (
         <div className="mt-4 flex items-center gap-x-2 mb-4">{actions}</div>
