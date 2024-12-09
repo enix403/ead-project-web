@@ -20,6 +20,8 @@ export function ApplicantsGrid({ applications }: { applications: any[] }) {
 }
 
 function ApplicantCell({ application }: { application: any }) {
+  const applicant = application["applicant"];
+
   return (
     <Card className="border-2 border-teal-dark">
       <CardHeader floated={false}>
@@ -27,7 +29,7 @@ function ApplicantCell({ application }: { application: any }) {
       </CardHeader>
       <CardBody className="text-center">
         <Typography variant="h6" color="blue-gray">
-          Yiannis Andrew
+          {applicant.fullName}
         </Typography>
         <Typography variant="small" color="gray" className="font-normal">
           Senior Software Engineer at Apple | 2021 - 2024
