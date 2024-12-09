@@ -11,7 +11,7 @@ export default function AuthGuard({ children }: PropsWithChildren) {
 
   useLayoutEffect(() => {
     const { isLoggedIn } = getAuthState();
-    if (!isLoggedIn) {
+    if (!isLoggedIn && pathname !== "/login") {
       router.replace("/login");
     } else if ((isLoggedIn && pathname === "/login") || pathname === "/") {
       router.replace("/home");
