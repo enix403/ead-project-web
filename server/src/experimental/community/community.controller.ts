@@ -17,7 +17,7 @@ router.get(
       searchTerm: joi.string().allow(''),
       location: joi.string(),
       jobType: joi.string(),
-      userType: joi.string().valid('individual', 'business'),
+      userType: joi.string().valid('employee', 'individual', 'business'),
     }),
   ),
   ah(async (req, res) => {

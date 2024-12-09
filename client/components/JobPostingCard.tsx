@@ -23,7 +23,7 @@ export function JobPostingCard({
       setIsFavourite={setIsFavourite}
       actions={
         <>
-          <Button fullRounded>Hire</Button>
+          <Button fullRounded>Apply</Button>
           <Button fullRounded variant="outlined">
             Message
           </Button>

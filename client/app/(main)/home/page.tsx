@@ -17,6 +17,7 @@ import { useViewMode } from "~/app/providers/auth-state";
 
 import { Filters } from "./filters/Filters";
 import { HomePostings } from "./HomePostings";
+import { HomeProfiles } from "./HomeProfiles";
 
 function PageTitle(props: DivProps) {
   return (
@@ -138,6 +139,8 @@ function SearchControls(props: DivProps) {
 }
 
 export default function HomeProposalsPage() {
+  const viewMode = useViewMode();
+
   return (
     <AppLayout pageTitle="Proposals">
       <div className="app-container py-8 w-full">
@@ -153,7 +156,7 @@ export default function HomeProposalsPage() {
         </div>
 
         <div className="mt-4 grid wl:grid-cols-2 gap-6">
-          <HomePostings />
+          {viewMode === "employer" ? <HomeProfiles /> : <HomePostings />}
         </div>
         <Button variant="outlined" className="mx-auto mt-8 mb-4" fullRounded>
           Load More
