@@ -13,7 +13,7 @@ export default function AuthGuard({ children }: PropsWithChildren) {
     const { isLoggedIn } = getAuthState();
     if (!isLoggedIn) {
       router.replace("/login");
-    } else if (isLoggedIn && pathname == "/login") {
+    } else if ((isLoggedIn && pathname === "/login") || pathname === "/") {
       router.replace("/home");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

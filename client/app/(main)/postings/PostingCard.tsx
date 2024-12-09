@@ -32,16 +32,15 @@ export function PostingCard({ posting }: { posting: any }) {
     display === "list" ? IconListDetails : IconLayoutDashboard;
 
   async function updateStatus(isActive: boolean) {
-    // updateJobStatus
-    const responsePromise = apiRoutes.updateJobStatus(
-      { isActive },
-      posting._id
-    );
-
     setUpdatingStatus(true);
     try {
+      const responsePromise = apiRoutes.updateJobStatus(
+        { isActive },
+        posting._id
+      );
+
       let result = await toast.promise(responsePromise, {
-        loading: "updatingStatus...",
+        loading: "Updating Status...",
         success:
           "Marked " + (isActive ? "active" : "inactive") + " successfully",
         error: "Error occured",
