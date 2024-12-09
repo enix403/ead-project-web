@@ -220,7 +220,7 @@ export default function HomeProposalsPage() {
             postings.map((posting, index) => (
               <ProposalCard
                 key={posting._id}
-                job={posting}
+                posting={posting}
                 // isBestMatch={index == 0}
                 isFavourite={favouriteIds.includes(posting["_id"])}
                 setIsFavourite={(isFavourite) =>

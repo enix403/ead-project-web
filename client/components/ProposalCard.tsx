@@ -6,14 +6,14 @@ import { IconHeartFilled } from "@tabler/icons-react";
 import Link from "next/link";
 
 export function ProposalCard({
-  job,
+  posting,
   isBestMatch,
   footer,
   isFavourite,
   setIsFavourite,
   showLikedButton = true,
 }: {
-  job?: any,
+  posting?: any,
   isBestMatch?: boolean;
   footer?: ReactNode;
   isFavourite: boolean;
@@ -61,19 +61,19 @@ export function ProposalCard({
         href="user"
         className="text-teal hover:underline font-semibold mt-1"
       >
-        Yiannis M.
+        {posting.poster.fullName}
       </Link>
 
       <h3 className="font-semibold text-lg mt-3">
         {/* Chef - Mediterranean Cuisine, Experience in Hotel and Restaurant */}
         {/* Environments (5 Years) */}
-        {job?.title}
+        {posting?.title}
       </h3>
       <p className="text-black/70 mt-1">
         {/* Hello ! I have worked in similar positions and know the challenges of
         the job very well. Please take a look at my resume and I`m at your
         disposal. */}
-        {job?.description}
+        {posting?.description}
       </p>
 
       {footer ?? (

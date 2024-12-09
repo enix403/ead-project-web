@@ -14,7 +14,7 @@ export async function searchJobController(req: Request, res: Response) {
   if (location) filter.location = new RegExp(location as string, 'i');
   if (jobType) filter.jobType = jobType;
 
-  const jobs = await JobPostingModel.find(filter);
+  const jobs = await JobPostingModel.find(filter).populate('poster');
   res.json(jobs);
 }
 

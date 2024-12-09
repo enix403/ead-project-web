@@ -116,5 +116,12 @@ jobPostingSchema.virtual('applications', {
   foreignField: 'jobId',
 });
 
+jobPostingSchema.virtual('poster', {
+  ref: 'User',
+  localField: 'posterId',
+  foreignField: '_id',
+  justOne: true
+});
+
 // prettier-ignore
 export const JobPostingModel = model('JobPosting', jobPostingSchema);

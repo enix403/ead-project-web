@@ -54,6 +54,12 @@ Authorization: Bearer {{accessToken}}
 
 ###
 # -------------------------
+
+GET {{baseUrl}}/job/search
+Authorization: Bearer {{accessToken}}
+
+###
+# -------------------------
 PATCH {{baseUrl}}/mark-posting-favourite
 Authorization: Bearer {{accessToken}}
 
