@@ -123,6 +123,11 @@ export const apiRoutes = {
   /* ========================== */
   login: payloadDecl(`/api/auth/login`),
 
+  /* ========================= */
+  /* ======= Community ======= */
+  /* ========================= */
+  getCommunity: jsonDecl(wq`/api/community`),
+
   /* ========================== */
   /* ======= Job Routes ======= */
   /* ========================== */
