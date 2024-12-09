@@ -9,6 +9,18 @@ import { PostingFavouriteMarkModel } from 'db/models/favouriteMark';
 
 export const router = express.Router();
 
+router.get(
+  '/api/posting-favourites',
+  requireAuthenticated(),
+  ah(async (req, res) => {
+    const userId = req.user!._id;
+    const marks = await PostingFavouriteMarkModel.find({
+      userId,
+    });
+    return reply(res, marks);
+  }),
+);
+
 router.patch(
   '/api/mark-posting-favourite',
   requireAuthenticated(),

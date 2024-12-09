@@ -59,7 +59,11 @@ Authorization: Bearer {{accessToken}}
 
 {
   "postingId": "674f55d17c5310d7dab48b36",
-  "isFavourite": false
+  "isFavourite": true
 }
 
-# 674f55d17c5310d7dab48b36
+###
+# -------------------------
+
+GET {{baseUrl}}/posting-favourites
+Authorization: Bearer {{accessToken}}
