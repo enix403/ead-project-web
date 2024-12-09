@@ -21,6 +21,8 @@ export function ApplicantsList({ applications }: { applications: any[] }) {
 }
 
 function ApplicantRow({ application }: { application: any }) {
+  const applicant = application["applicant"];
+
   return (
     <ListItem ripple={false}>
       <ListItemPrefix>
@@ -28,7 +30,7 @@ function ApplicantRow({ application }: { application: any }) {
       </ListItemPrefix>
       <div>
         <Typography variant="h6" color="blue-gray">
-          Yiannis Andrew
+          {applicant.fullName}
         </Typography>
         <Typography variant="small" color="gray" className="font-normal">
           Senior Software Engineer at Apple | 2021 - 2024

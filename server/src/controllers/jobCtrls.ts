@@ -117,7 +117,7 @@ export async function getEmployerPostingsController(
   }).populate({
     path: 'applications',
     populate: {
-      path: 'employeeId',
+      path: 'applicant',
     },
   });
 

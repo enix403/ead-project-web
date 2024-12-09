@@ -15,25 +15,38 @@ export interface IJobApplication extends Document<Types.ObjectId> {
   decision: 'accepted' | 'rejected' | 'waiting';
 }
 
-const jobApplicationSchema = new Schema<IJobApplication>({
-  jobId: { type: Schema.Types.ObjectId, ref: 'JobPosting', required: true },
-  jobPosterId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-  employeeId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-  appliedAt: { type: Date, default: Date.now },
+const jobApplicationSchema = new Schema<IJobApplication>(
+  {
+    jobId: { type: Schema.Types.ObjectId, ref: 'JobPosting', required: true },
+    jobPosterId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    employeeId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    appliedAt: { type: Date, default: Date.now },
 
-  answers: [
-    {
-      question: String,
-      answer: String,
+    answers: [
+      {
+        question: String,
+        answer: String,
+      },
+    ],
+
+    isEmployerInterested: { type: Boolean, default: false },
+    decision: {
+      type: String,
+      enum: ['accepted', 'rejected', 'waiting'],
+      default: 'waiting',
     },
-  ],
-
-  isEmployerInterested: { type: Boolean, default: false },
-  decision: {
-    type: String,
-    enum: ['accepted', 'rejected', 'waiting'],
-    default: 'waiting',
   },
+  {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+  },
+);
+
+jobApplicationSchema.virtual('applicant', {
+  ref: 'User',
+  localField: 'employeeId',
+  foreignField: '_id',
+  justOne: true
 });
 
 // prettier-ignore
