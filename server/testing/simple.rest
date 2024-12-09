@@ -24,7 +24,7 @@ POST {{baseUrl}}/auth/register
 POST {{baseUrl}}/auth/login
 
 {
-  "email": "user2@gmail.com",
+  "email": "user1@gmail.com",
   "password": "pass"
 }
 ###
@@ -52,3 +52,14 @@ Authorization: Bearer {{accessToken}}
 GET {{baseUrl}}/community
 Authorization: Bearer {{accessToken}}
 
+###
+# -------------------------
+PATCH {{baseUrl}}/mark-posting-favourite
+Authorization: Bearer {{accessToken}}
+
+{
+  "postingId": "674f55d17c5310d7dab48b36",
+  "isFavourite": false
+}
+
+# 674f55d17c5310d7dab48b36

@@ -14,13 +14,14 @@ router.get(
   requireAuthenticated(),
   validateJoi(
     joi.object({
+      searchTerm: joi.string().allow(''),
       location: joi.string(),
       jobType: joi.string(),
       userType: joi.string().valid('individual', 'business'),
     }),
   ),
   ah(async (req, res) => {
-    const { location, jobType, userType } = req.query;
+    const { searchTerm, location, jobType, userType } = req.query;
 
     const users = await UserModel.find({
       _id: { $ne: req.user!._id },

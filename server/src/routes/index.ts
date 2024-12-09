@@ -7,6 +7,7 @@ import { router as statRouter } from './statRoutes';
 import { router as authRouter } from 'experimental/auth/auth.controller';
 import { router as healthRouter } from 'experimental/health.controller';
 import { router as communityRouter } from 'experimental/community/community.controller';
+import { router as meRouter } from 'experimental/me/me.controller';
 
 export function createRootRouter() {
   const router = express.Router();
@@ -17,6 +18,7 @@ export function createRootRouter() {
   router.use(authRouter);
   router.use(healthRouter);
   router.use(communityRouter);
+  router.use(meRouter);
 
   return router;
 }
