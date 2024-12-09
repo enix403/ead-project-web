@@ -52,35 +52,31 @@ export default function Postings() {
       <div className="pb-8 pt-6">
         <div className="max-w-4xl mx-auto">
           <h3 className="mb-6 text-2xl font-semibold">Your Postings</h3>
-          <Tabs className="mb-6">
+          <Tabs value="A" className="mb-6">
             <TabsHeader>
               <Tab value="A">All</Tab>
               <Tab value="B">Active</Tab>
               <Tab value="C">Expired</Tab>
             </TabsHeader>
-            <TabsBody
-              animate={{
-                initial: {},
-                mount: {},
-                unmount: {},
-              }}
-            >
-              {isLoading ? (
-                <div className="flex items-center gap-x-2 py-3">
-                  <Spinner color="green" />
-                  <span>Loading...</span>
-                </div>
-              ) : (
-                <>
-                  {/* <TabPanel value="A">Hello 1</TabPanel> */}
-                  {/* <TabPanel value="B">Hello 2</TabPanel> */}
-                  {/* <TabPanel value="C">Hello 3</TabPanel> */}
-                  <PostingsListTab value="A" postings={all} />
-                  <PostingsListTab value="B" postings={active} />
-                  <PostingsListTab value="C" postings={expired} />
-                </>
-              )}
-            </TabsBody>
+
+            {isLoading ? (
+              <div className="flex items-center gap-x-2 py-3">
+                <Spinner color="green" />
+                <span>Loading...</span>
+              </div>
+            ) : (
+              <TabsBody
+                animate={{
+                  initial: {},
+                  mount: {},
+                  unmount: {},
+                }}
+              >
+                <PostingsListTab value="A" postings={all} />
+                <PostingsListTab value="B" postings={active} />
+                <PostingsListTab value="C" postings={expired} />
+              </TabsBody>
+            )}
           </Tabs>
         </div>
       </div>

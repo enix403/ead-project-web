@@ -8,6 +8,7 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { IconCheck, IconX } from "@tabler/icons-react";
+import { useInterestMarker } from "./common";
 
 export function ApplicantsGrid({ applications }: { applications: any[] }) {
   return (
@@ -21,6 +22,7 @@ export function ApplicantsGrid({ applications }: { applications: any[] }) {
 
 function ApplicantCell({ application }: { application: any }) {
   const applicant = application["applicant"];
+  const interestMarker = useInterestMarker(application);
 
   return (
     <Card className="border-2 border-teal-dark">
@@ -37,12 +39,26 @@ function ApplicantCell({ application }: { application: any }) {
       </CardBody>
       <CardFooter className="pt-0 flex items-center justify-center gap-x-2">
         <Tooltip content="Interested">
-          <IconButton color="green" variant="text">
+          <IconButton
+            color="green"
+            variant="text"
+            disabled={interestMarker.marking}
+            onClick={() => {
+              interestMarker.mark(true);
+            }}
+          >
             <IconCheck />
           </IconButton>
         </Tooltip>
         <Tooltip content="Not Interested">
-          <IconButton color="red" variant="text">
+          <IconButton
+            color="red"
+            variant="text"
+            disabled={interestMarker.marking}
+            onClick={() => {
+              interestMarker.mark(false);
+            }}
+          >
             <IconX />
           </IconButton>
         </Tooltip>

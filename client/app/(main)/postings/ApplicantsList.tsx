@@ -9,6 +9,10 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { IconCheck, IconX } from "@tabler/icons-react";
+import { useState } from "react";
+import toast from "react-hot-toast";
+import { apiRoutes } from "~/app/api-routes";
+import { useInterestMarker } from "./common";
 
 export function ApplicantsList({ applications }: { applications: any[] }) {
   return (
@@ -22,6 +26,7 @@ export function ApplicantsList({ applications }: { applications: any[] }) {
 
 function ApplicantRow({ application }: { application: any }) {
   const applicant = application["applicant"];
+  const interestMarker = useInterestMarker(application);
 
   return (
     <ListItem ripple={false}>
@@ -39,12 +44,26 @@ function ApplicantRow({ application }: { application: any }) {
       <ListItemSuffix className="flex items-center gap-x-4">
         {/* Yes / No */}
         <Tooltip content="Interested">
-          <IconButton color="green" variant="text">
+          <IconButton
+            color="green"
+            variant="text"
+            disabled={interestMarker.marking}
+            onClick={() => {
+              interestMarker.mark(true);
+            }}
+          >
             <IconCheck />
           </IconButton>
         </Tooltip>
         <Tooltip content="Not Interested">
-          <IconButton color="red" variant="text">
+          <IconButton
+            color="red"
+            variant="text"
+            disabled={interestMarker.marking}
+            onClick={() => {
+              interestMarker.mark(false);
+            }}
+          >
             <IconX />
           </IconButton>
         </Tooltip>
