@@ -1,6 +1,6 @@
 import { Button } from "~/components/Button/Button";
 import { UserOwnedCard } from "./UserOwnedCard";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ApiReplyError, apiRoutes } from "~/app/api-routes";
 import toast from "react-hot-toast";
 
@@ -15,9 +15,20 @@ export function JobPostingCard({
   isFavourite?: boolean;
   setIsFavourite?: (fav: boolean) => void;
 }) {
-
   const [isApplying, setIsApplying] = useState(false);
-  const [isApplied, setIsApplied] = useState(false);
+  const [isApplied, setIsApplied] = useState<boolean | "waiting">("waiting");
+
+  useEffect(() => {
+    async function checkPosting() {
+      setIsApplied("waiting");
+      try {
+        // ...
+        const { applied } = await apiRoutes.isPostingApplied(posting["_id"]);
+        setIsApplied(applied);
+      } catch {}
+    }
+    checkPosting();
+  }, [posting]);
 
   async function apply() {
     setIsApplying(true);
@@ -58,9 +69,9 @@ export function JobPostingCard({
             fullRounded
             onClick={apply}
             loading={isApplying}
-            disabled={isApplied}
+            disabled={isApplied === true || isApplied === "waiting"}
           >
-            {isApplied ? "Already Applied" : "Apply"}
+            {isApplied === true ? "Already Applied" : "Apply"}
           </Button>
           <Button fullRounded variant="outlined">
             Message

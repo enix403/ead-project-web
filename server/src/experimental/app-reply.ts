@@ -9,3 +9,12 @@ export function reply(res: Response, data?: any): void {
 
   res.status(200).json(data).end();
 }
+
+function replyWithMessage(res: Response, message: string, data?: any) {
+  return reply(res, {
+    message,
+    ...(data || {})
+  });
+}
+
+reply.msg = replyWithMessage;

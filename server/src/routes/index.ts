@@ -8,6 +8,7 @@ import { router as authRouter } from 'experimental/auth/auth.controller';
 import { router as healthRouter } from 'experimental/health.controller';
 import { router as communityRouter } from 'experimental/community/community.controller';
 import { router as meRouter } from 'experimental/me/me.controller';
+import { router as postingRouter } from 'experimental/posting/posting.controller';
 
 export function createRootRouter() {
   const router = express.Router();
@@ -19,6 +20,7 @@ export function createRootRouter() {
   router.use(healthRouter);
   router.use(communityRouter);
   router.use(meRouter);
+  router.use(postingRouter);
 
   return router;
 }

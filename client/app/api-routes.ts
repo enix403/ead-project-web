@@ -180,7 +180,7 @@ export const apiRoutes = {
   markPostingFavourite: payloadDecl(`/api/mark-posting-favourite`, { method: "PATCH" }),
 
   /* ========================== */
-  /* ======= Job Routes ======= */
+  /* ======== Postings ======== */
   /* ========================== */
   // Queries
   searchJobs: jsonDecl(wq`/api/job/search`),
@@ -189,6 +189,7 @@ export const apiRoutes = {
   getMyApplications: jsonDecl(`/api/employee/my-applications`),
   getMyPostings: jsonDecl(`/api/employer/my-postings`),
   getJobApplicants: jsonDecl((jobId: string) => `/api/job/${jobId}/applicants`),
+  isPostingApplied: jsonDecl((postingId: string) => `/api/is-posting-applied/${postingId}`),
 
   // Mutations
   postJob: payloadDecl(`/api/job/post`),
