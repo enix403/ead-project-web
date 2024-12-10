@@ -46,28 +46,22 @@ export function CommunityItemCard({ user }: { user: any }) {
     }
   }
 
-  /* function removeFriend() {
+  async function removeFriend() {
     setIsAdding(true);
     try {
-      const responsePromise = apiRoutes.addFriend({
+      const responsePromise = apiRoutes.removeFriend({
         userId: user["_id"],
       });
       await toast.promise(responsePromise, {
-        loading: "Adding...",
+        loading: "Removing...",
         success: (reply) => reply["message"],
         error: (error) => ApiReplyError.userMessage(error),
       });
-      setIsFriend(true);
-    } catch (err) {
-      if (ApiReplyError.check(err)) {
-        if (err.errorCode == "already_added") {
-          setIsFriend(true);
-        }
-      }
+      setIsFriend(false);
     } finally {
       setIsAdding(false);
     }
-  } */
+  }
 
   return (
     <UserOwnedCard
@@ -82,11 +76,11 @@ export function CommunityItemCard({ user }: { user: any }) {
           <Button
             className="!py-1 flex-1"
             fullRounded
-            onClick={addFriend}
+            onClick={isFriend === false ? addFriend : removeFriend}
             loading={isAdding}
-            disabled={isFriend === true || isFriend === "waiting"}
+            disabled={isFriend === "waiting"}
           >
-            {isFriend ? "Added" : "Add"}
+            {isFriend ? "Remove" : "Add"}
           </Button>
           <Button variant="outlined" fullRounded className="!py-1 flex-1">
             Message

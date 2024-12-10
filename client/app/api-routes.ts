@@ -179,6 +179,7 @@ export const apiRoutes = {
   getCommunity: jsonDecl(wq`/api/community`),
   addFriend: payloadDecl(`/api/add-friend`),
   isFriend: payloadDecl(`/api/add-friend?checkOnly=true`),
+  removeFriend: payloadDecl(`/api/remove-friend`, { method: "DELETE" }),
 
   /* ========================= */
   /* ======= Favourites ====== */

@@ -102,7 +102,7 @@ router.delete(
     const userIdA = req.user!._id;
     const { userId: userIdB } = req.body;
 
-    FriendshipModel.deleteMany({
+    await FriendshipModel.deleteMany({
       $or: [
         { firstUserId: userIdA, secondUserId: userIdB },
         { firstUserId: userIdB, secondUserId: userIdA },
