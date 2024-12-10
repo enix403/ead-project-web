@@ -89,3 +89,26 @@ router.post(
     return reply.msg(res, 'Added friend');
   }),
 );
+
+router.delete(
+  '/api/remove-friend',
+  requireAuthenticated(),
+  validateJoi(
+    joi.object({
+      userId: joi.string().required(),
+    }),
+  ),
+  ah(async (req, res) => {
+    const userIdA = req.user!._id;
+    const { userId: userIdB } = req.body;
+
+    FriendshipModel.deleteMany({
+      $or: [
+        { firstUserId: userIdA, secondUserId: userIdB },
+        { firstUserId: userIdB, secondUserId: userIdA },
+      ],
+    });
+
+    return reply.msg(res, 'Removed friend');
+  }),
+);
