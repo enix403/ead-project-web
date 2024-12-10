@@ -4,6 +4,7 @@ import { Types } from 'mongoose';
 import { JobPostingModel } from 'db/models/jobPosting';
 import { JobApplicationModel } from 'db/models/jobApplication';
 import { ApplicationError, NotFound } from 'experimental/errors';
+import { reply } from 'experimental/app-reply';
 
 // GET /api/job/search'
 export async function searchJobController(req: Request, res: Response) {
@@ -44,6 +45,7 @@ export async function applyJobController(req: Request, res: Response) {
     employeeId,
     postingId,
   });
+
   if (existingAppl) {
     throw new ApplicationError('Already applied to this job');
   }
@@ -52,7 +54,7 @@ export async function applyJobController(req: Request, res: Response) {
   const application = new JobApplicationModel({
     postingId,
     employeeId,
-    jobPosterId: posting.posterId,
+    posterId: posting.posterId,
     answers,
     decision: 'waiting',
     appliedAt: new Date(),
@@ -60,9 +62,10 @@ export async function applyJobController(req: Request, res: Response) {
 
   await application.save();
 
-  res
-    .status(201)
-    .json({ message: 'Application submitted successfully', application });
+  return reply(res, {
+    message: 'Application submitted successfully',
+    application,
+  });
 }
 
 /* ----------------------------------- */
@@ -83,7 +86,7 @@ export async function getApplicationDetailsController(
 
   const isAuthorized =
     req.user!._id.equals(application.employeeId) ||
-    req.user!._id.equals(application.jobPosterId); // Simplified check
+    req.user!._id.equals(application.posterId); // Simplified check
 
   if (!isAuthorized) return res.status(403).json({ message: 'Forbidden' });
 
@@ -184,7 +187,7 @@ export async function updateApplicationDecisionController(
   const { decision } = req.body;
 
   const application = await JobApplicationModel.findById(applicationId);
-  if (!application || !application.jobPosterId.equals(req.user!._id)) {
+  if (!application || !application.posterId.equals(req.user!._id)) {
     return res.status(403).json({
       message: 'Forbidden: Not authorized to update this application',
     });
@@ -206,7 +209,7 @@ export async function markApplicationInterestedController(
   const { isInterested } = req.body;
 
   const application = await JobApplicationModel.findById(applicationId);
-  if (!application || !application.jobPosterId.equals(req.user!._id)) {
+  if (!application || !application.posterId.equals(req.user!._id)) {
     return res.status(403).json({
       message: 'Forbidden: Not authorized to update this application',
     });

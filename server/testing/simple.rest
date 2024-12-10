@@ -1,9 +1,21 @@
 @baseUrl = http://localhost:4201/api
 
 ###
+# -------------------------
 # @name QueryHealth
 GET {{baseUrl}}/health
 Authorization: Bearer {{accessToken}}
+
+###
+# -------------------------
+# @name CmdTemp
+POST {{baseUrl}}/temp
+
+# ==================================
+# ==================================
+# ==================================
+# ==================================
+# ==================================
 
 ###
 # -------------------------
@@ -29,6 +41,24 @@ POST {{baseUrl}}/auth/login
 ###
 @accessToken = {{CmdLogin.response.body.$.token}}
 
+# ==================================
+# ==================================
+# ==================================
+# ==================================
+# ==================================
+
+###
+# -------------------------
+# @name QueryCommunity
+GET {{baseUrl}}/community
+Authorization: Bearer {{accessToken}}
+
+# ==================================
+# ==================================
+# ==================================
+# ==================================
+# ==================================
+
 ###
 # -------------------------
 # @name QueryEmployerPostings
@@ -37,8 +67,51 @@ Authorization: Bearer {{accessToken}}
 
 ###
 # -------------------------
-# @name CmdUpdateJobActiveStatus
-PATCH {{baseUrl}}/job/674f55d17c5310d7dab48b36/update-status
+# @name CmdEmployerCreatePosting
+POST {{baseUrl}}/job/post
+Authorization: Bearer {{accessToken}}
+
+{,
+  "title": "Software Automation Engineers needed",
+  "description": "Experts who have the knowledge and ability to design, create, develop and manage machines and systems",
+  "category": "Techonology",
+  "specialism": "Software Engineering",
+  "jobType": "fullTime",
+  "expLevelRequired": "senior",
+  "qualificationsRequired": [],
+  "qualificationsDesired": [],
+  "salaryMode": "monthly",
+  "salary": "16000",
+  "startDate": "2024-12-05T11:49:40.512Z",
+  "endDate": "2024-12-05T11:49:40.512Z",
+  "startTime": "2024-12-05T11:49:40.512Z",
+  "endTime": "2024-12-05T11:49:40.512Z",
+
+  "benefits": [],
+  "workingLanguage": "en-US",
+  "residence": "no",
+  "food": "oneMeal",
+  "transport": "notRequired",
+
+  "companyName": "",
+  "companyUsername": "",
+  "companyDescription": "",
+  "companyWebsite": "",
+  "companyLogoUrl": "",
+  "companyCountry": "",
+  "companyCity": "",
+  "companyArea": "",
+  "companyZip": "",
+  "companyMapAddress": "",
+
+  "questions": [],
+  "postedAt": "{{$datetime iso8601}}"
+}
+
+###
+# -------------------------
+# @name CmdEmployerUpdatePostingActiveStatus
+PATCH {{baseUrl}}/job/6751950cfa37bcf420d2cc38/update-status
 Authorization: Bearer {{accessToken}}
 
 {
@@ -47,13 +120,7 @@ Authorization: Bearer {{accessToken}}
 
 ###
 # -------------------------
-# @name QueryCommunity
-GET {{baseUrl}}/community
-Authorization: Bearer {{accessToken}}
-
-###
-# -------------------------
-# @name QueryPostings
+# @name QueryAllPostings
 GET {{baseUrl}}/job/search
 Authorization: Bearer {{accessToken}}
 
@@ -64,7 +131,7 @@ PATCH {{baseUrl}}/mark-posting-favourite
 Authorization: Bearer {{accessToken}}
 
 {
-  "postingId": "674f55d17c5310d7dab48b36",
+  "postingId": "6751950cfa37bcf420d2cc38",
   "isFavourite": true
 }
 
@@ -74,7 +141,6 @@ Authorization: Bearer {{accessToken}}
 GET {{baseUrl}}/posting-favourites
 Authorization: Bearer {{accessToken}}
 
-
 ###
 # -------------------------
 # @name CmdEmployeeApplyToPosting
@@ -82,6 +148,6 @@ POST {{baseUrl}}/job/apply
 Authorization: Bearer {{accessToken}}
 
 {
-  "postingId": "674f55d17c5310d7dab48b36",
+  "postingId": "6751950cfa37bcf420d2cc38",
   "answers": []
 }
