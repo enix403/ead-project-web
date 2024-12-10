@@ -3,11 +3,14 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { ApiReplyError, apiRoutes } from "~/app/api-routes";
+import { useResumableAction } from "~/app/hooks/useResumableAction";
+import { sleep } from "~/app/utils/promises";
 import { Button } from "~/components/Button/Button";
 import { UserOwnedCard } from "~/components/UserOwnedCard";
 
 export function CommunityItemCard({ user }: { user: any }) {
-  const userId = user["_id"];
+  // const userId = user["_id"];
+  /*
   const [isAdding, setIsAdding] = useState(false);
   const [isFriend, setIsFriend] = useState<boolean | "waiting">("waiting");
 
@@ -63,6 +66,26 @@ export function CommunityItemCard({ user }: { user: any }) {
       setIsAdding(false);
     }
   }
+  */
+
+  const userId = user["_id"];
+
+  const {
+    isDone: isFriend,
+    isExecuting: isAdding,
+    isHydrating,
+    execute: changeFriendship,
+  } = useResumableAction({
+    executeFn: async (currentDone) => {
+      await sleep(3000);
+      return !currentDone;
+    },
+    hydrateFn: async () => {
+      await sleep(3000);
+      return true;
+    },
+    hydrateDeps: [userId],
+  });
 
   return (
     <UserOwnedCard
@@ -77,9 +100,9 @@ export function CommunityItemCard({ user }: { user: any }) {
           <Button
             className="!py-1 flex-1"
             fullRounded
-            onClick={isFriend === false ? addFriend : removeFriend}
+            onClick={changeFriendship}
             loading={isAdding}
-            disabled={isFriend === "waiting"}
+            disabled={isHydrating}
           >
             {isFriend ? "Remove" : "Add"}
           </Button>
