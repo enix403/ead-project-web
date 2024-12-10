@@ -3,7 +3,7 @@ import { Input, TextArea } from "~/components/Input/Input";
 import { FormLabel } from "~/components/FormLabel/FormLabel";
 import { StepForm, StepProps } from "./common";
 
-function LogoInput() {
+function LogoInput({ register }: any) {
   /* TODO: logo input */
   return (
     <div>
@@ -26,7 +26,7 @@ function LogoInput() {
               />
             </g>
           </svg>
-          <h2 className="text-center text-gray-400   text-xs leading-4">
+          <h2 className="text-center text-gray-400 text-xs leading-4">
             PNG, JPG or PDF, smaller than 15MB
           </h2>
         </div>
@@ -36,7 +36,7 @@ function LogoInput() {
           </h4>
           <div className="flex items-center justify-center">
             <label>
-              <input type="file" className="hidden" />
+              <input type="file" className="hidden" {...register("companyLogo")} />
               <div className="flex w-30 h-10 px-4 flex-col bg-teal rounded-full shadow text-white font-semibold leading-4 items-center justify-center cursor-pointer focus:outline-none">
                 Choose File
               </div>
@@ -96,7 +96,7 @@ export function CompanyInfoStep({
             />
           </FormLabel>
 
-          <LogoInput />
+          <LogoInput register={register} />
 
           <div className="flex gap-4 flex-col md:flex-row">
             <div className="flex-1">

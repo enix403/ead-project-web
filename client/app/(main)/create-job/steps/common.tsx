@@ -24,7 +24,8 @@ export function StepForm({
   return (
     <form
       onInvalid={() => {
-        setSubmitted(true);
+        // setSubmitted(true);
+        onNext();
       }}
       onSubmit={(event) => {
         event.preventDefault();

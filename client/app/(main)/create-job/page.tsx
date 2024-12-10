@@ -7,9 +7,6 @@ import { useForm } from "react-hook-form";
 import type { InputProps } from "react-html-props";
 import toast from "react-hot-toast";
 
-// @ts-ignore
-if (typeof window !== "undefined") window.toast = toast;
-
 import { AppLayout } from "~/components/AppLayout/AppLayout";
 
 import { GeneralInfoStep } from "./steps/GeneralInfoStep";
@@ -17,6 +14,7 @@ import { SpecificInfoStep } from "./steps/SpecificInfoStep";
 import { CompanyInfoStep } from "./steps/CompanyInfoStep";
 import { QuestionsStep } from "./steps/QuestionsStep";
 import { apiRoutes } from "~/app/api-routes";
+import { Button } from "~/components/Button/Button";
 
 function useSelectionController() {
   const groupIdToStates = useRef<Record<string, Record<string, boolean>>>(
@@ -142,7 +140,6 @@ export default function CreateJobPage() {
       salaryMode: values["salaryMode"],
       salary: values["salary"],
 
-      // TODO: fix
       startDate: new Date(),
       endDate: new Date(),
       startTime: new Date(),
@@ -158,7 +155,7 @@ export default function CreateJobPage() {
       companyUsername: values["companyUsername"],
       companyDescription: values["companyDescription"],
       companyWebsite: values["companyWebsite"],
-      companyLogoUrl: "", // TODO: fix
+      // companyLogoImageId: "", // Will be set below
       companyCountry: values["companyCountry"],
       companyCity: values["companyCity"],
       companyArea: values["companyArea"],
@@ -174,6 +171,15 @@ export default function CreateJobPage() {
     };
 
     console.log("Posting: ", payload);
+    const companyLogoFileList: FileList = values["companyLogo"];
+    const companyLogoFile = companyLogoFileList[0];
+
+    if (companyLogoFile) {
+      let uploadRecord = await apiRoutes.uploadImage(companyLogoFile);
+      console.log("uploadRecord: ", uploadRecord);
+      const companyLogoImageId = uploadRecord["_id"];
+      payload["companyLogoImageId"] = companyLogoImageId;
+    }
 
     setLoading(true);
     try {
@@ -184,8 +190,7 @@ export default function CreateJobPage() {
       });
       console.log(result);
 
-      router.push('/postings');
-
+      router.push("/postings");
     } catch {
       setLoading(false);
     }
@@ -198,8 +203,8 @@ export default function CreateJobPage() {
     QuestionsStep,
   ];
 
-  let StepComponent = steps[pageIndex];
-  // let StepComponent = steps[2];
+  // let StepComponent = steps[pageIndex];
+  let StepComponent = steps[2];
 
   let progressView = (
     <Stepper
@@ -224,6 +229,9 @@ export default function CreateJobPage() {
     <AppLayout pageTitle="Jobs">
       <div className="flex-1 flex items-start">
         <div className="flex-1 px-7 py-8">
+          {/* {isDev && (
+            <Button onClick={() => postJob()}>DEV: Post Job</Button>
+          )} */}
           <StepComponent
             onNext={onNext}
             onCancel={onCancel}
@@ -237,3 +245,5 @@ export default function CreateJobPage() {
     </AppLayout>
   );
 }
+
+export const isDev = !!process && process.env.NODE_ENV === "development";

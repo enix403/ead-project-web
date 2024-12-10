@@ -30,7 +30,7 @@ export interface IJobPosting extends Document<Types.ObjectId> {
   companyUsername: string;
   companyDescription?: string;
   companyWebsite?: string;
-  companyLogoUrl?: string;
+  companyLogoImageId?: Types.ObjectId;
   companyCountry?: string;
   companyCity?: string;
   companyArea?: string;
@@ -86,7 +86,11 @@ const jobPostingSchema = new Schema<IJobPosting>(
     companyUsername: String,
     companyDescription: String,
     companyWebsite: String,
-    companyLogoUrl: String,
+    companyLogoImageId: {
+      type: Schema.Types.ObjectId,
+      ref: 'MediaUpload',
+      required: false,
+    },
     companyCountry: String,
     companyCity: String,
     companyArea: String,
@@ -121,6 +125,13 @@ jobPostingSchema.virtual('poster', {
   localField: 'posterId',
   foreignField: '_id',
   justOne: true
+});
+
+jobPostingSchema.virtual('companyLogo', {
+  ref: 'MediaUpload',
+  localField: 'companyLogoImageId',
+  foreignField: '_id',
+  justOne: true,
 });
 
 // prettier-ignore

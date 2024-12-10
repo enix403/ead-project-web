@@ -210,7 +210,7 @@ const jobPostingSchema = Joi.object({
   companyUsername: Joi.string().allow('').optional(),
   companyDescription: Joi.string().allow('').optional(),
   companyWebsite: Joi.string().allow('').optional(),
-  companyLogoUrl: Joi.string().allow('').optional(),
+  companyLogoImageId: Joi.string().hex().length(24).optional(),
   companyCountry: Joi.string().allow('').optional(),
   companyCity: Joi.string().allow('').optional(),
   companyArea: Joi.string().allow('').optional(),
@@ -221,26 +221,6 @@ const jobPostingSchema = Joi.object({
   postedAt: Joi.date().allow('').optional(),
 });
 
-/**
- * @swagger
- * /api/job/post:
- *   post:
- *     summary: Allows an employer to post a new job
- *     description: Employers can create job postings.
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/JobPosting'
- *     responses:
- *       201:
- *         description: Job posted successfully
- *       400:
- *         description: Validation error
- *       403:
- *         description: Forbidden
- */
 router.post(
   '/api/job/post',
   requireAuthenticated(['employer']),

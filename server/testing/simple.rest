@@ -53,7 +53,7 @@ POST {{baseUrl}}/auth/login
 ###
 # -------------------------
 # @name CmdUploadImage
-POST {{baseUrl}}/upload/image
+POST {{baseUrl}}/upload/image2
 Authorization: Bearer {{accessToken}}
 Content-Type: multipart/form-data; boundary=MfnBoundry
 
