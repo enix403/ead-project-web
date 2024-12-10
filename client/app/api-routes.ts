@@ -1,4 +1,4 @@
-import ky from "ky";
+import ky, { HTTPError } from "ky";
 import { getAuthState } from "./providers/auth-state";
 
 function unslashStart(str: string) {
@@ -13,6 +13,12 @@ export const API_BASE_URL: string = process.env.NEXT_PUBLIC_API_URL as any;
 
 if (!API_BASE_URL) {
   throw new Error("Env variable `NEXT_PUBLIC_API_URL` not set");
+}
+
+class ApiReplyError extends HTTPError {
+  constructor(parent: HTTPError, public readonly errorMessage: string) {
+    super(parent.response, parent.request, parent.options);
+  }
 }
 
 export const apiConn = ky.extend({
@@ -34,8 +40,7 @@ export const apiConn = ky.extend({
         if (response && response.body) {
           error.name = "APIError";
           let reply = (await response.json()) as any;
-          let errorMessage = reply["errorMessage"];
-          error.message = errorMessage;
+          error.message = reply["errorMessage"];
         } else {
           error.message = "An error occured";
         }
