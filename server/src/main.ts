@@ -42,7 +42,7 @@ function createApp() {
 
       if (err instanceof ApplicationError) {
         return res.status(err.statusCode).json({
-          error: err.message,
+          errorMessage: err.message,
         });
       }
 

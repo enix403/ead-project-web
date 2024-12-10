@@ -32,6 +32,7 @@ export async function getJobDetailsController(req: Request, res: Response) {
 
 // POST /api/job/apply
 export async function applyJobController(req: Request, res: Response) {
+  // await JobApplicationModel.deleteMany({});
   const { postingId, answers } = req.body;
   const employeeId = req.user!._id;
 

@@ -19,6 +19,7 @@ export function Button({
   theme = "teal",
   loading = false,
   children,
+  disabled,
   ...rest
 }: ButtonProps) {
   let variantClass: string;
@@ -37,6 +38,7 @@ export function Button({
 
   return (
     <button
+      disabled={loading ? true : disabled}
       {...combineVisualProps(rest, {
         className: [
           classes.btn,

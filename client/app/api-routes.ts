@@ -28,6 +28,21 @@ export const apiConn = ky.extend({
         return request;
       },
     ],
+    beforeError: [
+      async (error) => {
+        const { response } = error;
+        if (response && response.body) {
+          error.name = "APIError";
+          let reply = (await response.json()) as any;
+          let errorMessage = reply["errorMessage"];
+          error.message = errorMessage;
+        } else {
+          error.message = "An error occured";
+        }
+
+        return error;
+      },
+    ],
   },
 });
 
@@ -148,7 +163,7 @@ export const apiRoutes = {
   // Mutations
   postJob: payloadDecl(`/api/job/post`),
   deleteJob: payloadDecl((jobId: string) => `/api/job/${jobId}`, { method: "DELETE" }),
-  applyToJob: payloadDecl((jobId: string) => `/api/job/${jobId}/apply`),
+  applyToJob: payloadDecl(`/api/job/apply`),
   updateJobStatus: payloadDecl((jobId: string) => `/api/job/${jobId}/update-status`, { method: "PATCH" }),
   updateApplDecision: payloadDecl((applId: string) => `/api/job/application/${applId}/update-decision`,{ method: "PATCH" }),
   markApplInterested: payloadDecl((applId: string) => `/api/job/application/${applId}/mark-interested`, { method: "PATCH" }),

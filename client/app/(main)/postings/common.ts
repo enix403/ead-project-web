@@ -6,13 +6,12 @@ export function useInterestMarker(application: any) {
   const [marking, setMarking] = useState(false);
 
   async function mark(isInterested: boolean) {
-    const responsePromise = apiRoutes.markApplInterested(
-      { isInterested },
-      application._id
-    );
-
     setMarking(true);
     try {
+      const responsePromise = apiRoutes.markApplInterested(
+        { isInterested },
+        application._id
+      );
       let result = await toast.promise(responsePromise, {
         loading: "Marking...",
         success:
