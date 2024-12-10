@@ -9,8 +9,50 @@ import { JobApplicationModel } from 'db/models/jobApplication';
 import { ApplicationError, NotFound } from 'experimental/errors';
 import { UserModel } from 'db/models/user';
 import { JobInvitationModel } from 'db/models/jobInvitation';
+import { PostingFavouriteMarkModel } from 'db/models/favouriteMark';
 
 export const router = express.Router();
+
+router.get(
+  '/api/posting-favourites',
+  requireAuthenticated(),
+  ah(async (req, res) => {
+    const userId = req.user!._id;
+    const marks = await PostingFavouriteMarkModel.find({
+      userId,
+    });
+    return reply(res, marks);
+  }),
+);
+
+router.patch(
+  '/api/mark-posting-favourite',
+  requireAuthenticated(),
+  validateJoi(
+    joi.object({
+      postingId: joi.string().required(),
+      isFavourite: joi.bool().required(),
+    }),
+  ),
+  ah(async (req, res) => {
+    const { postingId, isFavourite } = req.body;
+    const userId = req.user!._id;
+
+    if (isFavourite) {
+      await PostingFavouriteMarkModel.findOneAndUpdate(
+        { postingId, userId },
+        { postingId, userId },
+        { upsert: true },
+      );
+    } else {
+      await PostingFavouriteMarkModel.deleteMany({ postingId, userId });
+    }
+
+    return reply(res, 'Marked successfully');
+  }),
+);
+
+/* ========================== */
 
 router.get(
   '/api/is-posting-applied/:postingId',
@@ -28,6 +70,8 @@ router.get(
     return reply(res, { applied });
   }),
 );
+
+/* ========================== */
 
 router.post(
   '/api/invite-employee',

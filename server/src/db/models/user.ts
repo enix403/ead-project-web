@@ -87,7 +87,9 @@ const userSchema = new Schema<IUser>(
     isBanned: { type: Boolean, default: false },
   },
   {
+    toObject: { virtuals: true },
     toJSON: {
+      virtuals: true,
       transform(doc, ret, options) {
         // Remove passwordHash from any JSON response
         delete ret.passwordHash;
@@ -96,6 +98,20 @@ const userSchema = new Schema<IUser>(
     },
   },
 );
+
+/* Friendship.firstUserId === this._id */
+userSchema.virtual('friendsWith', {
+  ref: 'Friendship',
+  localField: '_id',
+  foreignField: 'firstUserId',
+});
+
+/* Friendship.secondUserId === this._id */
+userSchema.virtual('friendsOf', {
+  ref: 'Friendship',
+  localField: '_id',
+  foreignField: 'secondUserId',
+});
 
 // prettier-ignore
 export const UserModel = model('User', userSchema);

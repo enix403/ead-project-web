@@ -168,10 +168,17 @@ export const apiRoutes = {
   /* ========================== */
   login: payloadDecl(`/api/auth/login`),
 
+  /* ========================== */
+  /* =========== Me =========== */
+  /* ========================== */
+  getMe: jsonDecl(`/api/me`),
+
   /* ========================= */
   /* ======= Community ======= */
   /* ========================= */
   getCommunity: jsonDecl(wq`/api/community`),
+  addFriend: payloadDecl(`/api/add-friend`),
+  isFriend: payloadDecl(`/api/add-friend?checkOnly=true`),
 
   /* ========================= */
   /* ======= Favourites ====== */

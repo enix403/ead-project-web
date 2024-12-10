@@ -35,12 +35,14 @@ POST {{baseUrl}}/auth/register
 POST {{baseUrl}}/auth/login
 
 {
-  "email": "user2@gmail.com",
+  "email": "user1@gmail.com",
   "password": "pass"
 }
 
 ###
 @accessToken = {{CmdLogin.response.body.$.token}}
+# user1: 674f261e2b05a0cf3e0e3b87
+# user2: 674f2676661dab1966200fa9
 
 # ==================================
 # ==================================
@@ -50,9 +52,25 @@ POST {{baseUrl}}/auth/login
 
 ###
 # -------------------------
+# @name QueryMe
+GET {{baseUrl}}/me
+Authorization: Bearer {{accessToken}}
+
+###
+# -------------------------
 # @name QueryCommunity
 GET {{baseUrl}}/community
 Authorization: Bearer {{accessToken}}
+
+###
+# -------------------------
+# @name CmdAddFriend
+POST {{baseUrl}}/add-friend
+Authorization: Bearer {{accessToken}}
+
+{
+  "userId": "674f2676661dab1966200fa9"
+}
 
 # ==================================
 # ==================================
