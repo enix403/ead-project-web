@@ -190,6 +190,7 @@ export const apiRoutes = {
   getMyPostings: jsonDecl(`/api/employer/my-postings`),
   getJobApplicants: jsonDecl((jobId: string) => `/api/job/${jobId}/applicants`),
   isPostingApplied: jsonDecl((postingId: string) => `/api/is-posting-applied/${postingId}`),
+  isEmployeeInvited: payloadDecl(`/api/is-employee-invited`),
 
   // Mutations
   postJob: payloadDecl(`/api/job/post`),
@@ -198,6 +199,7 @@ export const apiRoutes = {
   updateJobStatus: payloadDecl((jobId: string) => `/api/job/${jobId}/update-status`, { method: "PATCH" }),
   updateApplDecision: payloadDecl((applId: string) => `/api/job/application/${applId}/update-decision`,{ method: "PATCH" }),
   markApplInterested: payloadDecl((applId: string) => `/api/job/application/${applId}/mark-interested`, { method: "PATCH" }),
+  inviteEmployee: payloadDecl(`/api/invite-employee`),
 } as const;
 
 if (typeof window !== "undefined") {
