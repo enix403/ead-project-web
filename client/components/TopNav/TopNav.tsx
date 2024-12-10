@@ -2,7 +2,7 @@ import "react-modern-drawer/dist/index.css";
 
 import Logo from "./assets/logo-big.png";
 import MessageIcon from "./assets/message.svg";
-import ProfileImage from "~/app/assets/profile-1.webp";
+// import ProfileImage from "~/app/assets/profile-1.webp";
 
 import { US } from "country-flag-icons/react/3x2";
 
@@ -61,8 +61,9 @@ function Contents({ pageTitle }: TopNavProps) {
               <Menu>
                 <MenuHandler>
                   <button>
-                    <Image
-                      src={ProfileImage}
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src="/profile_empty_gradient.png"
                       alt=""
                       className="w-8 h-8 rounded-full ml-2.5"
                     />

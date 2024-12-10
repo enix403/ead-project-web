@@ -34,7 +34,7 @@ function ContactsList() {
             <Avatar
               // size="lg"
               className="object-center"
-              src="/profile-2.jpg"
+              src="/profile_empty_gradient.png"
               alt="avatar"
             />
           </Badge>
@@ -62,7 +62,7 @@ function ActiveChat() {
           "py-2 px-4"
         )}
       >
-        <Avatar variant="circular" alt="User" src="/profile-2.jpg" />
+        <Avatar variant="circular" alt="User" src="/profile_empty_gradient.png" />
         <div className="flex-1">
           <Typography variant="h6" color="white">
             Yiannis Andrew

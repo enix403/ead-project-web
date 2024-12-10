@@ -27,7 +27,7 @@ function ApplicantCell({ application }: { application: any }) {
   return (
     <Card className="border-2 border-teal-dark">
       <CardHeader floated={false}>
-        <img src="/profile-2.jpg" />
+        <img src="/profile_empty_gradient.png" />
       </CardHeader>
       <CardBody className="text-center">
         <Typography variant="h6" color="blue-gray">

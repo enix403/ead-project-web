@@ -31,7 +31,7 @@ function ApplicantRow({ application }: { application: any }) {
   return (
     <ListItem ripple={false}>
       <ListItemPrefix>
-        <Avatar variant="circular" alt="User" src="/profile-2.jpg" />
+        <Avatar variant="circular" alt="User" src="/profile_empty_gradient.png" />
       </ListItemPrefix>
       <div>
         <Typography variant="h6" color="blue-gray">

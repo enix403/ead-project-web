@@ -15,7 +15,7 @@ function TeamMemberCell() {
   return (
     <Card className="" shadow={false}>
       <CardHeader floated={false}>
-        <img src="/profile-2.jpg" />
+        <img src="/profile_empty_gradient.png" />
       </CardHeader>
       <CardBody className="text-left">
         <Typography variant="h6" color="blue-gray">

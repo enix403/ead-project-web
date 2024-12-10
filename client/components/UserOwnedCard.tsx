@@ -51,7 +51,7 @@ export function UserOwnedCard({
           <Avatar
             size="lg"
             className="object-center"
-            src="/profile-2.jpg"
+            src="/profile_empty_gradient.png"
             alt="avatar"
           />
         </Badge>

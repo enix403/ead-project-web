@@ -27,8 +27,9 @@ export default function UserProfile() {
             <div className="relative">
               {/* Cover Image */}
               {/* <div className="h-40 bg-gray-300"></div> */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/cover-1.jpg" // Replace with your actual image URL
+                src="/cover-1.jpg"
                 alt="Cover Image"
                 className="h-44 w-full object-cover"
               />
@@ -36,7 +37,7 @@ export default function UserProfile() {
               {/* Profile Picture */}
               <div className="absolute -bottom-16 left-6">
                 <Avatar
-                  src="https://flowbite.com/docs/images/people/profile-picture-1.jpg"
+                  src="/profile_empty_gradient.png"
                   alt="Profile Picture"
                   className="w-32 h-32 border-4 border-white"
                 />
