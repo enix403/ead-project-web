@@ -1,50 +1,32 @@
-import { ApiReplyError, apiRoutes } from "~/app/api-routes";
+import { apiRoutes } from "~/app/api-routes";
 
 import { UserOwnedCard } from "~/components/UserOwnedCard";
 import { Button } from "~/components/Button/Button";
-import toast from "react-hot-toast";
-import { useEffect, useState } from "react";
+import { useResumableAction } from "~/app/hooks/useResumableAction";
+import { reportedCall } from "~/app/utils/promises";
 
 export function CandidateCard({ employee }: { employee: any }) {
-  const [isInviting, setIsInviting] = useState(false);
-  const [isInvited, setIsInvited] = useState<boolean | "waiting">("waiting");
+  const employeeId = employee["_id"];
 
-  useEffect(() => {
-    async function checkInvitation() {
-      setIsInvited("waiting");
-      try {
-        // ...
-        const { invited } = await apiRoutes.isEmployeeInvited({
-          employeeId: employee["_id"]
-        });
-        setIsInvited(invited);
-      } catch {}
-    }
-    checkInvitation();
-  }, [employee]);
-
-  async function invite() {
-    setIsInviting(true);
-    try {
-      const responsePromise = apiRoutes.inviteEmployee({
-        employeeId: employee["_id"]
-      });
-      await toast.promise(responsePromise, {
-        loading: "Inviting...",
-        success: (reply) => reply["message"],
-        error: (error) => ApiReplyError.userMessage(error),
-      });
-      setIsInvited(true);
-    } catch (err) {
-      if (ApiReplyError.check(err)) {
-        if (err.errorCode == "already_invited") {
-          setIsInvited(true);
-        }
+  const {
+    isDone: isInvited,
+    isExecuting: isInviting,
+    isLoading,
+    execute: invite,
+  } = useResumableAction({
+    executeFn: async (isInvited) => {
+      if (!isInvited) {
+        await reportedCall(apiRoutes.inviteEmployee({ employeeId }));
       }
-    } finally {
-      setIsInviting(false);
-    }
-  }
+
+      return true;
+    },
+    hydrateFn: async () => {
+      const { invited } = await apiRoutes.isEmployeeInvited({ employeeId });
+      return invited;
+    },
+    hydrateDeps: [employeeId],
+  });
 
   return (
     <UserOwnedCard
@@ -56,7 +38,7 @@ export function CandidateCard({ employee }: { employee: any }) {
             fullRounded
             onClick={invite}
             loading={isInviting}
-            disabled={isInvited === true || isInvited === "waiting"}
+            disabled={isLoading || isInvited}
           >
             {isInvited === true ? "Already invited" : "Invite"}
           </Button>
