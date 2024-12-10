@@ -15,8 +15,42 @@ import { IconMail, IconMap2, IconPhoneCall } from "@tabler/icons-react";
 import { Button } from "~/components/Button/Button";
 import { repeatNode } from "~/app/utils/markup";
 import { AppLayout } from "~/components/AppLayout/AppLayout";
+import { useParams } from "next/navigation";
+import { useLayoutEffect, useState } from "react";
+import { apiRoutes } from "~/app/api-routes";
 
 export default function UserProfile() {
+  const { userId } = useParams<{ userId: string }>();
+
+  const [status, setStatus] = useState<"ok" | "loading" | "error">("loading");
+  const [user, setUser] = useState<any>(null);
+
+  useLayoutEffect(() => {
+    async function loadUser() {
+      try {
+        const user = await apiRoutes.getUser(userId);
+        console.log(user);
+        setUser(user);
+        setStatus("ok");
+      } catch {
+        setStatus("error");
+      }
+    }
+
+    setStatus("loading");
+    setUser(null);
+    loadUser();
+  }, [userId]);
+
+  return (
+    <>
+      <>{status === "ok" && user && <Contents user={user} />}</>
+    </>
+  );
+}
+
+function Contents({ user }: any) {
+  const connectionCount = user["friendsWith"].length + user["friendsOf"].length;
   return (
     <AppLayout>
       <div className="app-container max-w-6xl w-full mt-8 grid grid-cols-3 gap-6">
@@ -46,12 +80,14 @@ export default function UserProfile() {
 
             {/* User Info */}
             <CardBody className="pt-16">
-              <h1 className="text-2xl font-semibold">John Doe</h1>
+              <h1 className="text-2xl font-semibold">{user.fullName}</h1>
               <p className="text-gray-600">Software Developer at XYZ Corp</p>
               <p className="text-gray-600">
                 San Francisco, California, United States
               </p>
-              <p className="mt-2 text-sm text-gray-500">500+ connections</p>
+              <p className="mt-2 text-sm text-gray-500">
+                {connectionCount} connection(s)
+              </p>
 
               {/* Buttons */}
               <div className="mt-4 flex space-x-4">
@@ -89,7 +125,7 @@ export default function UserProfile() {
                       <IconMail size={28} />
                       <span>Email address:</span>
                     </p>
-                    <p>yourname@flowbite.com</p>
+                    <p>{user.email}</p>
                   </p>
                   <p className="text-gray-700 py-4">
                     <p className="font-bold text-xl text-blue-400 flex gap-x-2 items-center mb-3">
@@ -191,6 +227,8 @@ export default function UserProfile() {
               through LinkedIn ads.
             </p>
           </Card>
+
+          <div className="h-24" />
         </div>
       </div>
     </AppLayout>

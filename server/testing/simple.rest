@@ -93,6 +93,11 @@ Authorization: Bearer {{accessToken}}
 
 ###
 # -------------------------
+# @name QueryGetUser
+GET {{baseUrl}}/user/674f261e2b05a0cf3e0e3b87
+
+###
+# -------------------------
 # @name CmdAddFriend
 POST {{baseUrl}}/add-friend
   # ?checkOnly=true

@@ -197,6 +197,7 @@ export const apiRoutes = {
   /* ======= Community ======= */
   /* ========================= */
   getCommunity: jsonDecl(wq`/api/community`),
+  getUser: jsonDecl((userId: string) => `/api/user/${userId}`),
   addFriend: payloadDecl(`/api/add-friend`),
   isFriend: payloadDecl(`/api/add-friend?checkOnly=true`),
   removeFriend: payloadDecl(`/api/remove-friend`, { method: "DELETE" }),

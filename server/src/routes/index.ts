@@ -14,15 +14,15 @@ import { router as uploadingRouter } from 'experimental/uploading/uploading.cont
 export function createRootRouter() {
   const router = express.Router();
 
-  router.use(userRouter);
-  router.use(jobRouter);
-  router.use(statRouter);
   router.use(authRouter);
   router.use(healthRouter);
   router.use(communityRouter);
   router.use(meRouter);
   router.use(postingRouter);
   router.use(uploadingRouter);
+  router.use(userRouter);
+  router.use(jobRouter);
+  router.use(statRouter);
 
   return router;
 }

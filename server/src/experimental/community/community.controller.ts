@@ -33,7 +33,7 @@ router.get(
     } as Record<string, any>;
 
     // If searchTerm is provided, add case-insensitive search for fullName
-    if (searchTerm.length > 0)  {
+    if (searchTerm.length > 0) {
       query = {
         ...query,
         fullName: { $regex: new RegExp(searchTerm, 'i') },
@@ -123,5 +123,29 @@ router.delete(
     });
 
     return reply.msg(res, 'Removed friend');
+  }),
+);
+
+/* ================================ */
+
+router.get(
+  '/api/user/:userId',
+  validateJoi(
+    joi.object({
+      userId: joi.string().required(),
+    }),
+  ),
+  ah(async (req, res) => {
+    const { userId } = req.params;
+
+    const user = await UserModel.findOne({ _id: userId })
+      .populate('friendsWith')
+      .populate('friendsOf');
+
+    if (!user) {
+      throw new NotFound();
+    }
+
+    return reply(res, user);
   }),
 );
