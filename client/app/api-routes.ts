@@ -15,9 +15,26 @@ if (!API_BASE_URL) {
   throw new Error("Env variable `NEXT_PUBLIC_API_URL` not set");
 }
 
-class ApiReplyError extends HTTPError {
-  constructor(parent: HTTPError, public readonly errorMessage: string) {
+export class ApiReplyError extends HTTPError {
+  constructor(
+    parent: HTTPError,
+    public readonly errorMessage: string,
+    public readonly errorCode: string
+  ) {
     super(parent.response, parent.request, parent.options);
+    this.name = "ApiReplyError";
+    this.message = errorMessage;
+  }
+
+  public static check(error: any): error is ApiReplyError {
+    return error instanceof ApiReplyError;
+  }
+
+  public static userMessage(error: any) {
+    if (error instanceof ApiReplyError) {
+      return error.errorMessage;
+    }
+    return "An error occured";
   }
 }
 
@@ -37,12 +54,20 @@ export const apiConn = ky.extend({
     beforeError: [
       async (error) => {
         const { response } = error;
+
+        let isApiReplyError = false;
+        let reply: any = null;
+
         if (response && response.body) {
-          error.name = "APIError";
-          let reply = (await response.json()) as any;
-          error.message = reply["errorMessage"];
-        } else {
-          error.message = "An error occured";
+          reply = await response.json();
+          if (reply["isApiReplyError"] === true) {
+            isApiReplyError = true;
+          }
+        }
+
+        if (isApiReplyError) {
+          const { errorMessage, errorCode } = reply!;
+          return new ApiReplyError(error, errorMessage, errorCode);
         }
 
         return error;

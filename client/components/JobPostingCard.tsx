@@ -1,7 +1,7 @@
 import { Button } from "~/components/Button/Button";
 import { UserOwnedCard } from "./UserOwnedCard";
 import { useState } from "react";
-import { apiRoutes } from "~/app/api-routes";
+import { ApiReplyError, apiRoutes } from "~/app/api-routes";
 import toast from "react-hot-toast";
 
 export function JobPostingCard({
@@ -15,6 +15,7 @@ export function JobPostingCard({
   isFavourite?: boolean;
   setIsFavourite?: (fav: boolean) => void;
 }) {
+
   const [isApplying, setIsApplying] = useState(false);
   const [isApplied, setIsApplied] = useState(false);
 
@@ -27,10 +28,16 @@ export function JobPostingCard({
       });
       await toast.promise(responsePromise, {
         loading: "Applying...",
-        success: (reply) => reply['message'],
-        error: (httpError) => httpError.message,
+        success: (reply) => reply["message"],
+        error: (error) => ApiReplyError.userMessage(error),
       });
       setIsApplied(true);
+    } catch (err) {
+      if (ApiReplyError.check(err)) {
+        if (err.errorCode == "already_applied") {
+          setIsApplied(true);
+        }
+      }
     } finally {
       setIsApplying(false);
     }

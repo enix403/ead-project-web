@@ -47,7 +47,7 @@ export async function applyJobController(req: Request, res: Response) {
   });
 
   if (existingAppl) {
-    throw new ApplicationError('Already applied to this job');
+    throw new ApplicationError('Already applied to this job', 400, "already_applied");
   }
 
   // Create the application with the job poster's ID

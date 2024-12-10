@@ -41,9 +41,7 @@ function createApp() {
     ) => {
 
       if (err instanceof ApplicationError) {
-        return res.status(err.statusCode).json({
-          errorMessage: err.message,
-        });
+        return err.sendResponse(res);
       }
 
       if (err) {
