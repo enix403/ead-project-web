@@ -47,10 +47,13 @@ export function useResumableAction({
     setIsExecuting(false);
   }, [executeFn, isDone]);
 
+  const isLoading = isHydrating || isExecuting;
+
   return {
     isDone,
     isHydrating,
     isExecuting,
+    isLoading,
     execute,
   };
 }

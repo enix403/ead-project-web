@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
 import { Button } from "~/components/Button/Button";
 import { UserOwnedCard } from "~/components/UserOwnedCard";
-import { ApiReplyError, apiRoutes } from "~/app/api-routes";
+import { apiRoutes } from "~/app/api-routes";
+import { useResumableAction } from "~/app/hooks/useResumableAction";
+import { reportedCall } from "~/app/utils/promises";
 
 export function PostingCard({
   posting,
@@ -15,44 +15,32 @@ export function PostingCard({
   isFavourite?: boolean;
   setIsFavourite?: (fav: boolean) => void;
 }) {
-  const [isApplying, setIsApplying] = useState(false);
-  const [isApplied, setIsApplied] = useState<boolean | "waiting">("waiting");
+  const postingId = posting["_id"];
 
-  useEffect(() => {
-    async function checkPosting() {
-      setIsApplied("waiting");
-      try {
-        // ...
-        const { applied } = await apiRoutes.isPostingApplied(posting["_id"]);
-        setIsApplied(applied);
-      } catch {}
-    }
-    checkPosting();
-  }, [posting]);
-
-  async function apply() {
-    setIsApplying(true);
-    try {
-      const responsePromise = apiRoutes.applyToJob({
-        postingId: posting["_id"],
-        answers: [],
-      });
-      await toast.promise(responsePromise, {
-        loading: "Applying...",
-        success: (reply) => reply["message"],
-        error: (error) => ApiReplyError.userMessage(error),
-      });
-      setIsApplied(true);
-    } catch (err) {
-      if (ApiReplyError.check(err)) {
-        if (err.errorCode == "already_applied") {
-          setIsApplied(true);
-        }
+  const {
+    isDone: isApplied,
+    isExecuting: isApplying,
+    isLoading,
+    execute: apply,
+  } = useResumableAction({
+    executeFn: async (isApplied) => {
+      if (!isApplied) {
+        await reportedCall(
+          apiRoutes.applyToJob({
+            postingId: postingId,
+            answers: [],
+          })
+        );
       }
-    } finally {
-      setIsApplying(false);
-    }
-  }
+
+      return true;
+    },
+    hydrateFn: async () => {
+      const { applied } = await apiRoutes.isPostingApplied(postingId);
+      return applied;
+    },
+    hydrateDeps: [postingId],
+  });
 
   return (
     <UserOwnedCard
@@ -69,7 +57,7 @@ export function PostingCard({
             fullRounded
             onClick={apply}
             loading={isApplying}
-            disabled={isApplied === true || isApplied === "waiting"}
+            disabled={isLoading || isApplied}
           >
             {isApplied === true ? "Already Applied" : "Apply"}
           </Button>

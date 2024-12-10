@@ -7,7 +7,6 @@ import { Button } from "~/components/Button/Button";
 import { UserOwnedCard } from "~/components/UserOwnedCard";
 
 export function CommunityItemCard({ user }: { user: any }) {
-
   const userId = user["_id"];
 
   // Friendship
@@ -20,16 +19,16 @@ export function CommunityItemCard({ user }: { user: any }) {
     executeFn: async (isFriend) => {
       let apiCall: Promise<unknown>;
       let result: boolean;
+
       if (isFriend) {
-        apiCall = apiRoutes.removeFriend({ userId })
+        apiCall = apiRoutes.removeFriend({ userId });
         result = false;
-      }
-      else {
-        apiCall = apiRoutes.addFriend({ userId })
+      } else {
+        apiCall = apiRoutes.addFriend({ userId });
         result = true;
       }
 
-      await reportedCall(delay(apiCall));
+      await reportedCall(apiCall);
       return result;
     },
     hydrateFn: async () => {
