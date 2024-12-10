@@ -14,13 +14,44 @@ import { apiRoutes } from "~/app/api-routes";
 
 import { CommunityItemCard } from "./CommunityItemCard";
 
+/* function useFriendsIds() {
+  const {
+    isLoading,
+    isFetched,
+    data: user,
+  } = useQuery<any>({
+    queryKey: ["getMe"],
+    queryFn: () => apiRoutes.getMe(),
+    initialData: null,
+    placeholderData: null,
+  });
+
+  let friendIds: string[] | null = null;
+
+  if (isFetched && !isLoading) {
+    const friendsWith = user["friendsWith"];
+    const friendsOf = user["friendsOf"];
+
+    friendIds = [
+      ...friendsWith.map((friendship: any) => friendship["secondUserId"]),
+      ...friendsOf.map((friendship: any) => friendship["firstUserId"]),
+    ];
+  }
+
+  return { friendIds, isLoading };
+} */
+
 export default function Community() {
+  // const { friendIds, isLoading: isFriendsLoading } = useFriendsIds();
+
   const { isLoading, data: community } = useQuery<any[]>({
     queryKey: ["getCommunity"],
     queryFn: () => apiRoutes.getCommunity(),
     initialData: [],
     placeholderData: [],
   });
+
+  // const isLoading = isCommunityLoading || isFriendsLoading;
 
   return (
     <AppLayout>
@@ -75,12 +106,15 @@ export default function Community() {
               </div>
             ) : (
               community.map((user, index) => (
-                <CommunityItemCard
+                <motion.div
                   key={user["_id"]}
-                  user={user}
-                  index={index}
-                  isFriend={false}
-                />
+                  initial="hidden"
+                  animate="visible"
+                  custom={index}
+                  variants={variants}
+                >
+                  <CommunityItemCard user={user} />
+                </motion.div>
               ))
             )}
           </motion.div>
@@ -89,3 +123,16 @@ export default function Community() {
     </AppLayout>
   );
 }
+
+const variants = {
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: i * 0.05,
+      ease: "easeInOut",
+      duration: 0.5,
+    },
+  }),
+  hidden: { opacity: 0, y: 80 },
+};
