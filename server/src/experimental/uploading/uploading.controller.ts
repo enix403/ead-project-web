@@ -9,9 +9,9 @@ import { ApplicationError } from 'experimental/errors';
 export const router = express.Router();
 
 router.post(
-  '/api/image-upload',
-  multerUpload.single('image'),
+  '/api/upload/image',
   requireAuthenticated(),
+  multerUpload.single('image'),
   ah(async (req, res) => {
 
     if (!req.file)

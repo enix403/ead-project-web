@@ -52,6 +52,34 @@ POST {{baseUrl}}/auth/login
 
 ###
 # -------------------------
+# @name CmdUploadImage
+POST {{baseUrl}}/upload/image
+Authorization: Bearer {{accessToken}}
+Content-Type: multipart/form-data; boundary=MfnBoundry
+
+--MfnBoundry
+Content-Disposition: form-data; name="image"; filename="test-image.jpg"
+Content-Type: image/jpeg
+
+< ./test-image.jpg
+--MfnBoundry--
+
+# {
+#   "name": "1733505249083-gzwx6.jpg",
+#   "_id": "675330e14e317d60a5c61f35",
+#   "uploadedAt": "2024-12-06T17:14:09.095Z",
+#   "__v": 0,
+#   "id": "675330e14e317d60a5c61f35"
+# }
+
+# ==================================
+# ==================================
+# ==================================
+# ==================================
+# ==================================
+
+###
+# -------------------------
 # @name QueryMe
 GET {{baseUrl}}/me
 Authorization: Bearer {{accessToken}}
