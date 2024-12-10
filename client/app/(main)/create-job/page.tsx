@@ -199,6 +199,7 @@ export default function CreateJobPage() {
   ];
 
   let StepComponent = steps[pageIndex];
+  // let StepComponent = steps[2];
 
   let progressView = (
     <Stepper

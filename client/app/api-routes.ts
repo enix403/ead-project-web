@@ -76,6 +76,11 @@ export const apiConn = ky.extend({
   },
 });
 
+if (typeof window !== "undefined") {
+  // @ts-ignore
+  window.apiConn = apiConn;
+}
+
 function decl<
   UrlT extends string | ((...args: UrlArgs) => string),
   UrlArgs extends any[],
@@ -84,69 +89,84 @@ function decl<
 >({
   url,
   invoke,
-  failMsg,
 }: {
   url: UrlT;
   invoke: (url: UrlT, ...args: FuncArgs) => FuncRet;
-  failMsg?: string;
 }) {
   return async (...args: FuncArgs): Promise<any> => {
     try {
       return await invoke(url, ...args);
     } catch (e) {
-      let msg = failMsg ?? "Request failed";
-      console.log("API-CALL-ERR: " + msg, e);
+      console.log("API-CALL-ERR: Request failed", e);
       throw e;
     }
   };
+}
+
+function toUrl<UrlT extends string | ((...args: any) => string)>(
+  url: UrlT,
+  args: MaybeParameters<UrlT>
+) {
+  let urlString = typeof url === "string" ? url : url(...args);
+  urlString = unslashStart(urlString);
+  return urlString;
 }
 
 type MaybeParameters<T> = T extends (...args: infer R) => any ? R : [];
 
 function jsonDecl<UrlT extends string | ((...args: any) => string)>(
   url: UrlT,
-  opts?: {
-    method?: string;
-    failMsg?: string;
-  }
+  opts?: { method?: string }
 ) {
   return decl({
     url,
     invoke: (url, ...args: MaybeParameters<UrlT>) => {
-      let urlString = typeof url === "string" ? url : url(...args);
-      urlString = unslashStart(urlString);
-      return apiConn(urlString, {
+      return apiConn(toUrl(url, args), {
         method: opts?.method ?? "GET",
       }).json<any>();
     },
-    failMsg: opts?.failMsg,
   });
 }
 
-// const getJob = jsonDecl((jobId: string) => `/api/job/${jobId}`);
-
 function payloadDecl<UrlT extends string | ((...args: any) => string)>(
   url: UrlT,
-  opts?: {
-    method?: string;
-    failMsg?: string;
-  }
+  opts?: { method?: string }
 ) {
   return decl({
     url,
     invoke: (url, payload: any, ...args: MaybeParameters<UrlT>) => {
-      let urlString = typeof url === "string" ? url : url(...args);
-      urlString = unslashStart(urlString);
-      return apiConn(urlString, {
+      return apiConn(toUrl(url, args), {
         method: opts?.method ?? "POST",
         json: payload,
       }).json<any>();
     },
-    failMsg: opts?.failMsg,
   });
 }
 
-// const postJob = payloadDecl((postCat: string) => "/api/job/post");
+function uploadDecl<UrlT extends string | ((...args: any) => string)>(
+  url: UrlT,
+  opts?: {
+    method?: string;
+    key?: string;
+  }
+) {
+  const key = opts?.key ?? "file";
+
+  return decl({
+    url,
+    invoke: (url, file: File, ...args: MaybeParameters<UrlT>) => {
+      const formData = new FormData();
+      formData.set(key, file);
+
+      return apiConn(toUrl(url, args), {
+        method: opts?.method ?? "POST",
+        body: formData,
+      }).json<any>();
+    },
+  });
+}
+
+/* ------------------------ */
 
 function wq<Q = Record<string, any>>(template: TemplateStringsArray) {
   let url = template.join("");
@@ -208,6 +228,11 @@ export const apiRoutes = {
   updateApplDecision: payloadDecl((applId: string) => `/api/job/application/${applId}/update-decision`,{ method: "PATCH" }),
   markApplInterested: payloadDecl((applId: string) => `/api/job/application/${applId}/mark-interested`, { method: "PATCH" }),
   inviteEmployee: payloadDecl(`/api/invite-employee`),
+
+  /* ========================== */
+  /* ========= Uploads ======== */
+  /* ========================== */
+  uploadImage: uploadDecl(`/api/upload/image`, { key: "image" }),
 } as const;
 
 if (typeof window !== "undefined") {
