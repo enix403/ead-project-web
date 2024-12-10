@@ -60,6 +60,7 @@ Authorization: Bearer {{accessToken}}
 # -------------------------
 # @name QueryCommunity
 GET {{baseUrl}}/community
+  ?searchTerm=user
 Authorization: Bearer {{accessToken}}
 
 ###

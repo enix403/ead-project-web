@@ -7,6 +7,7 @@ import { Button } from "~/components/Button/Button";
 import { UserOwnedCard } from "~/components/UserOwnedCard";
 
 export function CommunityItemCard({ user }: { user: any }) {
+  const userId = user["_id"];
   const [isAdding, setIsAdding] = useState(false);
   const [isFriend, setIsFriend] = useState<boolean | "waiting">("waiting");
 
@@ -15,19 +16,19 @@ export function CommunityItemCard({ user }: { user: any }) {
       setIsFriend("waiting");
       try {
         const { isFriend } = await apiRoutes.isFriend({
-          userId: user["_id"],
+          userId,
         });
         setIsFriend(isFriend);
       } catch {}
     }
     checkFriendship();
-  }, [user]);
+  }, [userId]);
 
   async function addFriend() {
     setIsAdding(true);
     try {
       const responsePromise = apiRoutes.addFriend({
-        userId: user["_id"],
+        userId,
       });
       await toast.promise(responsePromise, {
         loading: "Adding...",
@@ -50,7 +51,7 @@ export function CommunityItemCard({ user }: { user: any }) {
     setIsAdding(true);
     try {
       const responsePromise = apiRoutes.removeFriend({
-        userId: user["_id"],
+        userId: userId,
       });
       await toast.promise(responsePromise, {
         loading: "Removing...",

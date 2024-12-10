@@ -1,7 +1,6 @@
 "use client";
 
 import clsx from "clsx";
-import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { Spinner } from "@material-tailwind/react";
 import { IconSearch } from "@tabler/icons-react";
@@ -13,6 +12,8 @@ import { Select } from "~/components/Select/Select";
 import { apiRoutes } from "~/app/api-routes";
 
 import { CommunityItemCard } from "./CommunityItemCard";
+import { useDebounceValue } from "usehooks-ts";
+import { useMemo } from "react";
 
 /* function useFriendsIds() {
   const {
@@ -42,11 +43,18 @@ import { CommunityItemCard } from "./CommunityItemCard";
 } */
 
 export default function Community() {
-  // const { friendIds, isLoading: isFriendsLoading } = useFriendsIds();
+  const [searchTerm, setSearchTerm] = useDebounceValue("", 500);
+
+  const queryParams = useMemo(
+    () => ({
+      searchTerm,
+    }),
+    [searchTerm]
+  );
 
   const { isLoading, data: community } = useQuery<any[]>({
-    queryKey: ["getCommunity"],
-    queryFn: () => apiRoutes.getCommunity(),
+    queryKey: ["getCommunity", queryParams],
+    queryFn: () => apiRoutes.getCommunity(queryParams),
     initialData: [],
     placeholderData: [],
   });
@@ -66,6 +74,8 @@ export default function Community() {
               size={1}
               className="flex-1 outline-none"
               placeholder="Search for people"
+              defaultValue={""}
+              onChange={(event) => setSearchTerm(event.target.value)}
             />
           </div>
 
@@ -98,41 +108,20 @@ export default function Community() {
             </FormLabel>
           </div>
 
-          <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {isLoading ? (
               <div className="flex items-center gap-x-2 py-3">
                 <Spinner color="green" />
                 <span>Loading...</span>
               </div>
             ) : (
-              community.map((user, index) => (
-                <motion.div
-                  key={user["_id"]}
-                  initial="hidden"
-                  animate="visible"
-                  custom={index}
-                  variants={variants}
-                >
-                  <CommunityItemCard user={user} />
-                </motion.div>
+              community.map((user) => (
+                <CommunityItemCard key={user["_id"]} user={user} />
               ))
             )}
-          </motion.div>
+          </div>
         </div>
       </div>
     </AppLayout>
   );
 }
-
-const variants = {
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: {
-      delay: i * 0.05,
-      ease: "easeInOut",
-      duration: 0.5,
-    },
-  }),
-  hidden: { opacity: 0, y: 80 },
-};

@@ -23,11 +23,24 @@ router.get(
     }),
   ),
   ah(async (req, res) => {
-    const { searchTerm, location, jobType, userType } = req.query;
+    let { searchTerm } = req.query;
 
-    const users = await UserModel.find({
+    searchTerm = String(searchTerm || '').trim();
+
+    let query = {
+      // find users other than the current logged-in one
       _id: { $ne: req.user!._id },
-    });
+    } as Record<string, any>;
+
+    // If searchTerm is provided, add case-insensitive search for fullName
+    if (searchTerm.length > 0)  {
+      query = {
+        ...query,
+        fullName: { $regex: new RegExp(searchTerm, 'i') },
+      };
+    }
+
+    const users = await UserModel.find(query);
 
     return reply(res, users);
   }),
