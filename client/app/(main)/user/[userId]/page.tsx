@@ -8,6 +8,7 @@ import {
   TabsHeader,
   Tab,
   Chip,
+  Spinner,
 } from "@material-tailwind/react";
 
 import { IconMail, IconMap2, IconPhoneCall } from "@tabler/icons-react";
@@ -18,6 +19,7 @@ import { AppLayout } from "~/components/AppLayout/AppLayout";
 import { useParams } from "next/navigation";
 import { useLayoutEffect, useState } from "react";
 import { apiRoutes } from "~/app/api-routes";
+import { useQuery } from "@tanstack/react-query";
 
 export default function UserProfile() {
   const { userId } = useParams<{ userId: string }>();
@@ -199,22 +201,7 @@ function Contents({ user }: any) {
           <Card className="shadow-md rounded-lg p-6">
             <h2 className="text-xl font-semibold mb-4">People you may know</h2>
             <div className="divide-y-2">
-              {repeatNode(10, (index) => (
-                <div key={index} className="flex items-center space-x-4 py-3">
-                  <Avatar
-                    src="https://via.placeholder.com/50"
-                    alt="Person 1"
-                    className="w-12 h-12 rounded-full"
-                  />
-                  <div>
-                    <p className="font-semibold">Jane Smith</p>
-                    <p className="text-gray-600 text-sm">UI/UX Designer</p>
-                    <Button color="blue" className="mt-2 !py-1 !px-1">
-                      Connect
-                    </Button>
-                  </div>
-                </div>
-              ))}
+              <PeopleYouMayKnowList currentUser={user} />
             </div>
           </Card>
 
@@ -232,5 +219,47 @@ function Contents({ user }: any) {
         </div>
       </div>
     </AppLayout>
+  );
+}
+
+function PeopleYouMayKnowList({ currentUser }) {
+  const { isLoading, data: users } = useQuery<any[]>({
+    queryKey: ["getCommunityPYMK"],
+    queryFn: () => apiRoutes.getCommunity(),
+    initialData: [],
+    placeholderData: [],
+  });
+
+  if (isLoading) {
+    return <Spinner color="blue-gray" width={32} height={32} />;
+  }
+
+  return (
+    <>
+      {users
+        .filter((user) => user["_id"] !== currentUser["_id"])
+        .map((user) => (
+          <UserYouMayKnow key={user["_id"]} user={user} />
+        ))}
+    </>
+  );
+}
+
+function UserYouMayKnow({ user }: any) {
+  return (
+    <div className="flex items-center space-x-4 py-3">
+      <Avatar
+        src="/profile_empty_gradient.png"
+        alt={user.fullName}
+        className="w-12 h-12 rounded-full"
+      />
+      <div>
+        <p className="font-semibold">{user.fullName}</p>
+        <p className="text-gray-600 text-sm">UI/UX Designer</p>
+        <Button color="blue" className="mt-2 !py-1 !px-1">
+          Connect
+        </Button>
+      </div>
+    </div>
   );
 }
