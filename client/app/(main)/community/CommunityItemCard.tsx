@@ -1,88 +1,40 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
-import { ApiReplyError, apiRoutes } from "~/app/api-routes";
+import { apiRoutes } from "~/app/api-routes";
 import { useResumableAction } from "~/app/hooks/useResumableAction";
-import { sleep } from "~/app/utils/promises";
+import { delay, reportedCall, sleep } from "~/app/utils/promises";
 import { Button } from "~/components/Button/Button";
 import { UserOwnedCard } from "~/components/UserOwnedCard";
 
 export function CommunityItemCard({ user }: { user: any }) {
-  // const userId = user["_id"];
-  /*
-  const [isAdding, setIsAdding] = useState(false);
-  const [isFriend, setIsFriend] = useState<boolean | "waiting">("waiting");
-
-  useEffect(() => {
-    async function checkFriendship() {
-      setIsFriend("waiting");
-      try {
-        const { isFriend } = await apiRoutes.isFriend({
-          userId,
-        });
-        setIsFriend(isFriend);
-      } catch {}
-    }
-    checkFriendship();
-  }, [userId]);
-
-  async function addFriend() {
-    setIsAdding(true);
-    try {
-      const responsePromise = apiRoutes.addFriend({
-        userId,
-      });
-      await toast.promise(responsePromise, {
-        loading: "Adding...",
-        success: (reply) => reply["message"],
-        error: (error) => ApiReplyError.userMessage(error),
-      });
-      setIsFriend(true);
-    } catch (err) {
-      if (ApiReplyError.check(err)) {
-        if (err.errorCode == "already_added") {
-          setIsFriend(true);
-        }
-      }
-    } finally {
-      setIsAdding(false);
-    }
-  }
-
-  async function removeFriend() {
-    setIsAdding(true);
-    try {
-      const responsePromise = apiRoutes.removeFriend({
-        userId: userId,
-      });
-      await toast.promise(responsePromise, {
-        loading: "Removing...",
-        success: (reply) => reply["message"],
-        error: (error) => ApiReplyError.userMessage(error),
-      });
-      setIsFriend(false);
-    } finally {
-      setIsAdding(false);
-    }
-  }
-  */
 
   const userId = user["_id"];
 
+  // Friendship
   const {
     isDone: isFriend,
     isExecuting: isAdding,
     isHydrating,
     execute: changeFriendship,
   } = useResumableAction({
-    executeFn: async (currentDone) => {
-      await sleep(3000);
-      return !currentDone;
+    executeFn: async (isFriend) => {
+      let apiCall: Promise<unknown>;
+      let result: boolean;
+      if (isFriend) {
+        apiCall = apiRoutes.removeFriend({ userId })
+        result = false;
+      }
+      else {
+        apiCall = apiRoutes.addFriend({ userId })
+        result = true;
+      }
+
+      await reportedCall(delay(apiCall));
+      return result;
     },
     hydrateFn: async () => {
-      await sleep(3000);
-      return true;
+      const { isFriend } = await apiRoutes.isFriend({ userId });
+      return isFriend;
     },
     hydrateDeps: [userId],
   });
