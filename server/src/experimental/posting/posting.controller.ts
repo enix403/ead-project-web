@@ -5,9 +5,7 @@ import joi from 'joi';
 import { validateJoi } from 'middleware/validateJoi';
 import { reply } from 'experimental/app-reply';
 import { requireAuthenticated } from 'middleware/authMiddleware';
-import { PostingFavouriteMarkModel } from 'db/models/favouriteMark';
 import { JobApplicationModel } from 'db/models/jobApplication';
-import { JobPostingModel } from 'db/models/jobPosting';
 import { ApplicationError, NotFound } from 'experimental/errors';
 import { UserModel } from 'db/models/user';
 import { JobInvitationModel } from 'db/models/jobInvitation';
@@ -34,33 +32,34 @@ router.get(
 router.post(
   '/api/invite-employee',
   requireAuthenticated(['employer']),
+  validateJoi(
+    joi.object({
+      employeeId: joi.string().required(),
+    }),
+  ),
   ah(async (req, res) => {
-    const { employeeId, postingId } = req.body;
+    const { employeeId } = req.body;
     const invitedByUserId = req.user!._id;
 
     {
-      const posting = await JobPostingModel.findById(postingId);
-      if (!posting) throw new NotFound();
-
       const employee = await UserModel.findById(employeeId);
       if (!employee) throw new NotFound();
     }
 
     const existing = await JobInvitationModel.findOne({
       employeeId,
-      postingId,
+      invitedByUserId
     });
 
     if (existing) {
       throw new ApplicationError(
-        'Already invited this applicant to this job',
+        'Already invited this candidate to this job',
         400,
         'already_invited',
       );
     }
 
     const invitation = new JobInvitationModel({
-      postingId,
       employeeId,
       invitedByUserId,
       invitedAt: new Date(),
@@ -79,14 +78,12 @@ router.post(
   validateJoi(
     joi.object({
       employeeId: joi.string().required(),
-      postingId: joi.string().required(),
     }),
   ),
   ah(async (req, res) => {
-    const { employeeId, postingId } = req.body;
+    const { employeeId } = req.body;
 
     const existing = await JobInvitationModel.findOne({
-      postingId,
       employeeId,
     });
 

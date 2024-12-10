@@ -3,8 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import { apiRoutes } from "~/app/api-routes";
 
-import { UserOwnedCard } from "~/components/UserOwnedCard";
-import { Button } from "~/components/Button/Button";
+import { CandidateCard } from "./CandidateCard";
 
 const communityApiFilters = {
   userType: "employee",
@@ -29,20 +28,7 @@ export function HomeProfiles() {
           <span>Loading...</span>
         </div>
       ) : (
-        users.map((user) => (
-          <UserOwnedCard
-            key={user._id}
-            user={user}
-            actions={
-              <>
-                <Button fullRounded>Invite</Button>
-                <Button fullRounded variant="outlined">
-                  Message
-                </Button>
-              </>
-            }
-          />
-        ))
+        users.map((employee) => <CandidateCard key={employee["_id"]} employee={employee} />)
       )}
     </>
   );

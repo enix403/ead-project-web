@@ -35,9 +35,10 @@ POST {{baseUrl}}/auth/register
 POST {{baseUrl}}/auth/login
 
 {
-  "email": "user1@gmail.com",
+  "email": "user2@gmail.com",
   "password": "pass"
 }
+
 ###
 @accessToken = {{CmdLogin.response.body.$.token}}
 
@@ -143,7 +144,7 @@ Authorization: Bearer {{accessToken}}
 
 ###
 # -------------------------
-# @name CmdEmployeeApplyToPosting
+# @name CmdApplyToPosting
 POST {{baseUrl}}/job/apply
 Authorization: Bearer {{accessToken}}
 
@@ -151,3 +152,24 @@ Authorization: Bearer {{accessToken}}
   "postingId": "6751950cfa37bcf420d2cc38",
   "answers": []
 }
+
+###
+# -------------------------
+# @name CmdInviteEmployee
+POST {{baseUrl}}/invite-employee
+Authorization: Bearer {{accessToken}}
+
+{
+  "employeeId": "674f261e2b05a0cf3e0e3b87"
+}
+
+###
+# -------------------------
+# @name QueryIsEmployeeInvited
+POST {{baseUrl}}/is-employee-invited
+Authorization: Bearer {{accessToken}}
+
+{
+  "employeeId": "674f261e2b05a0cf3e0e3b87"
+}
+

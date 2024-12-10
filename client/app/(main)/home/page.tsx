@@ -16,8 +16,8 @@ import { Select } from "~/components/Select/Select";
 import { useViewMode } from "~/app/providers/auth-state";
 
 import { Filters } from "./filters/Filters";
-import { HomePostings } from "./HomePostings";
-import { HomeProfiles } from "./HomeProfiles";
+import { HomePostings } from "./HomePostings/HomePostings";
+import { HomeProfiles } from "./HomeProfiles/HomeProfiles";
 
 function PageTitle(props: DivProps) {
   return (

@@ -1,7 +1,6 @@
 import { Schema, Types, model, Document } from 'mongoose';
 
 export interface IJobInvitation extends Document<Types.ObjectId> {
-  postingId: Types.ObjectId;
   employeeId: Types.ObjectId;
   invitedByUserId: Types.ObjectId;
   invitedAt: Date;
@@ -10,12 +9,11 @@ export interface IJobInvitation extends Document<Types.ObjectId> {
 
 const jobInvitationSchema = new Schema<IJobInvitation>(
   {
-    postingId: {
+    employeeId: {
       type: Schema.Types.ObjectId,
-      ref: 'JobPosting',
+      ref: 'User',
       required: true,
     },
-    employeeId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     invitedByUserId: {
       type: Schema.Types.ObjectId,
       ref: 'User',
@@ -34,25 +32,18 @@ const jobInvitationSchema = new Schema<IJobInvitation>(
   },
 );
 
-jobInvitationSchema.virtual('posting', {
-  ref: 'JobPosting',
-  localField: 'postingId',
-  foreignField: '_id',
-  justOne: true
-});
-
 jobInvitationSchema.virtual('inviter', {
   ref: 'User',
   localField: 'invitedByUserId',
   foreignField: '_id',
-  justOne: true
+  justOne: true,
 });
 
 jobInvitationSchema.virtual('employee', {
   ref: 'User',
   localField: 'employeeId',
   foreignField: '_id',
-  justOne: true
+  justOne: true,
 });
 
 // prettier-ignore

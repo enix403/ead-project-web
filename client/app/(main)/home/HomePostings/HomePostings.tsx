@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Spinner } from "@material-tailwind/react";
 
 import { apiRoutes } from "~/app/api-routes";
-import { JobPostingCard } from "~/components/JobPostingCard";
+import { PostingCard } from "./PostingCard";
 
 export function HomePostings() {
   const favsQuery = useQuery<any[] | null>({
@@ -71,7 +71,7 @@ export function HomePostings() {
         </div>
       ) : (
         postings.map((posting) => (
-          <JobPostingCard
+          <PostingCard
             key={posting._id}
             posting={posting}
             isFavourite={favouriteIds.includes(posting["_id"])}

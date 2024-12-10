@@ -1,10 +1,10 @@
-import { Button } from "~/components/Button/Button";
-import { UserOwnedCard } from "./UserOwnedCard";
 import { useEffect, useState } from "react";
-import { ApiReplyError, apiRoutes } from "~/app/api-routes";
 import toast from "react-hot-toast";
+import { Button } from "~/components/Button/Button";
+import { UserOwnedCard } from "~/components/UserOwnedCard";
+import { ApiReplyError, apiRoutes } from "~/app/api-routes";
 
-export function JobPostingCard({
+export function PostingCard({
   posting,
   isBestMatch,
   isFavourite = false,
