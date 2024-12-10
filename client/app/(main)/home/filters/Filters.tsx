@@ -7,10 +7,16 @@ import {
   IconMapPin,
   IconMathEqualGreater,
   IconMathEqualLower,
-  IconSearch,
 } from "@tabler/icons-react";
 import clsx from "clsx";
-import { isValidElement, PropsWithChildren, useState, Children } from "react";
+import {
+  Fragment,
+  isValidElement,
+  PropsWithChildren,
+  useState,
+  Children,
+  ReactNode,
+} from "react";
 
 import { RichInput } from "~/components/Input/Input";
 import { Button } from "~/components/Button/Button";
@@ -18,6 +24,7 @@ import { Select } from "~/components/Select/Select";
 
 import { SwitchOption } from "./SwitchOption";
 import { RangeSlider } from "./RangeSlider";
+import { useViewMode } from "~/app/providers/auth-state";
 
 type FilterProps = PropsWithChildren & { label: string };
 
@@ -25,19 +32,32 @@ export function Filter(_props: FilterProps) {
   return null;
 }
 
+const collectFilterProps = (children: ReactNode): FilterProps[] => {
+  const propsArray: FilterProps[] = [];
+
+  Children.forEach(children, (child) => {
+    if (isValidElement(child)) {
+      if (child.type === Filter) {
+        let props = child.props as FilterProps;
+        propsArray.push(props);
+      } else if (child.type === Fragment) {
+        propsArray.push(...collectFilterProps(child.props.children));
+      }
+    }
+  });
+
+  return propsArray;
+};
+
 export function FilterList({
   children,
   className,
-}: PropsWithChildren & { className?: string }) {
-  let filterConfigs =
-    Children.map(children, (child) => {
-      if (isValidElement(child) && child.type === Filter) {
-        let props = child.props as FilterProps;
-        return props;
-      }
-    })?.filter(Boolean) || [];
-
+}: PropsWithChildren & {
+  className?: string;
+}) {
   let [openIndex, setOpenIndex] = useState(-1);
+
+  let filterConfigs = collectFilterProps(children)?.filter(Boolean) || [];
 
   return (
     <div className={className}>
@@ -80,6 +100,8 @@ export function FilterList({
 }
 
 export function Filters({ className }: { className?: string }) {
+  const viewMode = useViewMode();
+
   return (
     <FilterList className={className}>
       {/* <Filter label="Search by Keywords">
@@ -102,52 +124,60 @@ export function Filters({ className }: { className?: string }) {
           100 km
         </Button>
       </Filter>
-      <Filter label="Category">
-        <Select icon={<IconBriefcase2 size={17} />}>
-          <option>Choose a category</option>
-        </Select>
-      </Filter>
-      <Filter label="Job Type">
-        <div className="space-y-2.5">
-          <SwitchOption label="Freelancer" />
-          <SwitchOption label="Full Time" />
-          <SwitchOption label="Part Time" />
-          <SwitchOption label="Temporary" />
-        </div>
-      </Filter>
-      <Filter label="Date Posted">
-        <div className="space-y-2.5">
-          <SwitchOption label="All" />
-          <SwitchOption label="Last Hour" />
-          <SwitchOption label="Last 24 Hour" />
-          <SwitchOption label="Last 7 Days" />
-        </div>
-      </Filter>
-      <Filter label="Experience Level">
-        <div className="space-y-2.5">
-          <SwitchOption label="Fresh" />
-          <SwitchOption label="1 Year" />
-          <SwitchOption label="2 Year" />
-          <SwitchOption label="3 Year" />
-        </div>
+      {viewMode === "employee" && (
+        <>
+          <Filter label="Category">
+            <Select icon={<IconBriefcase2 size={17} />}>
+              <option>Choose a category</option>
+            </Select>
+          </Filter>
+          <Filter label="Job Type">
+            <div className="space-y-2.5">
+              <SwitchOption label="Freelancer" />
+              <SwitchOption label="Full Time" />
+              <SwitchOption label="Part Time" />
+              <SwitchOption label="Temporary" />
+            </div>
+          </Filter>
+          <Filter label="Date Posted">
+            <div className="space-y-2.5">
+              <SwitchOption label="All" />
+              <SwitchOption label="Last Hour" />
+              <SwitchOption label="Last 24 Hour" />
+              <SwitchOption label="Last 7 Days" />
+            </div>
+          </Filter>
+          <Filter label="Experience Level">
+            <div className="space-y-2.5">
+              <SwitchOption label="Fresh" />
+              <SwitchOption label="1 Year" />
+              <SwitchOption label="2 Year" />
+              <SwitchOption label="3 Year" />
+            </div>
 
-        <Button variant="text" fullRounded className="mt-3 !gap-x-2 text-teal">
-          <IconCirclePlusFilled size={20} />
-          View More
-        </Button>
-      </Filter>
-      <Filter label="Salary">
-        <div className="flex gap-x-4">
-          <RichInput
-            icon={<IconMathEqualGreater size={17} />}
-            inputProps={{ placeholder: "Min salary" }}
-          />
-          <RichInput
-            icon={<IconMathEqualLower size={17} />}
-            inputProps={{ placeholder: "Max salary" }}
-          />
-        </div>
-      </Filter>
+            <Button
+              variant="text"
+              fullRounded
+              className="mt-3 !gap-x-2 text-teal"
+            >
+              <IconCirclePlusFilled size={20} />
+              View More
+            </Button>
+          </Filter>
+          <Filter label="Salary">
+            <div className="flex gap-x-4">
+              <RichInput
+                icon={<IconMathEqualGreater size={17} />}
+                inputProps={{ placeholder: "Min salary" }}
+              />
+              <RichInput
+                icon={<IconMathEqualLower size={17} />}
+                inputProps={{ placeholder: "Max salary" }}
+              />
+            </div>
+          </Filter>
+        </>
+      )}
     </FilterList>
   );
 }
