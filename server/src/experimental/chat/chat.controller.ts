@@ -26,7 +26,7 @@ router.get(
         { sender: userId, receiver: receiverId },
         { sender: receiverId, receiver: userId },
       ],
-    }).sort({ timestamp: 1 });
+    }).sort({ sentAt: 1 });
 
     return reply(res, messages);
   }),
