@@ -17,6 +17,7 @@ import {
   Children,
   ReactNode,
   useEffect,
+  useCallback,
 } from "react";
 
 import { RichInput } from "~/components/Input/Input";
@@ -27,6 +28,7 @@ import { SwitchOption } from "./SwitchOption";
 import { RangeSlider } from "./RangeSlider";
 import { useViewMode } from "~/app/providers/auth-state";
 import { useForm } from "react-hook-form";
+import { useDebounceCallback } from "usehooks-ts";
 
 type FilterProps = PropsWithChildren & { label: string };
 
@@ -51,15 +53,54 @@ const collectFilterProps = (children: ReactNode): FilterProps[] => {
   return propsArray;
 };
 
-function useFilterController() {
+function toArray(obj: Record<string, boolean | undefined | null>): string[] {
+  if (!obj) return [];
+  return Object.keys(obj).filter((key) => Boolean(obj[key]));
+}
+
+function keyToArray(obj: any, key: string) {
+  let arr = toArray(obj[key]);
+  if (arr.length === 0) {
+    delete obj[key];
+  } else {
+    obj[key] = arr;
+  }
+}
+
+function removeFalsey(obj: any) {
+  Object.keys(obj).forEach((key) => {
+    if (!obj[key]) {
+      delete obj[key];
+    }
+  });
+}
+
+if (typeof window !== "undefined") {
+  // @ts-ignore
+  window.toArray = toArray;
+  // @ts-ignore
+  window.keyToArray = keyToArray;
+}
+
+function prepareFilterQuery(values: any) {
+  keyToArray(values, "jobType");
+  keyToArray(values, "expLevelRequired");
+  keyToArray(values, "datePosted");
+  removeFalsey(values);
+}
+
+function useFilterController(onFilter: (filters: any) => void) {
   const { register, watch } = useForm();
 
+  const performFilter = useDebounceCallback(onFilter, 500);
+
   useEffect(() => {
-    const { unsubscribe } = watch((value) => {
-      console.log(value);
+    const { unsubscribe } = watch((values) => {
+      prepareFilterQuery(values);
+      performFilter(values);
     });
     return () => unsubscribe();
-  }, [watch]);
+  }, [watch, performFilter]);
 
   return { register };
 }
@@ -75,7 +116,9 @@ function FilterList({
 }) {
   let [openIndex, setOpenIndex] = useState(-1);
 
-  let filterCtrl = useFilterController();
+  const onFilter = useCallback((filters: any) => {}, []);
+
+  let filterCtrl = useFilterController(onFilter);
 
   let filterConfigs =
     collectFilterProps(children(filterCtrl))?.filter(Boolean) || [];
@@ -150,7 +193,7 @@ export function Filters({ className }: { className?: string }) {
                   selectProps={register("category")}
                   icon={<IconBriefcase2 size={17} />}
                 >
-                  <option>Choose a category</option>
+                  <option value="">Choose a category</option>
                   <option>one</option>
                   <option>two</option>
                   <option>three</option>
