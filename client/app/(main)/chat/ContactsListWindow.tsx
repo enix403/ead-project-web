@@ -35,7 +35,6 @@ export function ContactsListWindow() {
 
 function Conversation({ user }) {
   const router = useRouter();
-  // const userId = "674f2676661dab1966200fa9";
   const userId = user["_id"];
 
   return (

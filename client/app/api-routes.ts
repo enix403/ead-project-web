@@ -234,6 +234,12 @@ export const apiRoutes = {
   /* ========= Uploads ======== */
   /* ========================== */
   uploadImage: uploadDecl(`/api/upload/image`, { key: "image" }),
+
+  /* ========================== */
+  /* ========== Chats ========= */
+  /* ========================== */
+  getChatMessages: jsonDecl((receiverId: string) => `/api/chat/messages/${receiverId}`),
+
 } as const;
 
 if (typeof window !== "undefined") {

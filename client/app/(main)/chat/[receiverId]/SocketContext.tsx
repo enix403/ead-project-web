@@ -7,20 +7,26 @@ import { API_BASE_URL } from "~/app/api-routes";
 const SocketContext = createContext<Socket | null>(null);
 
 export const SocketProvider = ({ children }) => {
-  const socket = useRef<Socket | null>(null);
+  const socketRef = useRef<Socket | null>(null);
+
+  if (!socketRef.current) {
+    socketRef.current = io(API_BASE_URL);
+  }
 
   useEffect(() => {
-    socket.current = io(API_BASE_URL);
     return () => {
-      socket.current?.disconnect();
+      socketRef.current?.disconnect();
     };
   }, []);
 
   return (
-    <SocketContext.Provider value={socket.current}>
+    <SocketContext.Provider value={socketRef.current}>
       {children}
     </SocketContext.Provider>
   );
 };
 
-export const useSocket = () => useContext(SocketContext);
+export const useSocket = () => {
+  const socket = useContext(SocketContext);
+  return socket!;
+};

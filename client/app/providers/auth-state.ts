@@ -4,6 +4,7 @@ import { atomWithStorage } from "jotai/utils";
 export type AuthStateData = {
   token: string;
   userRole: "admin" | "employer" | "employee";
+  userId: string;
 };
 
 const PERSISTANT_STORE_NAME = "authStateData-v1";
@@ -22,10 +23,11 @@ export function getAuthState() {
     if (rawDataJson) {
       try {
         const parsed = JSON.parse(rawDataJson);
-        if ("token" in parsed && "userRole" in parsed) {
+        if ("token" in parsed && "userRole" in parsed && "userId" in parsed) {
           stateData = {
             token: parsed["token"],
             userRole: parsed["userRole"],
+            userId: parsed["userId"],
           };
         }
       } catch {
@@ -37,7 +39,8 @@ export function getAuthState() {
   function login(token: string, user: any) {
     store.set(stateAtom, {
       token,
-      userRole: user.role as any,
+      userRole: user["role"] as any,
+      userId: user["_id"] as any,
     });
   }
 
@@ -51,6 +54,7 @@ export function getAuthState() {
     isLoggedIn: Boolean(stateData?.token),
     token: stateData?.token,
     userRole: stateData?.userRole,
+    userId: stateData?.userId,
   };
 }
 
@@ -60,7 +64,8 @@ export function useAuthState() {
   function login(token: string, user: any) {
     setStateData({
       token,
-      userRole: user.role as any,
+      userRole: user["role"] as any,
+      userId: user["_id"] as any,
     });
   }
 
@@ -74,6 +79,7 @@ export function useAuthState() {
     isLoggedIn: Boolean(stateData?.token),
     token: stateData?.token,
     userRole: stateData?.userRole,
+    userId: stateData?.userId,
   };
 }
 

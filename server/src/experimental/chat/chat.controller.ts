@@ -10,7 +10,7 @@ import { requireAuthenticated } from 'middleware/authMiddleware';
 export const router = express.Router();
 
 router.get(
-  '/messages/:receiverId',
+  '/api/chat/messages/:receiverId',
   requireAuthenticated(),
   validateJoi(
     joi.object({
@@ -33,7 +33,7 @@ router.get(
 );
 
 router.get(
-  '/conversations',
+  '/api/chat/conversations',
   requireAuthenticated(),
   ah(async (req, res) => {
     try {
@@ -51,7 +51,7 @@ router.get(
 );
 
 router.post(
-  '/start-conversation',
+  '/api/chat/start-conversation',
   requireAuthenticated(),
   validateJoi(
     joi.object({

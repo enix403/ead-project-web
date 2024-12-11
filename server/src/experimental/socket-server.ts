@@ -1,6 +1,7 @@
 import http from 'http';
 
 import { Server, type Socket } from 'socket.io';
+import logger from 'utils/logger';
 
 export function createSocketServer(
   parent: any,
@@ -17,17 +18,17 @@ export function createSocketServer(
 
   // Socket.io implementation
   io.on('connection', (socket) => {
-    console.log('A user connected:', socket.id);
+    logger.info('A user connected:', socket.id);
 
     socket.on('join', (userId) => {
       socket.join(userId);
-      console.log(`${userId} joined.`);
+      logger.info(`${userId} joined.`);
     });
 
     onNewConnection(socket, io);
 
     socket.on('disconnect', () => {
-      console.log('A user disconnected:', socket.id);
+      logger.info('A user disconnected:', socket.id);
     });
   });
 

@@ -4,7 +4,6 @@ import { Server, Socket } from 'socket.io';
 export function handleChatConnection(socket: Socket, io: Server) {
   socket.on('sendMessage', async ({ senderId, receiverId, content }) => {
     try {
-      // Ensure a conversation exists
       let conversation = await ConversationModel.findOne({
         participants: { $all: [senderId, receiverId] },
       });
@@ -17,10 +16,10 @@ export function handleChatConnection(socket: Socket, io: Server) {
 
       // Save message
       const message = await ChatMessageModel.create({
-        sender: senderId,
-        receiver: receiverId,
         conversation: conversation._id,
-        content,
+        senderId,
+        receiverId,
+        content
       });
 
       // Update conversation with the latest message

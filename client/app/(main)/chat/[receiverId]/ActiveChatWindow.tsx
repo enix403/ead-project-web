@@ -8,7 +8,17 @@ import { Button } from "~/components/Button/Button";
 
 import { MessageList } from "./MessageList";
 
-export function ActiveChatWindow() {
+export function ActiveChatWindow({
+  messages,
+  sendMessage,
+  newMessage,
+  setNewMessage,
+}: {
+  messages: any[];
+  sendMessage: () => void;
+  newMessage: string;
+  setNewMessage: (val: string) => void;
+}) {
   return (
     <div className={clsx("flex-1", "max-h-[80vh]", "relative bg-[#e0dcdc]")}>
       <div
