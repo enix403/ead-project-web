@@ -10,14 +10,18 @@ import { apiRoutes } from "~/app/api-routes";
 import { useAuthState } from "~/app/providers/auth-state";
 
 import { singleConvParticipants } from "./utils";
+import { useGetConversations, useLoadConvList } from "./covn-list";
 
 export function ContactsListWindow() {
-  const { isLoading, data: conversations } = useQuery<any[]>({
-    queryKey: ["getConversations"],
-    queryFn: () => apiRoutes.getConversations(),
-    initialData: [],
-    placeholderData: [],
-  });
+  // const { isLoading, data: conversations } = useQuery<any[]>({
+  //   queryKey: ["getConversations"],
+  //   queryFn: () => apiRoutes.getConversations(),
+  //   initialData: [],
+  //   placeholderData: [],
+  // });
+
+  useLoadConvList();
+  const conversations = useGetConversations();
 
   return (
     <div
@@ -36,7 +40,7 @@ export function ContactsListWindow() {
   );
 }
 
-function Conversation({ conversation }: { conversation: any[] }) {
+function Conversation({ conversation }: { conversation: any }) {
   const router = useRouter();
 
   // assume conversations["kind"] === "single"
@@ -70,7 +74,8 @@ function Conversation({ conversation }: { conversation: any[] }) {
       <div className="flex-1 ml-3">
         <h2 className="text-lg font-semibold">{receiver.fullName}</h2>
         <p className="text-gray-600">
-          Let's catch up soon. It's been too long!
+          {/* Let's catch up soon. It's been too long! */}
+          {conversation["lastMessage"]}
         </p>
       </div>
     </button>

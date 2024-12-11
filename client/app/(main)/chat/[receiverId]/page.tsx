@@ -1,12 +1,13 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { memo, useCallback, useEffect, useState } from "react";
 import { io, type Socket } from "socket.io-client";
 
 import { ActiveChatWindow } from "./ActiveChatWindow";
 import { useAuthState } from "~/app/providers/auth-state";
 import { API_BASE_URL, apiRoutes } from "~/app/api-routes";
+import { useFocusConv, useRegisterConv } from "../covn-list";
 
 function useSocket() {
   const { userId } = useAuthState();
@@ -33,6 +34,8 @@ function useConversation(
 ) {
   const [conversation, setConversation] = useState<any>(null);
 
+  const registerConv = useRegisterConv();
+
   useEffect(() => {
     if (!receiverId) return;
 
@@ -44,6 +47,7 @@ function useConversation(
         setConversation(conversation);
         setMessages(messages);
         // TODO: update/show conversation in list
+        registerConv(conversation);
       } catch {
         // Handle not found (never for now)
       }
@@ -61,6 +65,8 @@ function useListenMessages(
   conversation: any,
   setMessages: React.Dispatch<React.SetStateAction<any[]>>
 ) {
+  const focusConv = useFocusConv();
+
   useEffect(() => {
     if (!socket || !conversation) return;
 
@@ -70,6 +76,7 @@ function useListenMessages(
         message["senderId"] !== userId
       ) {
         setMessages((prev) => [...prev, message]);
+        focusConv(conversation, message["content"]);
       }
     });
 
@@ -79,15 +86,16 @@ function useListenMessages(
   }, [socket, conversation, userId, setMessages]);
 }
 
-function ChatWindow() {
+const ChatWindow = memo(({ receiverId }: { receiverId: string }) => {
   const { userId } = useAuthState();
-  const { receiverId } = useParams<{ receiverId: string }>();
 
   const [messages, setMessages] = useState<any[]>([]);
   const { conversation } = useConversation(receiverId, setMessages);
 
   const socket = useSocket();
   useListenMessages(socket, userId, conversation, setMessages);
+
+  const focusConv = useFocusConv();
 
   const sendMessage = useCallback(
     (content: string) => {
@@ -102,6 +110,8 @@ function ChatWindow() {
       socket.emit("sendMessage", message);
       // Optimistic update
       setMessages((prev) => [...prev, message]);
+
+      focusConv(conversation, content);
     },
     [conversation, socket, userId]
   );
@@ -117,8 +127,10 @@ function ChatWindow() {
       ) : null}
     </>
   );
-}
+});
 
 export default function ChatPage() {
-  return <ChatWindow />;
+  const { receiverId } = useParams<{ receiverId: string }>();
+
+  return <ChatWindow receiverId={receiverId} />;
 }
