@@ -1,56 +1,83 @@
-import { Avatar } from "@material-tailwind/react";
-import clsx from "clsx";
-import { PropsWithChildren } from "react";
-import { repeatNode } from "~/app/utils/markup";
+"use client";
 
-function ChatMessage({
-  side,
-  children,
-}: { side: "left" | "right" } & PropsWithChildren) {
+import clsx from "clsx";
+import { Avatar, Typography } from "@material-tailwind/react";
+import { IconMessage, IconSend2 } from "@tabler/icons-react";
+
+import { Button } from "~/components/Button/Button";
+
+import { MessageList } from "./MessageList";
+
+function ActiveChat() {
   return (
-    <div
-      className={clsx(
-        "flex items-start gap-2.5",
-        "max-w-sm",
-        side === "right" && "self-end flex-row-reverse"
-      )}
-    >
-      <Avatar
-        size="xs"
-        className="object-center"
-        src="/profile_empty_gradient.png"
-        alt="avatar"
-      />
-      <div className="flex flex-col w-full max-w-[320px] leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-e-xl rounded-es-xl">
-        <div className="flex items-center space-x-2">
-          <span className="text-sm font-semibold text-gray-900">
-            Yiassin M.
-          </span>
-          <span className="text-sm font-normal text-gray-500">01:16</span>
+    <div className={clsx("flex-1", "max-h-[80vh]", "relative bg-[#e0dcdc]")}>
+      <div
+        className={clsx(
+          "bg-teal",
+          "absolute top-0 w-full",
+          "z-[60]",
+          "flex gap-x-4",
+          "py-2 px-4"
+        )}
+      >
+        <Avatar
+          variant="circular"
+          alt="User"
+          src="/profile_empty_gradient.png"
+        />
+        <div className="flex-1">
+          <Typography variant="h6" color="white">
+            Yiannis Andrew
+          </Typography>
+          <Typography variant="small" color="white" className="font-normal">
+            Senior Software Engineer
+          </Typography>
         </div>
-        <p className="text-sm font-normal py-2.5 text-gray-900">
-          {children}
-        </p>
-        <span className="text-sm font-normal text-gray-500">Delivered</span>
+      </div>
+      <div className="h-full max-h-full overflow-y-auto pt-20 pb-24 px-8">
+        <MessageList />
+      </div>
+      <div
+        className={clsx(
+          "bg-white",
+          "absolute bottom-0 w-full h-20 flex items-center gap-x-4",
+          "px-8"
+        )}
+      >
+        <div className="border border-black/20 rounded-xl flex-1 flex overflow-hidden px-2.5 py-2.5 gap-x-1.5">
+          <IconMessage size={17} className="self-center" />
+          <input
+            size={1}
+            className="flex-1 outline-none bg-transparent"
+            placeholder="Enter message"
+          />
+        </div>
+        <Button>
+          Send
+          <IconSend2 />
+        </Button>
       </div>
     </div>
   );
 }
 
-export function ChatWindow() {
+function NoActiveChat() {
   return (
     <div
       className={clsx(
-        "w-full min-h-full flex flex-col gap-y-4",
-        "justify-end items-start"
+        "flex-1 flex flex-col justify-center items-center",
+        "bg-white"
       )}
     >
-      {repeatNode(16, (index) => (
-        <ChatMessage key={index} side={index % 3 ? "left" : "right"}>
-          Lorem ipsum {index} dolor sit amet consectetur adipisicing elit. Rem
-          nam hic dolor
-        </ChatMessage>
-      ))}
+      <img src="/no_chat_selected.png" className="w-[30rem]" />
+      <p className="text-lg text-gray-600 mb-20">
+        Select a chat from the contacts list.
+      </p>
     </div>
   );
+}
+
+export function ChatWindow() {
+  return <ActiveChat />;
+  // return <NoActiveChat />;
 }
