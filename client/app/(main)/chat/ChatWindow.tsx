@@ -69,6 +69,7 @@ function NoActiveChat() {
         "bg-white"
       )}
     >
+      {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src="/no_chat_selected.png" className="w-[30rem]" />
       <p className="text-lg text-gray-600 mb-20">
         Select a chat from the contacts list.

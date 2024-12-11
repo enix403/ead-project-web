@@ -10,16 +10,19 @@ import { router as communityRouter } from 'experimental/community/community.cont
 import { router as meRouter } from 'experimental/me/me.controller';
 import { router as postingRouter } from 'experimental/posting/posting.controller';
 import { router as uploadingRouter } from 'experimental/uploading/uploading.controller';
+import { router as chatRouter } from 'experimental/chat/chat.controller';
 
 export function createRootRouter() {
   const router = express.Router();
 
+  router.use(chatRouter);
   router.use(authRouter);
   router.use(healthRouter);
   router.use(communityRouter);
   router.use(meRouter);
   router.use(postingRouter);
   router.use(uploadingRouter);
+
   router.use(userRouter);
   router.use(jobRouter);
   router.use(statRouter);

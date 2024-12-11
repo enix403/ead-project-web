@@ -11,6 +11,9 @@ import { appEnv } from 'config/app-env';
 import { createRootRouter } from 'routes';
 import { ApplicationError } from 'experimental/errors';
 
+import { handleChatConnection } from 'experimental/chat/chat.socket';
+import { createSocketServer } from 'experimental/socket-server';;
+
 function createApp() {
   const app = express();
 
@@ -63,7 +66,10 @@ async function bootstrap() {
   await connectMongoDB();
 
   const app = createApp();
-  const server = createServer(app);
+  const { server } = createSocketServer(app, (socket, io) => {
+    handleChatConnection(socket, io);
+  });
+  // const server = createServer(app);
 
   const bind = getBind();
 
