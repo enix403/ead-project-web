@@ -1,5 +1,6 @@
 import "./Filters.css";
 
+import clsx from "clsx";
 import {
   IconBriefcase2,
   IconChevronDown,
@@ -8,7 +9,6 @@ import {
   IconMathEqualGreater,
   IconMathEqualLower,
 } from "@tabler/icons-react";
-import clsx from "clsx";
 import {
   Fragment,
   isValidElement,
@@ -16,6 +16,7 @@ import {
   useState,
   Children,
   ReactNode,
+  useEffect,
 } from "react";
 
 import { RichInput } from "~/components/Input/Input";
@@ -25,6 +26,7 @@ import { Select } from "~/components/Select/Select";
 import { SwitchOption } from "./SwitchOption";
 import { RangeSlider } from "./RangeSlider";
 import { useViewMode } from "~/app/providers/auth-state";
+import { useForm } from "react-hook-form";
 
 type FilterProps = PropsWithChildren & { label: string };
 
@@ -49,15 +51,34 @@ const collectFilterProps = (children: ReactNode): FilterProps[] => {
   return propsArray;
 };
 
-export function FilterList({
+function useFilterController() {
+  const { register, watch } = useForm();
+
+  useEffect(() => {
+    const { unsubscribe } = watch((value) => {
+      console.log(value);
+    });
+    return () => unsubscribe();
+  }, [watch]);
+
+  return { register };
+}
+
+type FilterController = ReturnType<typeof useFilterController>;
+
+function FilterList({
   children,
   className,
-}: PropsWithChildren & {
+}: {
   className?: string;
+  children: (filterCtrl: FilterController) => ReactNode;
 }) {
   let [openIndex, setOpenIndex] = useState(-1);
 
-  let filterConfigs = collectFilterProps(children)?.filter(Boolean) || [];
+  let filterCtrl = useFilterController();
+
+  let filterConfigs =
+    collectFilterProps(children(filterCtrl))?.filter(Boolean) || [];
 
   return (
     <div className={className}>
@@ -85,15 +106,14 @@ export function FilterList({
                   className={clsx("ta", open && "-rotate-180")}
                 />
               </button>
-              {/* {open && (
-                <div className="px-2 pt-1 max-md:hidden">{filter.children}</div>
-              )} */}
             </div>
           );
         })}
       </div>
       {openIndex > -1 && (
-        <div className="mt-4">{filterConfigs[openIndex].children}</div>
+        <div key={openIndex} className="mt-4">
+          {filterConfigs[openIndex].children}
+        </div>
       )}
     </div>
   );
@@ -104,78 +124,114 @@ export function Filters({ className }: { className?: string }) {
 
   return (
     <FilterList className={className}>
-      {/* <Filter label="Search by Keywords">
-        <RichInput
-          icon={<IconSearch size={17} />}
-          inputProps={{ placeholder: "UI/UX Designer" }}
-        />
-      </Filter> */}
-      <Filter label="Location">
-        <RichInput
-          icon={<IconMapPin size={17} />}
-          inputProps={{ placeholder: "London" }}
-        />
-        <p className="text-black/80 text-sm mt-3 mb-3">
-          Radius around selected destination
-        </p>
-        <RangeSlider />
-
-        <Button fullRounded className="mx-auto">
-          100 km
-        </Button>
-      </Filter>
-      {viewMode === "employee" && (
+      {({ register }) => (
         <>
-          <Filter label="Category">
-            <Select icon={<IconBriefcase2 size={17} />}>
-              <option>Choose a category</option>
-            </Select>
-          </Filter>
-          <Filter label="Job Type">
-            <div className="space-y-2.5">
-              <SwitchOption label="Freelancer" />
-              <SwitchOption label="Full Time" />
-              <SwitchOption label="Part Time" />
-              <SwitchOption label="Temporary" />
-            </div>
-          </Filter>
-          <Filter label="Date Posted">
-            <div className="space-y-2.5">
-              <SwitchOption label="All" />
-              <SwitchOption label="Last Hour" />
-              <SwitchOption label="Last 24 Hour" />
-              <SwitchOption label="Last 7 Days" />
-            </div>
-          </Filter>
-          <Filter label="Experience Level">
-            <div className="space-y-2.5">
-              <SwitchOption label="Fresh" />
-              <SwitchOption label="1 Year" />
-              <SwitchOption label="2 Year" />
-              <SwitchOption label="3 Year" />
-            </div>
+          <Filter label="Location">
+            <RichInput
+              icon={<IconMapPin size={17} />}
+              inputProps={{
+                ...register("location"),
+                placeholder: "London",
+              }}
+            />
+            <p className="text-black/80 text-sm mt-3 mb-3">
+              Radius around selected destination
+            </p>
+            <RangeSlider />
 
-            <Button
-              variant="text"
-              fullRounded
-              className="mt-3 !gap-x-2 text-teal"
-            >
-              <IconCirclePlusFilled size={20} />
-              View More
+            <Button fullRounded className="mx-auto">
+              100 km
             </Button>
           </Filter>
-          <Filter label="Salary">
-            <div className="flex gap-x-4">
-              <RichInput
-                icon={<IconMathEqualGreater size={17} />}
-                inputProps={{ placeholder: "Min salary" }}
-              />
-              <RichInput
-                icon={<IconMathEqualLower size={17} />}
-                inputProps={{ placeholder: "Max salary" }}
-              />
-            </div>
-          </Filter>
+          {viewMode === "employee" && (
+            <>
+              <Filter label="Category">
+                <Select
+                  selectProps={register("category")}
+                  icon={<IconBriefcase2 size={17} />}
+                >
+                  <option>Choose a category</option>
+                  <option>one</option>
+                  <option>two</option>
+                  <option>three</option>
+                </Select>
+              </Filter>
+              <Filter label="Job Type">
+                <div className="space-y-2.5">
+                  <SwitchOption
+                    {...register("jobType.fullTime")}
+                    label="Freelancer"
+                  />
+                  <SwitchOption
+                    {...register("jobType.partTime")}
+                    label="Full Time"
+                  />
+                  <SwitchOption
+                    {...register("jobType.internship")}
+                    label="Part Time"
+                  />
+                  <SwitchOption
+                    {...register("jobType.specificDates")}
+                    label="Temporary"
+                  />
+                </div>
+              </Filter>
+              <Filter label="Date Posted">
+                <div className="space-y-2.5">
+                  <SwitchOption {...register("datePosted.all")} label="All" />
+                  <SwitchOption
+                    {...register("datePosted.lastHour")}
+                    label="Last Hour"
+                  />
+                  <SwitchOption
+                    {...register("datePosted.last24Hours")}
+                    label="Last 24 Hour"
+                  />
+                  <SwitchOption
+                    {...register("datePosted.last7Days")}
+                    label="Last 7 Days"
+                  />
+                </div>
+              </Filter>
+              <Filter label="Experience Level">
+                <div className="space-y-2.5">
+                  <SwitchOption
+                    {...register("expLevelRequired.entry")}
+                    label="Entry Level"
+                  />
+                  <SwitchOption
+                    {...register("expLevelRequired.mid")}
+                    label="Mid Level"
+                  />
+                  <SwitchOption
+                    {...register("expLevelRequired.senior")}
+                    label="Senior Level"
+                  />
+                </div>
+
+                <Button
+                  variant="text"
+                  fullRounded
+                  className="mt-3 !gap-x-2 text-teal"
+                >
+                  <IconCirclePlusFilled size={20} />
+                  View More
+                </Button>
+              </Filter>
+              <Filter label="Salary">
+                <div className="flex gap-x-4">
+                  <RichInput
+                    icon={<IconMathEqualGreater size={17} />}
+                    inputProps={{ placeholder: "Min salary" }}
+                  />
+                  <RichInput
+                    icon={<IconMathEqualLower size={17} />}
+                    inputProps={{ placeholder: "Max salary" }}
+                  />
+                </div>
+              </Filter>
+            </>
+          )}
         </>
       )}
     </FilterList>
