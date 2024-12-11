@@ -6,55 +6,31 @@ import { ChatMessageModel, ConversationModel } from 'db/models/chat';
 import { customJoi, validateJoi } from 'middleware/validateJoi';
 import { reply } from 'experimental/app-reply';
 import { requireAuthenticated } from 'middleware/authMiddleware';
+import Joi from 'joi';
 
 export const router = express.Router();
 
 router.get(
-  '/api/chat/messages/:receiverId',
-  requireAuthenticated(),
-  validateJoi(
-    joi.object({
-      receiverId: customJoi.id(),
-    }),
-  ),
-  ah(async (req, res) => {
-    const { receiverId } = req.params;
-    const userId = req.user!._id;
-
-    const messages = await ChatMessageModel.find({
-      $or: [
-        { senderId: userId, receiverId: receiverId },
-        { senderId: receiverId, receiverId: userId },
-      ],
-    }).sort({ sentAt: 1 });
-
-    return reply(res, messages);
-  }),
-);
-
-/* router.get(
   '/api/chat/conversations',
   requireAuthenticated(),
   ah(async (req, res) => {
-    try {
-      const conversations = await ConversationModel.find({
-        participants: req.user!._id,
+    const conversations = await ConversationModel.find({
+      participants: req.user!._id,
+    })
+      .populate({
+        path: 'participants',
       })
-        .populate('participants')
-        .sort({ lastUpdated: -1 });
+      .sort({ lastUpdated: -1 });
 
-      res.json(conversations);
-    } catch (err) {
-      res.status(500).json({ error: 'Error fetching conversations' });
-    }
+    return reply(res, conversations);
   }),
-); */
+);
 
 router.post(
-  '/api/chat/start-conversation',
+  '/api/chat/resume-conv-single',
   requireAuthenticated(),
   validateJoi(
-    joi.object({
+    Joi.object({
       receiverId: customJoi.id(),
     }),
   ),
@@ -63,18 +39,36 @@ router.post(
     const { receiverId } = req.body;
 
     let conversation = await ConversationModel.findOne({
+      kind: 'single',
       participants: { $all: [userId, receiverId] },
     });
 
+    let fresh = false;
+
     if (!conversation) {
-      conversation = await ConversationModel.create({
+      fresh = true;
+
+      conversation = new ConversationModel({
+        kind: 'single',
         participants: [userId, receiverId],
+        creatorId: userId,
       });
+
+      conversation = await conversation.save();
     }
 
-    await conversation.populate('participants');
+    await conversation.populate({ path: 'participants' });
+    const conversationId = conversation._id;
 
-    return reply(res, conversation);
+    const messages = await ChatMessageModel.find({
+      conversationId,
+    }).sort({ sentAt: 1 });
+
+    return reply(res, {
+      fresh,
+      conversation,
+      messages,
+    });
   }),
 );
 

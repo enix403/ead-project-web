@@ -43,6 +43,8 @@ POST {{baseUrl}}/auth/login
 @accessToken = {{CmdLogin.response.body.$.token}}
 # user1: 674f261e2b05a0cf3e0e3b87
 # user2: 674f2676661dab1966200fa9
+@user1 = 674f261e2b05a0cf3e0e3b87
+@user2 = 674f2676661dab1966200fa9
 
 # ==================================
 # ==================================
@@ -52,18 +54,18 @@ POST {{baseUrl}}/auth/login
 
 ###
 # -------------------------
-# @name QueryGetMessages
-GET {{baseUrl}}/chat/messages/674f2676661dab1966200fa9
+# @name QueryGetConversations
+GET {{baseUrl}}/chat/conversations
 Authorization: Bearer {{accessToken}}
 
 ###
 # -------------------------
-# @name QueryGetMessages
-POST {{baseUrl}}/chat/start-conversation
+# @name CmdResumeConvSingle
+POST {{baseUrl}}/chat/resume-conv-single
 Authorization: Bearer {{accessToken}}
 
 {
-  "receiverId": "674f2676661dab1966200fa9"
+  "receiverId": "{{user2}}"
 }
 
 # ==================================
