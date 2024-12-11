@@ -76,7 +76,7 @@ function ChatWindow() {
   }, [receiverId, socket, currentUserId]);
 
   const sendMessage = () => {
-    if (!socket) return;
+    if (!socket || !newMessage) return;
 
     const message = {
       senderId: currentUserId,

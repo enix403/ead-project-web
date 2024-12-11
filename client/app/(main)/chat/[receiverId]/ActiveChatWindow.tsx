@@ -7,6 +7,7 @@ import { IconMessage, IconSend2 } from "@tabler/icons-react";
 import { Button } from "~/components/Button/Button";
 
 import { MessageList } from "./MessageList";
+import { FormEvent, useCallback } from "react";
 
 export function ActiveChatWindow({
   messages,
@@ -21,6 +22,11 @@ export function ActiveChatWindow({
   newMessage: string;
   setNewMessage: (val: string) => void;
 }) {
+  function handleSubmit(event: FormEvent<HTMLFormElement>): void {
+    event.preventDefault();
+    sendMessage();
+  }
+
   return (
     <div className={clsx("flex-1", "max-h-[80vh]", "relative bg-[#e0dcdc]")}>
       <div
@@ -46,15 +52,16 @@ export function ActiveChatWindow({
           </Typography>
         </div>
       </div>
-      <div className="h-full max-h-full overflow-y-auto pt-20 pb-24 px-8">
-        <MessageList messages={messages} />
-      </div>
-      <div
+
+      <MessageList messages={messages} />
+
+      <form
         className={clsx(
           "bg-white",
           "absolute bottom-0 w-full h-20 flex items-center gap-x-4",
           "px-8"
         )}
+        onSubmit={handleSubmit}
       >
         <div className="border border-black/20 rounded-xl flex-1 flex overflow-hidden px-2.5 py-2.5 gap-x-1.5">
           <IconMessage size={17} className="self-center" />
@@ -66,11 +73,11 @@ export function ActiveChatWindow({
             onChange={(e) => setNewMessage(e.target.value)}
           />
         </div>
-        <Button onClick={sendMessage}>
+        <Button type="submit" disabled={!newMessage}>
           Send
           <IconSend2 />
         </Button>
-      </div>
+      </form>
     </div>
   );
 }

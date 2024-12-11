@@ -1,6 +1,6 @@
 import { Avatar } from "@material-tailwind/react";
 import clsx from "clsx";
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useEffect, useRef } from "react";
 import { useAuthState } from "~/app/providers/auth-state";
 import { repeatNode } from "~/app/utils/markup";
 
@@ -36,24 +36,42 @@ function Message({
   );
 }
 
+function useChatScroll<T>(dep: T) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (ref.current) {
+      ref.current.scrollTop = ref.current.scrollHeight;
+    }
+  }, [dep]);
+
+  return ref;
+}
+
 export function MessageList({ messages }: { messages: any[] }) {
   const { userId: currentUserId } = useAuthState();
+  const ref = useChatScroll(messages);
 
   return (
-    <div
-      className={clsx(
-        "w-full min-h-full flex flex-col gap-y-4",
-        "justify-end items-start"
-      )}
-    >
-      {messages.map((message) => {
-        const isCurrentUser = message["senderId"] === currentUserId;
-        return (
-          <Message key={message["_id"]} side={isCurrentUser ? "right" : "left"}>
-            {message.content}
-          </Message>
-        );
-      })}
+    <div ref={ref} className="h-full max-h-full overflow-y-auto pt-20 pb-24 px-8">
+      <div
+        className={clsx(
+          "w-full min-h-full flex flex-col gap-y-4",
+          "justify-end items-start"
+        )}
+      >
+        {messages.map((message) => {
+          const isCurrentUser = message["senderId"] === currentUserId;
+          return (
+            <Message
+              key={message["_id"]}
+              side={isCurrentUser ? "right" : "left"}
+            >
+              {message.content}
+            </Message>
+          );
+        })}
+      </div>
     </div>
   );
 }
