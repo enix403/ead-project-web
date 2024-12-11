@@ -117,7 +117,7 @@ const jobPostingSchema = new Schema<IJobPosting>(
 jobPostingSchema.virtual('applications', {
   ref: 'JobApplication',
   localField: '_id',
-  foreignField: 'jobId',
+  foreignField: 'postingId',
 });
 
 jobPostingSchema.virtual('poster', {

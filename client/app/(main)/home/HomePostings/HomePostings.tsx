@@ -70,16 +70,19 @@ export function HomePostings() {
           <span>Loading...</span>
         </div>
       ) : (
-        postings.map((posting) => (
-          <PostingCard
-            key={posting._id}
-            posting={posting}
-            isFavourite={favouriteIds.includes(posting["_id"])}
-            setIsFavourite={(isFavourite) =>
-              markFavourite(posting, isFavourite)
-            }
-          />
-        ))
+        postings.map(
+          (posting) =>
+            posting["isActive"] && (
+              <PostingCard
+                key={posting._id}
+                posting={posting}
+                isFavourite={favouriteIds.includes(posting["_id"])}
+                setIsFavourite={(isFavourite) =>
+                  markFavourite(posting, isFavourite)
+                }
+              />
+            )
+        )
       )}
     </>
   );
