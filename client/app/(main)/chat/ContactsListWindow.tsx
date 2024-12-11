@@ -1,17 +1,20 @@
 "use client";
 
+import clsx from "clsx";
 import { Badge, Avatar } from "@material-tailwind/react";
 import { useQuery } from "@tanstack/react-query";
-import clsx from "clsx";
+
 import { useRouter } from "next/navigation";
+
 import { apiRoutes } from "~/app/api-routes";
-import { repeatNode } from "~/app/utils/markup";
+import { useAuthState } from "~/app/providers/auth-state";
+
+import { singleConvParticipants } from "./utils";
 
 export function ContactsListWindow() {
-
-  const { isLoading, data: users } = useQuery<any[]>({
-    queryKey: ["getCommunity"],
-    queryFn: () => apiRoutes.getCommunity(),
+  const { isLoading, data: conversations } = useQuery<any[]>({
+    queryKey: ["getConversations"],
+    queryFn: () => apiRoutes.getConversations(),
     initialData: [],
     placeholderData: [],
   });
@@ -26,22 +29,28 @@ export function ContactsListWindow() {
     >
       <h1 className="text-2xl font-bold ml-2 mt-2 mb-4">Chats</h1>
       {/* {repeatNode(6, (index) => ( */}
-      {users.map((user) => (
-        <Conversation key={user["_id"]} user={user} />
+      {conversations.map((conv) => (
+        <Conversation key={conv["_id"]} conversation={conv} />
       ))}
     </div>
   );
 }
 
-function Conversation({ user }) {
+function Conversation({ conversation }: { conversation: any[] }) {
   const router = useRouter();
-  const userId = user["_id"];
+
+  // assume conversations["kind"] === "single"
+
+  const { userId } = useAuthState();
+  const { receiver } = singleConvParticipants(conversation, userId);
+
+  const receiverId = receiver["_id"];
 
   return (
     <button
       className="flex items-center mb-4 cursor-pointer hover:bg-gray-100 p-2 rounded-md text-left w-full"
       onClick={() => {
-        router.push(`/chat/${userId}`);
+        router.push(`/chat/${receiverId}`);
       }}
     >
       <Badge
@@ -59,7 +68,7 @@ function Conversation({ user }) {
         />
       </Badge>
       <div className="flex-1 ml-3">
-        <h2 className="text-lg font-semibold">{user.fullName}</h2>
+        <h2 className="text-lg font-semibold">{receiver.fullName}</h2>
         <p className="text-gray-600">
           Let's catch up soon. It's been too long!
         </p>

@@ -1,12 +1,11 @@
 import express from 'express';
 import ah from 'express-async-handler';
-import joi from 'joi';
+import Joi from 'joi';
 
 import { ChatMessageModel, ConversationModel } from 'db/models/chat';
 import { customJoi, validateJoi } from 'middleware/validateJoi';
 import { reply } from 'experimental/app-reply';
 import { requireAuthenticated } from 'middleware/authMiddleware';
-import Joi from 'joi';
 
 export const router = express.Router();
 

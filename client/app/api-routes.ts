@@ -238,8 +238,11 @@ export const apiRoutes = {
   /* ========================== */
   /* ========== Chats ========= */
   /* ========================== */
-  getChatMessages: jsonDecl((receiverId: string) => `/api/chat/messages/${receiverId}`),
-  startConversation: payloadDecl(`/api/chat/start-conversation`),
+  // getChatMessages: jsonDecl((receiverId: string) => `/api/chat/messages/${receiverId}`),
+  // startConversation: payloadDecl(`/api/chat/start-conversation`),
+
+  getConversations: jsonDecl(`/api/chat/conversations`),
+  resumeConversationSingle: payloadDecl(`/api/chat/resume-conv-single`),
 
 } as const;
 
