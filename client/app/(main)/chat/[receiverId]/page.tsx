@@ -108,7 +108,9 @@ const ChatWindow = memo(({ receiverId }: { receiverId: string }) => {
       };
 
       socket.emit("sendMessage", message);
+
       // Optimistic update
+      message["sentAt"] = new Date();
       setMessages((prev) => [...prev, message]);
 
       focusConv(conversation, content);

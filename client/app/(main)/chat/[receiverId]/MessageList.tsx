@@ -1,17 +1,22 @@
-import { Avatar } from "@material-tailwind/react";
 import clsx from "clsx";
-import { PropsWithChildren, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
+import { format } from "date-fns";
+
+import { Avatar } from "@material-tailwind/react";
+
 import { useAuthState } from "~/app/providers/auth-state";
-import { repeatNode } from "~/app/utils/markup";
 
 function Message({
   side,
-  children,
   user,
+  message,
 }: {
   side: "left" | "right";
   user: any;
-} & PropsWithChildren) {
+  message: any;
+}) {
+  const date = new Date(message["sentAt"]);
+
   return (
     <div
       className={clsx(
@@ -31,9 +36,13 @@ function Message({
           <span className="text-sm font-semibold text-gray-900">
             {user?.fullName}
           </span>
-          <span className="text-sm font-normal text-gray-500">01:16</span>
+          <span className="text-sm font-normal text-gray-500">
+            {format(date, "h:mm a")}
+          </span>
         </div>
-        <p className="text-sm font-normal py-2.5 text-gray-900">{children}</p>
+        <p className="text-sm font-normal py-2.5 text-gray-900">
+          {message.content}
+        </p>
         <span className="text-sm font-normal text-gray-500">Delivered</span>
       </div>
     </div>
@@ -51,7 +60,6 @@ function useChatScroll<T>(dep: T) {
 
   return ref;
 }
-
 
 export function MessageList({
   messages,
@@ -77,7 +85,9 @@ export function MessageList({
       >
         {messages.map((message) => {
           const messageSenderId = message["senderId"];
-          const messageSender = participants.find(p => p["_id"] === messageSenderId);
+          const messageSender = participants.find(
+            (p) => p["_id"] === messageSenderId
+          );
 
           const isCurrentUser = messageSenderId === currentUserId;
 
@@ -86,9 +96,8 @@ export function MessageList({
               key={message["_id"]}
               side={isCurrentUser ? "right" : "left"}
               user={messageSender}
-            >
-              {message.content}
-            </Message>
+              message={message}
+            />
           );
         })}
       </div>
