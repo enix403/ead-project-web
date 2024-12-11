@@ -52,16 +52,17 @@ function useChatScroll<T>(dep: T) {
   return ref;
 }
 
+
 export function MessageList({
   messages,
-  sender,
-  receiver,
+  conversation,
 }: {
   messages: any[];
-  sender: any;
-  receiver: any;
+  conversation: any;
 }) {
   const ref = useChatScroll(messages);
+  const { userId: currentUserId } = useAuthState();
+  const participants = conversation["participants"];
 
   return (
     <div
@@ -75,13 +76,16 @@ export function MessageList({
         )}
       >
         {messages.map((message) => {
-          const isCurrentUser = message["senderId"] === sender["_id"];
-          const user = isCurrentUser ? sender : receiver;
+          const messageSenderId = message["senderId"];
+          const messageSender = participants.find(p => p["_id"] === messageSenderId);
+
+          const isCurrentUser = messageSenderId === currentUserId;
+
           return (
             <Message
               key={message["_id"]}
               side={isCurrentUser ? "right" : "left"}
-              user={user}
+              user={messageSender}
             >
               {message.content}
             </Message>

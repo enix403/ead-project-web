@@ -36,10 +36,13 @@ export function handleChatConnection(socket: Socket, io: Server) {
 
       // broadcast to all users other than the sender
       const broadcastTo = participants
-        .filter((p) => p.id !== senderId)
-        .map((id) => id.toString());
+        .map((id) => id.toString())
+        .filter((p) => p !== senderId);
 
-      io.to(broadcastTo).emit('receiveMessage', message);
+      io.to(broadcastTo).emit('receiveMessage', {
+        conversationId,
+        message,
+      });
     } catch (err) {
       console.error('Error sending message:', err);
     }

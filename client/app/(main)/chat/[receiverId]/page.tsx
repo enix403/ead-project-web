@@ -1,20 +1,108 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { ActiveChatWindow } from "./ActiveChatWindow";
-import { useEffect, useState } from "react";
-import { SocketProvider, useSocket } from "./SocketContext";
-import { useAuthState } from "~/app/providers/auth-state";
-import { apiRoutes } from "~/app/api-routes";
+import { useCallback, useEffect, useState } from "react";
+import { io, type Socket } from "socket.io-client";
 
-export default function ChatPage() {
+import { ActiveChatWindow } from "./ActiveChatWindow";
+// import { SocketProvider, useSocket } from "./SocketContext";
+import { useAuthState } from "~/app/providers/auth-state";
+import { API_BASE_URL, apiRoutes } from "~/app/api-routes";
+
+function useSocket() {
+  const { userId } = useAuthState();
+
+  const [socket, setSocket] = useState<Socket | null>(null);
+
+  useEffect(() => {
+    const socket = io(API_BASE_URL);
+    socket.emit("join", userId);
+    setSocket(socket);
+
+    return () => {
+      socket.emit("leave", userId);
+      socket.disconnect();
+    };
+  }, [userId]);
+
+  return socket;
+}
+
+function ChatWindow() {
+  const { userId } = useAuthState();
+  const { receiverId } = useParams<{ receiverId: string }>();
+
+  const [conversation, setConversation] = useState<any>(null);
+  const [messages, setMessages] = useState<any[]>([]);
+
+  const socket = useSocket();
+
+  useEffect(() => {
+    if (!receiverId) return;
+
+    async function loadConv() {
+      try {
+        const { fresh, conversation, messages } =
+          await apiRoutes.resumeConversationSingle({ receiverId });
+
+        setConversation(conversation);
+        setMessages(messages);
+        // TODO: update/show conversation in list
+      } catch {
+        // Handle not found (never for now)
+      }
+    }
+
+    loadConv();
+  }, [receiverId]);
+
+  useEffect(() => {
+    if (!socket || !conversation) return;
+
+    socket.on("receiveMessage", ({ conversationId, message }) => {
+      if (conversationId === conversation["_id"] && message["senderId"] !== userId) {
+        setMessages((prev) => [...prev, message]);
+      }
+    });
+
+    return () => {
+      socket.off("receiveMessage");
+    };
+  }, [socket, conversation, userId]);
+
+  const sendMessage = useCallback(
+    (content: string) => {
+      if (!socket || !content) return;
+
+      const message = {
+        conversationId: conversation["_id"],
+        senderId: userId,
+        content,
+      };
+
+      socket.emit("sendMessage", message);
+      // Optimistic update
+      setMessages((prev) => [...prev, message]);
+    },
+    [conversation, socket, userId]
+  );
+
   return (
-    <SocketProvider>
-      <ChatWindow />
-    </SocketProvider>
+    <>
+      {conversation ? (
+        <ActiveChatWindow
+          conversation={conversation}
+          messages={messages}
+          sendMessage={sendMessage}
+        />
+      ) : (
+        null
+      )}
+    </>
   );
 }
 
+/*
 function ChatWindow() {
   const { receiverId } = useParams<{ receiverId: string }>();
 
@@ -112,4 +200,14 @@ function ChatWindow() {
       )}
     </>
   );
+}
+ */
+
+export default function ChatPage() {
+  return <ChatWindow />;
+  /* return (
+    <SocketProvider>
+      {null}
+    </SocketProvider>
+  ); */
 }
