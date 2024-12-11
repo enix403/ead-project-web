@@ -7,7 +7,9 @@ import { IconMessage, IconSend2 } from "@tabler/icons-react";
 import { Button } from "~/components/Button/Button";
 
 import { MessageList } from "./MessageList";
-import { FormEvent, useCallback, useState } from "react";
+import { FormEvent, useCallback, useMemo, useState } from "react";
+import { singleConvParticipants } from "../utils";
+import { useAuthState } from "~/app/providers/auth-state";
 
 function NewMessageInput({
   sendMessage,
@@ -50,6 +52,13 @@ function NewMessageInput({
 }
 
 function ChatHeader({ conversation }: { conversation: any }) {
+  const { userId } = useAuthState();
+
+  const receiver = useMemo(() => {
+    const { receiver } = singleConvParticipants(conversation, userId);
+    return receiver;
+  }, [conversation, userId]);
+
   return (
     <div
       className={clsx(
@@ -63,8 +72,7 @@ function ChatHeader({ conversation }: { conversation: any }) {
       <Avatar variant="circular" alt="User" src="/profile_empty_gradient.png" />
       <div className="flex-1">
         <Typography variant="h6" color="white">
-          {/* {receiver?.fullName} */}
-          Receiver
+          {receiver?.fullName}
         </Typography>
         <Typography variant="small" color="white" className="font-normal">
           Senior Software Engineer
