@@ -97,13 +97,19 @@ function ChatWindow() {
   };
 
   return (
-    <ActiveChatWindow
-      messages={messages}
-      sender={sender}
-      receiver={receiver}
-      sendMessage={sendMessage}
-      newMessage={newMessage}
-      setNewMessage={setNewMessage}
-    />
+    <>
+      {sender && receiver ? (
+        <ActiveChatWindow
+          messages={messages}
+          sender={sender}
+          receiver={receiver}
+          sendMessage={sendMessage}
+          newMessage={newMessage}
+          setNewMessage={setNewMessage}
+        />
+      ) : (
+        null
+      )}
+    </>
   );
 }
