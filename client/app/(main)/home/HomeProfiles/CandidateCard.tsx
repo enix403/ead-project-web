@@ -4,6 +4,7 @@ import { UserOwnedCard } from "~/components/UserOwnedCard";
 import { Button } from "~/components/Button/Button";
 import { useResumableAction } from "~/app/hooks/useResumableAction";
 import { reportedCall } from "~/app/utils/promises";
+import Link from "next/link";
 
 export function CandidateCard({ employee }: { employee: any }) {
   const employeeId = employee["_id"];
@@ -42,9 +43,11 @@ export function CandidateCard({ employee }: { employee: any }) {
           >
             {isInvited === true ? "Already invited" : "Invite"}
           </Button>
-          <Button fullRounded variant="outlined">
-            Message
-          </Button>
+          <Link href={`/chat/${employee["_id"]}`}>
+            <Button fullRounded variant="outlined">
+              Message
+            </Button>
+          </Link>
         </>
       }
     />

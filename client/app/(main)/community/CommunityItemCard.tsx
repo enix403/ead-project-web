@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { apiRoutes } from "~/app/api-routes";
 import { useResumableAction } from "~/app/hooks/useResumableAction";
 import { delay, reportedCall, sleep } from "~/app/utils/promises";
@@ -57,9 +58,11 @@ export function CommunityItemCard({ user }: { user: any }) {
           >
             {isFriend ? "Remove" : "Add"}
           </Button>
-          <Button variant="outlined" fullRounded className="!py-1 flex-1">
-            Message
-          </Button>
+          <Link href={`/chat/${user["_id"]}`}>
+            <Button variant="outlined" fullRounded className="!py-1 flex-1">
+              Message
+            </Button>
+          </Link>
         </>
       }
     />

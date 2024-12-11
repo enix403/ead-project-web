@@ -3,6 +3,7 @@ import { UserOwnedCard } from "~/components/UserOwnedCard";
 import { apiRoutes } from "~/app/api-routes";
 import { useResumableAction } from "~/app/hooks/useResumableAction";
 import { reportedCall } from "~/app/utils/promises";
+import Link from "next/link";
 
 export function PostingCard({
   posting,
@@ -61,9 +62,11 @@ export function PostingCard({
           >
             {isApplied === true ? "Already Applied" : "Apply"}
           </Button>
-          <Button fullRounded variant="outlined">
-            Message
-          </Button>
+          <Link href={`/chat/${posting?.poster["_id"]}`}>
+            <Button fullRounded variant="outlined">
+              Message
+            </Button>
+          </Link>
         </>
       }
     />
