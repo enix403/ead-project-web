@@ -1,6 +1,7 @@
 import { Avatar } from "@material-tailwind/react";
 import clsx from "clsx";
 import { PropsWithChildren } from "react";
+import { useAuthState } from "~/app/providers/auth-state";
 import { repeatNode } from "~/app/utils/markup";
 
 function Message({
@@ -28,9 +29,7 @@ function Message({
           </span>
           <span className="text-sm font-normal text-gray-500">01:16</span>
         </div>
-        <p className="text-sm font-normal py-2.5 text-gray-900">
-          {children}
-        </p>
+        <p className="text-sm font-normal py-2.5 text-gray-900">{children}</p>
         <span className="text-sm font-normal text-gray-500">Delivered</span>
       </div>
     </div>
@@ -38,6 +37,8 @@ function Message({
 }
 
 export function MessageList({ messages }: { messages: any[] }) {
+  const { userId: currentUserId } = useAuthState();
+
   return (
     <div
       className={clsx(
@@ -45,17 +46,14 @@ export function MessageList({ messages }: { messages: any[] }) {
         "justify-end items-start"
       )}
     >
-      {/* {messages.map((message, index) => (
-        <Message key={index} side={index % 3 ? "left" : "right"}>
-          Lorem ipsum {index} dolor sit amet consectetur adipisicing elit. Rem
-          nam hic dolor
-        </Message>
-      ))} */}
-      {messages.map((message, index) => (
-        <Message key={message["_id"]} side={"left"}>
-          {message.content}
-        </Message>
-      ))}
+      {messages.map((message) => {
+        const isCurrentUser = message["senderId"] === currentUserId;
+        return (
+          <Message key={message["_id"]} side={isCurrentUser ? "right" : "left"}>
+            {message.content}
+          </Message>
+        );
+      })}
     </div>
   );
 }
