@@ -7,7 +7,7 @@ export function findIndexByKey<T>(arr: T[], item: T, key: string = "_id") {
 }
 
 export function hasByKey<T>(arr: T[], item: T, key: string = "_id") {
-  return findByKey(arr, item, key) != undefined;
+  return !(findByKey(arr, item, key) == null);
 }
 
 export function mapToKey<T>(arr: T[], key: string) {

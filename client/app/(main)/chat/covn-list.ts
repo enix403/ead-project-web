@@ -1,21 +1,19 @@
-import { useQuery } from "@tanstack/react-query";
-import { produce } from "immer";
 import { atom, useAtom, useAtomValue, useSetAtom } from "jotai";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import { apiRoutes } from "~/app/api-routes";
-import { findByKey, findIndexByKey, hasByKey } from "~/app/utils/collections";
+import { findIndexByKey, hasByKey } from "~/app/utils/collections";
 
 const apiListAtom = atom<any[]>([]);
 const optimListAtom = atom<any[]>([]);
 
 const allListAtom = atom((get) => {
   let list = [...get(optimListAtom)];
-  let listIds = list.map((c) => c["_id"]);
 
   let apiList = get(apiListAtom);
+
   for (let i = 0; i < apiList.length; ++i) {
     let conv = apiList[i];
-    if (!listIds.find((c) => c["_id"] === conv["_id"])) {
+    if (!hasByKey(list, conv)) {
       list.push(conv);
     }
   }
@@ -38,7 +36,7 @@ export function useGetConversations() {
 }
 
 export function useRegisterConv() {
-  const setList = useSetAtom(optimListAtom);
+  const [optimList, setOptimList] = useAtom(optimListAtom);
   const allList = useAtomValue(allListAtom);
 
   return useCallback(
@@ -47,37 +45,34 @@ export function useRegisterConv() {
         return;
       }
 
-      setList((prev) => [newConversation, ...prev]);
+      setOptimList([newConversation, ...optimList]);
     },
-    [setList]
+    [setOptimList]
   );
 }
 
 export function useFocusConv() {
-  const [, setList] = useAtom(optimListAtom);
-  // const allList = useAtomValue(allListAtom);
+  const [optimListPrev, setOptimList] = useAtom(optimListAtom);
 
   return useCallback(
     (conversation: any, lastMessage: string) => {
-      setList(
-        produce((optimList) => {
-          let index = findIndexByKey(optimList, conversation);
-          if (index >= 0) {
-            // move to top
-            let conv = optimList.splice(index, 1)[0];
-            // update message
-            conv.lastMessage = lastMessage;
-            optimList.unshift(conv);
-          } else {
-            // create at top
-            let conv = { ...conversation };
-            // update message
-            conv.lastMessage = lastMessage;
-            optimList.unshift(conv);
-          }
-        })
-      );
+      let optimList = [...optimListPrev];
+      let index = findIndexByKey(optimList, conversation);
+      if (index >= 0) {
+        // move to top
+        let conv = optimList.splice(index, 1)[0];
+        // update message
+        conv.lastMessage = lastMessage;
+        optimList.unshift(conv);
+      } else {
+        // create at top
+        let conv = { ...conversation };
+        // update message
+        conv.lastMessage = lastMessage;
+        optimList.unshift(conv);
+      }
+      setOptimList(optimList);
     },
-    [setList]
+    [setOptimList]
   );
 }
