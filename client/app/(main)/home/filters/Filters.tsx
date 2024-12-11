@@ -110,13 +110,13 @@ type FilterController = ReturnType<typeof useFilterController>;
 function FilterList({
   children,
   className,
+  onFilter,
 }: {
   className?: string;
   children: (filterCtrl: FilterController) => ReactNode;
+  onFilter: (filters: any) => void;
 }) {
   let [openIndex, setOpenIndex] = useState(-1);
-
-  const onFilter = useCallback((filters: any) => {}, []);
 
   let filterCtrl = useFilterController(onFilter);
 
@@ -162,11 +162,17 @@ function FilterList({
   );
 }
 
-export function Filters({ className }: { className?: string }) {
+export function Filters({
+  className,
+  onFilter,
+}: {
+  className?: string;
+  onFilter: (filters: any) => void;
+}) {
   const viewMode = useViewMode();
 
   return (
-    <FilterList className={className}>
+    <FilterList onFilter={onFilter} className={className}>
       {({ register }) => (
         <>
           <Filter label="Location">

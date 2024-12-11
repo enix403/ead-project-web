@@ -101,7 +101,10 @@ function PrimaryTabs({ className }: DivProps) {
   );
 }
 
-function SearchControls(props: DivProps) {
+function SearchControls({
+  onFilter,
+  ...props
+}: { onFilter: (filters: any) => void } & DivProps) {
   let [showFilters, setShowFilters] = useState(false);
   return (
     <div {...props}>
@@ -133,13 +136,18 @@ function SearchControls(props: DivProps) {
           </Select>
         </div>
       </div>
-      {showFilters && <Filters className="mt-4" />}
+      {showFilters && <Filters onFilter={onFilter} className="mt-4" />}
     </div>
   );
 }
 
 export default function HomeProposalsPage() {
   const viewMode = useViewMode();
+  const [filters, setFilters] = useState<any>({});
+
+  useEffect(() => {
+    console.log(filters);
+  }, [filters]);
 
   return (
     <AppLayout pageTitle="Proposals">
@@ -147,12 +155,12 @@ export default function HomeProposalsPage() {
         <div className="hidden md:block flex-1">
           <PageTitle />
           <PrimaryTabs className="mt-5" />
-          <SearchControls className="mt-4" />
+          <SearchControls onFilter={setFilters} className="mt-4" />
         </div>
         <div className="md:hidden block flex-1">
           <PrimaryTabs />
           <PageTitle className="mt-4" />
-          <SearchControls className="mt-4" />
+          <SearchControls onFilter={setFilters} className="mt-4" />
         </div>
 
         <div className="mt-4 grid wl:grid-cols-2 gap-6">
