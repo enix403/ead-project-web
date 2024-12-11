@@ -23,8 +23,8 @@ router.get(
 
     const messages = await ChatMessageModel.find({
       $or: [
-        { sender: userId, receiver: receiverId },
-        { sender: receiverId, receiver: userId },
+        { senderId: userId, receiverId: receiverId },
+        { senderId: receiverId, receiverId: userId },
       ],
     }).sort({ sentAt: 1 });
 

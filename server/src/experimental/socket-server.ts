@@ -18,22 +18,27 @@ export function createSocketServer(
 
   // Socket.io implementation
   io.on('connection', (socket) => {
-    logger.info('A user connected:', socket.id);
+    logger.info(`SOCKET OPEN: ${socket.id}`);
 
     socket.on('join', (userId) => {
       socket.join(userId);
       logger.info(`${userId} joined.`);
     });
 
+    socket.on('leave', (userId) => {
+      socket.leave(userId);
+      logger.info(`${userId} left.`);
+    });
+
     onNewConnection(socket, io);
 
     socket.on('disconnect', () => {
-      logger.info('A user disconnected:', socket.id);
+      logger.info(`SOCKET CLOSED: ${socket.id}`);
     });
   });
 
   return {
     server,
-    io
+    io,
   };
 }

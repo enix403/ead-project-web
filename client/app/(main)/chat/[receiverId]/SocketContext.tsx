@@ -1,26 +1,30 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useRef } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { io, type Socket } from "socket.io-client";
 import { API_BASE_URL } from "~/app/api-routes";
 
 const SocketContext = createContext<Socket | null>(null);
 
 export const SocketProvider = ({ children }) => {
-  const socketRef = useRef<Socket | null>(null);
-
-  if (!socketRef.current) {
-    socketRef.current = io(API_BASE_URL);
-  }
+  const [socket, setSocket] = useState<Socket | null>(null);
 
   useEffect(() => {
+    const socket = io(API_BASE_URL);
+    setSocket(socket);
     return () => {
-      socketRef.current?.disconnect();
+      socket.disconnect();
     };
   }, []);
 
   return (
-    <SocketContext.Provider value={socketRef.current}>
+    <SocketContext.Provider value={socket}>
       {children}
     </SocketContext.Provider>
   );
@@ -28,5 +32,5 @@ export const SocketProvider = ({ children }) => {
 
 export const useSocket = () => {
   const socket = useContext(SocketContext);
-  return socket!;
+  return socket;
 };

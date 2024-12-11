@@ -25,6 +25,8 @@ function ChatWindow() {
   const { userId: currentUserId } = useAuthState();
 
   useEffect(() => {
+    if (!receiverId || !currentUserId || !socket) return;
+
     console.log("Joining");
     socket.emit("join", currentUserId);
 
@@ -50,10 +52,13 @@ function ChatWindow() {
 
     return () => {
       socket.off("receiveMessage");
+      socket.emit("leave", currentUserId);
     };
   }, [receiverId, socket, currentUserId]);
 
   const sendMessage = () => {
+    if (!socket) return;
+
     const message = {
       senderId: currentUserId,
       receiverId: receiverId,

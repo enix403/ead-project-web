@@ -9,14 +9,15 @@ export function handleChatConnection(socket: Socket, io: Server) {
       });
 
       if (!conversation) {
-        conversation = await ConversationModel.create({
+        conversation = new ConversationModel({
           participants: [senderId, receiverId],
         });
+        conversation = await conversation.save();
       }
 
       // Save message
       const message = await ChatMessageModel.create({
-        conversation: conversation._id,
+        conversationId: conversation._id,
         senderId,
         receiverId,
         content

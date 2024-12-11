@@ -45,7 +45,7 @@ export function ActiveChatWindow({
         </div>
       </div>
       <div className="h-full max-h-full overflow-y-auto pt-20 pb-24 px-8">
-        <MessageList />
+        <MessageList messages={messages} />
       </div>
       <div
         className={clsx(
@@ -60,9 +60,11 @@ export function ActiveChatWindow({
             size={1}
             className="flex-1 outline-none bg-transparent"
             placeholder="Enter message"
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
           />
         </div>
-        <Button>
+        <Button onClick={sendMessage}>
           Send
           <IconSend2 />
         </Button>

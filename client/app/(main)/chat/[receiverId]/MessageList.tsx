@@ -37,7 +37,7 @@ function Message({
   );
 }
 
-export function MessageList() {
+export function MessageList({ messages }: { messages: any[] }) {
   return (
     <div
       className={clsx(
@@ -45,10 +45,15 @@ export function MessageList() {
         "justify-end items-start"
       )}
     >
-      {repeatNode(16, (index) => (
+      {/* {messages.map((message, index) => (
         <Message key={index} side={index % 3 ? "left" : "right"}>
           Lorem ipsum {index} dolor sit amet consectetur adipisicing elit. Rem
           nam hic dolor
+        </Message>
+      ))} */}
+      {messages.map((message, index) => (
+        <Message key={message["_id"]} side={"left"}>
+          {message.content}
         </Message>
       ))}
     </div>
