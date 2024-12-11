@@ -18,6 +18,7 @@ export default function ChatPage() {
 function ChatWindow() {
   const { receiverId } = useParams<{ receiverId: string }>();
 
+  const [sender, setSender] = useState<any>(null);
   const [receiver, setReceiver] = useState<any>(null);
 
   const [messages, setMessages] = useState<any[]>([]);
@@ -39,10 +40,14 @@ function ChatWindow() {
         })
         .then((conversation) => {
           const participants: any[] = conversation["participants"];
+          const sender = participants.find(
+            (user) => user["_id"] === currentUserId
+          );
           const receiver = participants.find(
             (user) => user["_id"] === receiverId
           );
           console.log("receiver => ", receiver);
+          setSender(sender);
           setReceiver(receiver);
         });
     } catch (error) {
@@ -94,6 +99,7 @@ function ChatWindow() {
   return (
     <ActiveChatWindow
       messages={messages}
+      sender={sender}
       receiver={receiver}
       sendMessage={sendMessage}
       newMessage={newMessage}

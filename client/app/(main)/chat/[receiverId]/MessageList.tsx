@@ -7,7 +7,11 @@ import { repeatNode } from "~/app/utils/markup";
 function Message({
   side,
   children,
-}: { side: "left" | "right" } & PropsWithChildren) {
+  user,
+}: {
+  side: "left" | "right";
+  user: any;
+} & PropsWithChildren) {
   return (
     <div
       className={clsx(
@@ -25,7 +29,7 @@ function Message({
       <div className="flex flex-col w-full max-w-[320px] leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-e-xl rounded-es-xl">
         <div className="flex items-center space-x-2">
           <span className="text-sm font-semibold text-gray-900">
-            Yiassin M.
+            {user?.fullName}
           </span>
           <span className="text-sm font-normal text-gray-500">01:16</span>
         </div>
@@ -48,12 +52,22 @@ function useChatScroll<T>(dep: T) {
   return ref;
 }
 
-export function MessageList({ messages }: { messages: any[] }) {
-  const { userId: currentUserId } = useAuthState();
+export function MessageList({
+  messages,
+  sender,
+  receiver,
+}: {
+  messages: any[];
+  sender: any;
+  receiver: any;
+}) {
   const ref = useChatScroll(messages);
 
   return (
-    <div ref={ref} className="h-full max-h-full overflow-y-auto pt-20 pb-24 px-8">
+    <div
+      ref={ref}
+      className="h-full max-h-full overflow-y-auto pt-20 pb-24 px-8"
+    >
       <div
         className={clsx(
           "w-full min-h-full flex flex-col gap-y-4",
@@ -61,11 +75,13 @@ export function MessageList({ messages }: { messages: any[] }) {
         )}
       >
         {messages.map((message) => {
-          const isCurrentUser = message["senderId"] === currentUserId;
+          const isCurrentUser = message["senderId"] === sender["_id"];
+          const user = isCurrentUser ? sender : receiver;
           return (
             <Message
               key={message["_id"]}
               side={isCurrentUser ? "right" : "left"}
+              user={user}
             >
               {message.content}
             </Message>

@@ -11,12 +11,14 @@ import { FormEvent, useCallback } from "react";
 
 export function ActiveChatWindow({
   messages,
+  sender,
   receiver,
   sendMessage,
   newMessage,
   setNewMessage,
 }: {
   messages: any[];
+  sender: any;
   receiver: any;
   sendMessage: () => void;
   newMessage: string;
@@ -53,7 +55,7 @@ export function ActiveChatWindow({
         </div>
       </div>
 
-      <MessageList messages={messages} />
+      <MessageList messages={messages} sender={sender} receiver={receiver} />
 
       <form
         className={clsx(
