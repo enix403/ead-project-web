@@ -2,18 +2,19 @@
 
 import clsx from "clsx";
 
-import { AppLayout } from "~/components/AppLayout/AppLayout";
-
-import { ContactsListWindow } from "./ContactsListWindow";
-import { ChatWindow } from "./ChatWindow";
-
-export default function ChatPage() {
+export default function ChatPageEmpty() {
   return (
-    <AppLayout>
-      <div className="flex-1 overflow-hidden flex">
-        <ContactsListWindow />
-        <ChatWindow />
-      </div>
-    </AppLayout>
+    <div
+      className={clsx(
+        "flex-1 flex flex-col justify-center items-center",
+        "bg-white"
+      )}
+    >
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/no_chat_selected.png" className="w-[30rem]" />
+      <p className="text-lg text-gray-600 mb-20">
+        Select a chat from the contacts list.
+      </p>
+    </div>
   );
 }

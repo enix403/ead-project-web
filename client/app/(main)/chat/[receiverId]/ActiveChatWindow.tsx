@@ -8,7 +8,7 @@ import { Button } from "~/components/Button/Button";
 
 import { MessageList } from "./MessageList";
 
-function ActiveChat() {
+export function ActiveChatWindow() {
   return (
     <div className={clsx("flex-1", "max-h-[80vh]", "relative bg-[#e0dcdc]")}>
       <div
@@ -59,26 +59,4 @@ function ActiveChat() {
       </div>
     </div>
   );
-}
-
-function NoActiveChat() {
-  return (
-    <div
-      className={clsx(
-        "flex-1 flex flex-col justify-center items-center",
-        "bg-white"
-      )}
-    >
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/no_chat_selected.png" className="w-[30rem]" />
-      <p className="text-lg text-gray-600 mb-20">
-        Select a chat from the contacts list.
-      </p>
-    </div>
-  );
-}
-
-export function ChatWindow() {
-  return <ActiveChat />;
-  // return <NoActiveChat />;
 }

@@ -2,6 +2,7 @@
 
 import { Badge, Avatar } from "@material-tailwind/react";
 import clsx from "clsx";
+import { useRouter } from "next/navigation";
 import { repeatNode } from "~/app/utils/markup";
 
 export function ContactsListWindow() {
@@ -14,30 +15,44 @@ export function ContactsListWindow() {
       )}
     >
       <h1 className="text-2xl font-bold ml-2 mt-2 mb-4">Chats</h1>
-      {repeatNode(6, () => (
-        <div className="flex items-center mb-4 cursor-pointer hover:bg-gray-100 p-2 rounded-md">
-          <Badge
-            placement="top-start"
-            overlap="circular"
-            color="blue-gray"
-            withBorder
-            className="shrink-0"
-          >
-            <Avatar
-              // size="lg"
-              className="object-center"
-              src="/profile_empty_gradient.png"
-              alt="avatar"
-            />
-          </Badge>
-          <div className="flex-1 ml-3">
-            <h2 className="text-lg font-semibold">Yiassin M.</h2>
-            <p className="text-gray-600">
-              Let's catch up soon. It's been too long!
-            </p>
-          </div>
-        </div>
+      {repeatNode(6, (index) => (
+        <Conversation key={index} />
       ))}
     </div>
+  );
+}
+
+function Conversation() {
+  const router = useRouter();
+  const userId = "674f2676661dab1966200fa9";
+
+  return (
+    <button
+      className="flex items-center mb-4 cursor-pointer hover:bg-gray-100 p-2 rounded-md text-left w-full"
+      onClick={() => {
+        router.push(`/chat/${userId}`);
+      }}
+    >
+      <Badge
+        placement="top-start"
+        overlap="circular"
+        color="blue-gray"
+        withBorder
+        className="shrink-0"
+      >
+        <Avatar
+          // size="lg"
+          className="object-center"
+          src="/profile_empty_gradient.png"
+          alt="avatar"
+        />
+      </Badge>
+      <div className="flex-1 ml-3">
+        <h2 className="text-lg font-semibold">Yiassin M.</h2>
+        <p className="text-gray-600">
+          Let's catch up soon. It's been too long!
+        </p>
+      </div>
+    </button>
   );
 }
