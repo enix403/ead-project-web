@@ -20,6 +20,8 @@ import { useParams } from "next/navigation";
 import { useLayoutEffect, useState } from "react";
 import { apiRoutes } from "~/app/api-routes";
 import { useQuery } from "@tanstack/react-query";
+import { useResumableAction } from "~/app/hooks/useResumableAction";
+import { reportedCall } from "~/app/utils/promises";
 
 export default function UserProfile() {
   const { userId } = useParams<{ userId: string }>();
@@ -48,6 +50,52 @@ export default function UserProfile() {
     <>
       <>{status === "ok" && user && <Contents user={user} />}</>
     </>
+  );
+}
+
+function ConnectButton({ user, className }: any) {
+  const userId = user["_id"];
+
+  const {
+    isDone: isFriend,
+    isExecuting: isAdding,
+    isHydrating,
+    execute: changeFriendship,
+  } = useResumableAction({
+    executeFn: async (isFriend) => {
+      let apiCall: Promise<unknown>;
+      let result: boolean;
+
+      if (isFriend) {
+        apiCall = apiRoutes.removeFriend({ userId });
+        result = false;
+      } else {
+        apiCall = apiRoutes.addFriend({ userId });
+        result = true;
+      }
+
+      await reportedCall(apiCall);
+      return result;
+    },
+
+    hydrateFn: async () => {
+      const { isFriend } = await apiRoutes.isFriend({ userId });
+      return isFriend;
+    },
+
+    hydrateDeps: [userId],
+  });
+
+  return (
+    <Button
+      fullRounded
+      onClick={changeFriendship}
+      loading={isAdding}
+      disabled={isHydrating}
+      className={className}
+    >
+      {isFriend ? "Remove" : "Connect"}
+    </Button>
   );
 }
 
@@ -93,7 +141,7 @@ function Contents({ user }: any) {
 
               {/* Buttons */}
               <div className="mt-4 flex space-x-4">
-                <Button fullRounded>Connect</Button>
+                <ConnectButton user={user} />
                 <Button fullRounded variant="outlined">
                   Message
                 </Button>
@@ -256,9 +304,7 @@ function UserYouMayKnow({ user }: any) {
       <div>
         <p className="font-semibold">{user.fullName}</p>
         <p className="text-gray-600 text-sm">UI/UX Designer</p>
-        <Button color="blue" className="mt-2 !py-1 !px-1">
-          Connect
-        </Button>
+        <ConnectButton user={user} className="mt-2 !py-1 !px-1" />
       </div>
     </div>
   );
