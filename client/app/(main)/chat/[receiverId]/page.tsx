@@ -18,6 +18,8 @@ export default function ChatPage() {
 function ChatWindow() {
   const { receiverId } = useParams<{ receiverId: string }>();
 
+  const [receiver, setReceiver] = useState<any>(null);
+
   const [messages, setMessages] = useState<any[]>([]);
   const [newMessage, setNewMessage] = useState("");
 
@@ -29,6 +31,23 @@ function ChatWindow() {
 
     console.log("Joining");
     socket.emit("join", currentUserId);
+
+    try {
+      apiRoutes
+        .startConversation({
+          receiverId,
+        })
+        .then((conversation) => {
+          const participants: any[] = conversation["participants"];
+          const receiver = participants.find(
+            (user) => user["_id"] === receiverId
+          );
+          console.log("receiver => ", receiver);
+          setReceiver(receiver);
+        });
+    } catch (error) {
+      // Handle not found
+    }
 
     try {
       // TODO: get conversation instead of messages
@@ -75,6 +94,7 @@ function ChatWindow() {
   return (
     <ActiveChatWindow
       messages={messages}
+      receiver={receiver}
       sendMessage={sendMessage}
       newMessage={newMessage}
       setNewMessage={setNewMessage}

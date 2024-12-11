@@ -239,6 +239,7 @@ export const apiRoutes = {
   /* ========== Chats ========= */
   /* ========================== */
   getChatMessages: jsonDecl((receiverId: string) => `/api/chat/messages/${receiverId}`),
+  startConversation: payloadDecl(`/api/chat/start-conversation`),
 
 } as const;
 

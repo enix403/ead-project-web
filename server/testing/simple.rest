@@ -56,6 +56,16 @@ POST {{baseUrl}}/auth/login
 GET {{baseUrl}}/chat/messages/674f2676661dab1966200fa9
 Authorization: Bearer {{accessToken}}
 
+###
+# -------------------------
+# @name QueryGetMessages
+POST {{baseUrl}}/chat/start-conversation
+Authorization: Bearer {{accessToken}}
+
+{
+  "receiverId": "674f2676661dab1966200fa9"
+}
+
 # ==================================
 # ==================================
 # ==================================

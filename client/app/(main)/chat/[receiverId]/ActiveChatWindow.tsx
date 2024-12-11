@@ -10,11 +10,13 @@ import { MessageList } from "./MessageList";
 
 export function ActiveChatWindow({
   messages,
+  receiver,
   sendMessage,
   newMessage,
   setNewMessage,
 }: {
   messages: any[];
+  receiver: any;
   sendMessage: () => void;
   newMessage: string;
   setNewMessage: (val: string) => void;
@@ -37,7 +39,7 @@ export function ActiveChatWindow({
         />
         <div className="flex-1">
           <Typography variant="h6" color="white">
-            Yiannis Andrew
+            {receiver?.fullName}
           </Typography>
           <Typography variant="small" color="white" className="font-normal">
             Senior Software Engineer

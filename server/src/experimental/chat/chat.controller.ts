@@ -32,7 +32,7 @@ router.get(
   }),
 );
 
-router.get(
+/* router.get(
   '/api/chat/conversations',
   requireAuthenticated(),
   ah(async (req, res) => {
@@ -48,7 +48,7 @@ router.get(
       res.status(500).json({ error: 'Error fetching conversations' });
     }
   }),
-);
+); */
 
 router.post(
   '/api/chat/start-conversation',
@@ -71,6 +71,8 @@ router.post(
         participants: [userId, receiverId],
       });
     }
+
+    await conversation.populate('participants');
 
     return reply(res, conversation);
   }),
