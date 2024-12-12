@@ -12,11 +12,11 @@ const seedDatabase = async () => {
 
     // Create fake employee users
     const employees = Array.from({ length: 10 }).map((_, index) => ({
-      email: faker.internet.email(),
+      email: `employee${index + 1}@gmail.com`,
       passwordHash:
         '$2b$10$msV/wfmLJtaGNTJavllEVuON4VjfQt.mbd1rzS6FsAThSiP22NImO',
       role: 'employee',
-      fullName: faker.person.fullName(),
+      fullName: faker.person.fullName() + ` (E${index + 1})`,
       gender: faker.helpers.arrayElement(['male', 'female', 'notSpecified']),
       profilePictureUrl: faker.image.avatar(),
       bio: faker.lorem.paragraph(),
@@ -46,12 +46,12 @@ const seedDatabase = async () => {
     }));
 
     // Create fake employer users
-    const employers = Array.from({ length: 5 }).map(() => ({
-      email: faker.internet.email(),
+    const employers = Array.from({ length: 10 }).map((_, index) => ({
+      email: `employer${index + 1}@gmail.com`,
       passwordHash:
         '$2b$10$msV/wfmLJtaGNTJavllEVuON4VjfQt.mbd1rzS6FsAThSiP22NImO',
       role: 'employer',
-      fullName: faker.person.fullName(),
+      fullName: faker.person.fullName() + ` (R${index + 1})`,
       gender: faker.helpers.arrayElement(['male', 'female', 'notSpecified']),
       profilePictureUrl: faker.image.avatar(),
       bio: faker.lorem.paragraph(),
@@ -78,7 +78,7 @@ const seedDatabase = async () => {
     const userRecords = await UserModel.insertMany(allUsers);
 
     // Create fake job postings
-    const jobPostings = Array.from({ length: 10 }).map(() => {
+    const jobPostings = Array.from({ length: 6 }).map(() => {
       const employer = faker.helpers.arrayElement(
         userRecords.filter((user) => user.role === 'employer'),
       );
@@ -145,7 +145,7 @@ const seedDatabase = async () => {
         questions: faker.helpers.uniqueArray(faker.lorem.sentence, 3),
         postedAt: faker.date.recent(),
         expireAt: faker.date.future(),
-        isActive: faker.datatype.boolean(),
+        isActive: true,
         posterId: employer._id,
       };
     });
