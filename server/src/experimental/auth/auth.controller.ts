@@ -49,6 +49,22 @@ router.post(
   }),
 );
 
+
+/*
+
+email
+password / confirmPassword
+role
+fullName
+dateOfBirth
+
+companyPhone
+companyPersonName
+companyIndustry
+companyArea
+
+*/
+
 router.post(
   '/api/auth/register',
   validateJoi(
@@ -56,8 +72,14 @@ router.post(
       email: joi.string().required(),
       password: joi.string().required(),
       role: joi.string().valid('employer', 'employee').required(),
+
       fullName: joi.string().required(),
       dateOfBirth: joi.date(),
+
+      companyPhone: joi.string(),
+      companyPersonName: joi.string(),
+      companyIndustry: joi.string(),
+      companyArea: joi.string(),
     }),
   ),
   ah(async (req, res) => {

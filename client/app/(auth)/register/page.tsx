@@ -7,11 +7,11 @@ import Image from "next/image";
 
 import { useEffect, useState } from "react";
 import { Button } from "~/components/Button/Button";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 import { AuthInput, PasswordInput } from "../common";
 import { useForm, UseFormRegister } from "react-hook-form";
+import toast from "react-hot-toast";
 
 function LoginNote() {
   return (
@@ -36,23 +36,6 @@ function CandidateForm({ register }: { register: UseFormRegister<any> }) {
         <PasswordInput {...register("password")} label="Password" />
         <PasswordInput {...register("confirmPassword")} label="Confirm Password" />
       </div>
-
-      <Button type="submit" fullWidth className="mt-6">
-        Sign Up
-      </Button>
-
-      <div className="flex items-center gap-x-2 my-4">
-        <div className="h-0.5 w-full bg-gray-line" />
-        <p className="font-medium text-gray-prose">or</p>
-        <div className="h-0.5 w-full bg-gray-line" />
-      </div>
-
-      <Button type="button" fullWidth variant="light" className="gap-x-2 mb-4">
-        Continue with Google
-        <GoogleIcon className="w-[18px]" />
-      </Button>
-
-      <LoginNote />
     </>
   );
 }
@@ -72,33 +55,47 @@ function EmployerForm({ register }: { register: UseFormRegister<any> }) {
         <PasswordInput {...register("password")} label="Password" />
         <PasswordInput {...register("confirmPassword")} label="Confirm Password" />
       </div>
-
-      <Button fullWidth className="mt-6">
-        Sign Up
-      </Button>
-
-      <LoginNote />
     </>
   );
 }
 
 function RegisterFormContent() {
-  type FormMode = "candidate" | "employer";
-  const [currentMode, setCurrentMode] = useState<FormMode>("candidate");
-  const getButtonVariant = (mode: FormMode) =>
-    mode === currentMode ? "filled" : "outlined";
+  type NewUserRole = "employee" | "employer";
+  const [role, setRole] = useState<NewUserRole>("employee");
+  const getButtonVariant = (mode: NewUserRole) =>
+    mode === role ? "filled" : "outlined";
 
   const [loading, setLoading] = useState(false);
   const { register, handleSubmit, reset } = useForm<any>();
 
   function handleRegister(values: any) {
-    console.log(values);
-    // TODO: fill role
+    let { fullName, email, password, confirmPassword } = values;
+
+    fullName = String(fullName).trim();
+    email = String(email).trim();
+    password = String(password).trim();
+
+    if (!fullName || !email || !password) {
+      toast.error("Fill all the fields");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
+
+    const payload = {
+      ...values,
+      role,
+    };
+
+    delete payload["confirmPassword"];
   }
 
   useEffect(() => {
     reset();
-  }, [reset, currentMode]);
+  }, [reset, role]);
 
   return (
     <>
@@ -114,8 +111,8 @@ function RegisterFormContent() {
           <Button
             type="button"
             className="flex-1"
-            variant={getButtonVariant("candidate")}
-            onClick={() => setCurrentMode("candidate")}
+            variant={getButtonVariant("employee")}
+            onClick={() => setRole("employee")}
           >
             Candidate
           </Button>
@@ -123,17 +120,39 @@ function RegisterFormContent() {
             type="button"
             className="flex-1"
             variant={getButtonVariant("employer")}
-            onClick={() => setCurrentMode("employer")}
+            onClick={() => setRole("employer")}
           >
             Employer
           </Button>
         </div>
 
-        {currentMode === "candidate" ? (
+        {role === "employee" ? (
           <CandidateForm register={register} />
         ) : (
           <EmployerForm register={register} />
         )}
+
+        <Button type="submit" fullWidth className="mt-6">
+          Sign Up
+        </Button>
+
+        <div className="flex items-center gap-x-2 my-4">
+          <div className="h-0.5 w-full bg-gray-line" />
+          <p className="font-medium text-gray-prose">or</p>
+          <div className="h-0.5 w-full bg-gray-line" />
+        </div>
+
+        <Button
+          type="button"
+          fullWidth
+          variant="light"
+          className="gap-x-2 mb-4"
+        >
+          Continue with Google
+          <GoogleIcon className="w-[18px]" />
+        </Button>
+
+        <LoginNote />
       </form>
     </>
   );
