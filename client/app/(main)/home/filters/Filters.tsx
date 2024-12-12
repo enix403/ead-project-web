@@ -29,6 +29,7 @@ import { RangeSlider } from "./RangeSlider";
 import { useViewMode } from "~/app/providers/auth-state";
 import { useForm } from "react-hook-form";
 import { useDebounceCallback } from "usehooks-ts";
+import { FilterController, useFilterController } from "./ctrl";
 
 type FilterProps = PropsWithChildren & { label: string };
 
@@ -53,75 +54,16 @@ const collectFilterProps = (children: ReactNode): FilterProps[] => {
   return propsArray;
 };
 
-function toArray(obj: Record<string, boolean | undefined | null>): string[] {
-  if (!obj) return [];
-  return Object.keys(obj).filter((key) => Boolean(obj[key]));
-}
-
-function keyToArray(obj: any, key: string) {
-  let arr = toArray(obj[key]);
-  if (arr.length === 0) {
-    delete obj[key];
-  } else {
-    obj[key] = arr;
-  }
-}
-
-function removeFalsey(obj: any) {
-  Object.keys(obj).forEach((key) => {
-    if (!obj[key]) {
-      delete obj[key];
-    }
-  });
-}
-
-if (typeof window !== "undefined") {
-  // @ts-ignore
-  window.toArray = toArray;
-  // @ts-ignore
-  window.keyToArray = keyToArray;
-}
-
-function prepareFilterQuery(values: any) {
-  keyToArray(values, "jobType");
-  keyToArray(values, "expLevelRequired");
-  keyToArray(values, "datePosted");
-  removeFalsey(values);
-}
-
-function useFilterController(onFilter: (filters: any) => void) {
-  const { register, watch } = useForm();
-
-  const performFilter = useDebounceCallback(onFilter, 500);
-
-  useEffect(() => {
-    const { unsubscribe } = watch((values) => {
-      prepareFilterQuery(values);
-      performFilter(values);
-    });
-    return () => unsubscribe();
-  }, [watch, performFilter]);
-
-  return { register };
-}
-
-type FilterController = ReturnType<typeof useFilterController>;
-
 function FilterList({
   children,
   className,
-  onFilter,
 }: {
   className?: string;
-  children: (filterCtrl: FilterController) => ReactNode;
-  onFilter: (filters: any) => void;
+  children: ReactNode;
 }) {
   let [openIndex, setOpenIndex] = useState(-1);
 
-  let filterCtrl = useFilterController(onFilter);
-
-  let filterConfigs =
-    collectFilterProps(children(filterCtrl))?.filter(Boolean) || [];
+  let filterConfigs = collectFilterProps(children)?.filter(Boolean) || [];
 
   return (
     <div className={className}>
@@ -164,123 +106,121 @@ function FilterList({
 
 export function Filters({
   className,
-  onFilter,
+  filterCtrl
 }: {
   className?: string;
-  onFilter: (filters: any) => void;
+  filterCtrl: FilterController;
 }) {
   const viewMode = useViewMode();
 
-  return (
-    <FilterList onFilter={onFilter} className={className}>
-      {({ register }) => (
-        <>
-          <Filter label="Location">
-            <RichInput
-              icon={<IconMapPin size={17} />}
-              inputProps={{
-                ...register("location"),
-                placeholder: "London",
-              }}
-            />
-            <p className="text-black/80 text-sm mt-3 mb-3">
-              Radius around selected destination
-            </p>
-            <RangeSlider />
+  let { register } = filterCtrl;
 
-            <Button fullRounded className="mx-auto">
-              100 km
+  return (
+    <FilterList className={className}>
+      <Filter label="Location">
+        <RichInput
+          icon={<IconMapPin size={17} />}
+          inputProps={{
+            ...register("location"),
+            placeholder: "London",
+          }}
+        />
+        <p className="text-black/80 text-sm mt-3 mb-3">
+          Radius around selected destination
+        </p>
+        <RangeSlider />
+
+        <Button fullRounded className="mx-auto">
+          100 km
+        </Button>
+      </Filter>
+      {viewMode === "employee" && (
+        <>
+          <Filter label="Category">
+            <Select
+              selectProps={register("category")}
+              icon={<IconBriefcase2 size={17} />}
+            >
+              <option value="">Choose a category</option>
+              <option>one</option>
+              <option>two</option>
+              <option>three</option>
+            </Select>
+          </Filter>
+          <Filter label="Job Type">
+            <div className="space-y-2.5">
+              <SwitchOption
+                {...register("jobType.fullTime")}
+                label="Full Time"
+              />
+              <SwitchOption
+                {...register("jobType.partTime")}
+                label="Part Time"
+              />
+              <SwitchOption
+                {...register("jobType.internship")}
+                label="internship"
+              />
+              <SwitchOption
+                {...register("jobType.specificDates")}
+                label="Temporary"
+              />
+            </div>
+          </Filter>
+          <Filter label="Date Posted">
+            <div className="space-y-2.5">
+              <SwitchOption {...register("datePosted.all")} label="All" />
+              <SwitchOption
+                {...register("datePosted.lastHour")}
+                label="Last Hour"
+              />
+              <SwitchOption
+                {...register("datePosted.last24Hours")}
+                label="Last 24 Hour"
+              />
+              <SwitchOption
+                {...register("datePosted.last7Days")}
+                label="Last 7 Days"
+              />
+            </div>
+          </Filter>
+          <Filter label="Experience Level">
+            <div className="space-y-2.5">
+              <SwitchOption
+                {...register("expLevelRequired.entry")}
+                label="Entry Level"
+              />
+              <SwitchOption
+                {...register("expLevelRequired.mid")}
+                label="Mid Level"
+              />
+              <SwitchOption
+                {...register("expLevelRequired.senior")}
+                label="Senior Level"
+              />
+            </div>
+
+            <Button
+              variant="text"
+              fullRounded
+              className="mt-3 !gap-x-2 text-teal"
+            >
+              <IconCirclePlusFilled size={20} />
+              View More
             </Button>
           </Filter>
-          {viewMode === "employee" && (
-            <>
-              <Filter label="Category">
-                <Select
-                  selectProps={register("category")}
-                  icon={<IconBriefcase2 size={17} />}
-                >
-                  <option value="">Choose a category</option>
-                  <option>one</option>
-                  <option>two</option>
-                  <option>three</option>
-                </Select>
-              </Filter>
-              <Filter label="Job Type">
-                <div className="space-y-2.5">
-                  <SwitchOption
-                    {...register("jobType.fullTime")}
-                    label="Full Time"
-                  />
-                  <SwitchOption
-                    {...register("jobType.partTime")}
-                    label="Part Time"
-                  />
-                  <SwitchOption
-                    {...register("jobType.internship")}
-                    label="internship"
-                  />
-                  <SwitchOption
-                    {...register("jobType.specificDates")}
-                    label="Temporary"
-                  />
-                </div>
-              </Filter>
-              <Filter label="Date Posted">
-                <div className="space-y-2.5">
-                  <SwitchOption {...register("datePosted.all")} label="All" />
-                  <SwitchOption
-                    {...register("datePosted.lastHour")}
-                    label="Last Hour"
-                  />
-                  <SwitchOption
-                    {...register("datePosted.last24Hours")}
-                    label="Last 24 Hour"
-                  />
-                  <SwitchOption
-                    {...register("datePosted.last7Days")}
-                    label="Last 7 Days"
-                  />
-                </div>
-              </Filter>
-              <Filter label="Experience Level">
-                <div className="space-y-2.5">
-                  <SwitchOption
-                    {...register("expLevelRequired.entry")}
-                    label="Entry Level"
-                  />
-                  <SwitchOption
-                    {...register("expLevelRequired.mid")}
-                    label="Mid Level"
-                  />
-                  <SwitchOption
-                    {...register("expLevelRequired.senior")}
-                    label="Senior Level"
-                  />
-                </div>
-
-                <Button
-                  variant="text"
-                  fullRounded
-                  className="mt-3 !gap-x-2 text-teal"
-                >
-                  <IconCirclePlusFilled size={20} />
-                  View More
-                </Button>
-              </Filter>
-              <Filter label="Salary">
-                <div className="flex gap-x-4">
-                  <RichInput
-                    icon={<IconMathEqualGreater size={17} />}
-                    inputProps={{ placeholder: "Min salary" }}
-                  />
-                  <RichInput
-                    icon={<IconMathEqualLower size={17} />}
-                    inputProps={{ placeholder: "Max salary" }}
-                  />
-                </div>
-              </Filter>
-            </>
-          )}
+          <Filter label="Salary">
+            <div className="flex gap-x-4">
+              <RichInput
+                icon={<IconMathEqualGreater size={17} />}
+                inputProps={{ placeholder: "Min salary" }}
+              />
+              <RichInput
+                icon={<IconMathEqualLower size={17} />}
+                inputProps={{ placeholder: "Max salary" }}
+              />
+            </div>
+          </Filter>
         </>
       )}
     </FilterList>

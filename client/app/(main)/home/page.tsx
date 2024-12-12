@@ -18,6 +18,7 @@ import { useViewMode } from "~/app/providers/auth-state";
 import { Filters } from "./filters/Filters";
 import { HomePostings } from "./HomePostings/HomePostings";
 import { HomeProfiles } from "./HomeProfiles/HomeProfiles";
+import { useFilterController } from "./filters/ctrl";
 
 function PageTitle(props: DivProps) {
   return (
@@ -106,12 +107,17 @@ function SearchControls({
   ...props
 }: { onFilter: (filters: any) => void } & DivProps) {
   let [showFilters, setShowFilters] = useState(false);
+
+  const filterCtrl = useFilterController(onFilter);
+  const { register } = filterCtrl;
+
   return (
     <div {...props}>
       <div className="flex max-md:flex-col max-md:items-stretch items-center gap-2">
         <div className="border border-black/20 rounded-xl flex-1 flex overflow-hidden px-2.5 py-2.5 gap-x-1.5">
           <IconSearch size={17} className="self-center" />
           <input
+            {...register("title")}
             size={1}
             className="flex-1 outline-none"
             placeholder="Job title, keywords or company"
@@ -128,15 +134,14 @@ function SearchControls({
         </Button>
         <div className="flex items-center gap-x-2.5">
           Sort:
-          <Select>
-            <option>Best Match</option>
-            <option>Popularity</option>
-            <option>Date</option>
-            <option>Price</option>
+          <Select selectProps={register("sort")}>
+            <option value="bestMatch">Best Match</option>
+            <option value="popularity">Popularity</option>
+            <option value="datePosted">Date Posted</option>
           </Select>
         </div>
       </div>
-      {showFilters && <Filters onFilter={onFilter} className="mt-4" />}
+      {showFilters && <Filters filterCtrl={filterCtrl} className="mt-4" />}
     </div>
   );
 }
@@ -160,7 +165,11 @@ export default function HomeProposalsPage() {
         </div>
 
         <div className="mt-4 grid wl:grid-cols-2 gap-6">
-          {viewMode === "employer" ? <HomeProfiles /> : <HomePostings filters={filters} />}
+          {viewMode === "employer" ? (
+            <HomeProfiles />
+          ) : (
+            <HomePostings filters={filters} />
+          )}
         </div>
         <Button variant="outlined" className="mx-auto mt-8 mb-4" fullRounded>
           Load More
