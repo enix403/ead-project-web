@@ -1,8 +1,8 @@
 import { Schema, model, Types, Document } from 'mongoose';
 
 export interface IJobApplication extends Document<Types.ObjectId> {
-  jobId: Types.ObjectId;
-  jobPosterId: Types.ObjectId;
+  postingId: Types.ObjectId;
+  posterId: Types.ObjectId;
   employeeId: Types.ObjectId;
   appliedAt: Date;
 
@@ -15,25 +15,52 @@ export interface IJobApplication extends Document<Types.ObjectId> {
   decision: 'accepted' | 'rejected' | 'waiting';
 }
 
-const jobApplicationSchema = new Schema<IJobApplication>({
-  jobId: { type: Schema.Types.ObjectId, ref: 'JobPosting', required: true },
-  jobPosterId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-  employeeId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-  appliedAt: { type: Date, default: Date.now },
+const jobApplicationSchema = new Schema<IJobApplication>(
+  {
+    postingId: { type: Schema.Types.ObjectId, ref: 'JobPosting', required: true },
+    posterId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    employeeId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    appliedAt: { type: Date, default: Date.now },
 
-  answers: [
-    {
-      question: String,
-      answer: String,
+    answers: [
+      {
+        question: String,
+        answer: String,
+      },
+    ],
+
+    isEmployerInterested: { type: Boolean, default: false },
+    decision: {
+      type: String,
+      enum: ['accepted', 'rejected', 'waiting'],
+      default: 'waiting',
     },
-  ],
-
-  isEmployerInterested: { type: Boolean, default: false },
-  decision: {
-    type: String,
-    enum: ['accepted', 'rejected', 'waiting'],
-    default: 'waiting',
   },
+  {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+  },
+);
+
+jobApplicationSchema.virtual('posting', {
+  ref: 'JobPosting',
+  localField: 'postingId',
+  foreignField: '_id',
+  justOne: true
+});
+
+jobApplicationSchema.virtual('poster', {
+  ref: 'User',
+  localField: 'posterId',
+  foreignField: '_id',
+  justOne: true
+});
+
+jobApplicationSchema.virtual('applicant', {
+  ref: 'User',
+  localField: 'employeeId',
+  foreignField: '_id',
+  justOne: true
 });
 
 // prettier-ignore

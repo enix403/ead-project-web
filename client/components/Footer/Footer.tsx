@@ -2,15 +2,14 @@ import IconFacebook from "./assets/facebook.svg";
 import IconTwitter from "./assets/twitter.svg";
 import IconInstagram from "./assets/instagram.svg";
 
-import Link from "next/link";
-
 import clsx from "clsx";
 import { FooterProps as HtmlFooterProps } from "react-html-props";
 import { combineVisualProps } from "../VisualComponent";
-import { AllLinks, ViewMode } from "../AllLinks";
+import { AllLinks } from "../AllLinks";
 import { Button } from "@material-tailwind/react";
 import { languageDrawerAtom } from "../AppLayout/LanguageDrawer";
 import { useSetAtom } from "jotai";
+import { useViewMode } from "~/app/providers/auth-state";
 
 function SocialIcon({
   imageSrc: Icon,
@@ -29,12 +28,12 @@ function SocialIcon({
   );
 }
 
-export type FooterProps = HtmlFooterProps & {
-  viewMode: ViewMode;
-};
+export type FooterProps = HtmlFooterProps;
 
-export function Footer({ viewMode, ...props }: FooterProps) {
+export function Footer(props: FooterProps) {
   const setLanguageDrawerAtom = useSetAtom(languageDrawerAtom);
+  const viewMode = useViewMode();
+
   return (
     <footer
       {...combineVisualProps(props, {
@@ -57,7 +56,7 @@ export function Footer({ viewMode, ...props }: FooterProps) {
             : "sm:grid-cols-[repeat(6,auto)]"
         )}
       >
-        <AllLinks viewMode={viewMode} />
+        <AllLinks />
       </div>
       <div className="grid grid-cols-3 mt-8 justify-items-center">
         <SocialIcon imageSrc={IconFacebook} />

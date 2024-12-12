@@ -90,7 +90,7 @@ router.patch(
  *       404:
  *         description: User not found
  */
-router.get('/api/user/:userId', getUserProfileController);
+// router.get('/api/user/:userId', getUserProfileController);
 
 /* ----------------------------------- */
 

@@ -1,4 +1,5 @@
 import express from 'express';
+import ah from 'express-async-handler';
 
 import Joi from 'joi';
 
@@ -22,46 +23,8 @@ import {
 
 export const router = express.Router();
 
-const jobSearchSchema = Joi.object({
-  title: Joi.string().optional(),
-  location: Joi.string().optional(),
-  jobType: Joi.string()
-    .valid('fullTime', 'partTime', 'internship', 'specificDates')
-    .optional(),
-});
-
-/**
- * @swagger
- * /api/job/search:
- *   get:
- *     summary: Search for job postings
- *     description: Allows searching for job postings with optional filters.
- *     parameters:
- *       - in: query
- *         name: title
- *         schema:
- *           type: string
- *         description: Filter by job title.
- *       - in: query
- *         name: location
- *         schema:
- *           type: string
- *         description: Filter by job location.
- *       - in: query
- *         name: jobType
- *         schema:
- *           type: string
- *           enum: [fullTime, partTime, internship, specificDates]
- *         description: Filter by job type.
- *     responses:
- *       200:
- *         description: List of jobs matching the filters.
- *       400:
- *         description: Invalid request parameters.
- */
 router.get(
   '/api/job/search',
-  validateJoi(jobSearchSchema),
   searchJobController,
 );
 
@@ -98,59 +61,23 @@ router.get(
 
 /* ----------------------------------- */
 
-const jobApplicationSchema = Joi.object({
-  jobId: Joi.string().hex().length(24).required(),
-  answers: Joi.array()
-    .items(
-      Joi.object({
-        question: Joi.string().required(),
-        answer: Joi.string().required(),
-      }),
-    )
-    .required(),
-});
-
-/**
- * @swagger
- * /api/job/{jobId}/apply:
- *   post:
- *     summary: Apply to a job
- *     description: Allows an employee to apply for a specific job.
- *     parameters:
- *       - in: path
- *         name: jobId
- *         required: true
- *         schema:
- *           type: string
- *         description: ID of the job to apply to.
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               answers:
- *                 type: array
- *                 items:
- *                   type: object
- *                   properties:
- *                     question:
- *                       type: string
- *                     answer:
- *                       type: string
- *                 description: List of answers to job-related questions.
- *     responses:
- *       201:
- *         description: Job application created successfully.
- *       403:
- *         description: Forbidden.
- */
 router.post(
-  '/api/job/:jobId/apply',
+  '/api/job/apply',
   requireAuthenticated(['employee']),
-  validateJoi(jobApplicationSchema),
-  applyJobController,
+  validateJoi(
+    Joi.object({
+      postingId: Joi.string().hex().length(24).required(),
+      answers: Joi.array()
+        .items(
+          Joi.object({
+            question: Joi.string().required(),
+            answer: Joi.string().required(),
+          }),
+        )
+        .required(),
+    }),
+  ),
+  ah(applyJobController),
 );
 
 /* ----------------------------------- */
@@ -241,41 +168,21 @@ const jobPostingSchema = Joi.object({
     .valid('required', 'notRequired', 'mopedProvided', 'carProvided')
     .required(),
 
-  companyName: Joi.string().optional(),
-  companyUsername: Joi.string().optional(),
-  companyDescription: Joi.string().optional(),
-  companyWebsite: Joi.string().optional(),
-  companyLogoUrl: Joi.string().optional(),
-  companyCountry: Joi.string().optional(),
-  companyCity: Joi.string().optional(),
-  companyArea: Joi.string().optional(),
-  companyZip: Joi.string().optional(),
-  companyMapAddress: Joi.string().optional(),
+  companyName: Joi.string().allow('').optional(),
+  companyUsername: Joi.string().allow('').optional(),
+  companyDescription: Joi.string().allow('').optional(),
+  companyWebsite: Joi.string().allow('').optional(),
+  companyLogoImageId: Joi.string().hex().length(24).optional(),
+  companyCountry: Joi.string().allow('').optional(),
+  companyCity: Joi.string().allow('').optional(),
+  companyArea: Joi.string().allow('').optional(),
+  companyZip: Joi.string().allow('').optional(),
+  companyMapAddress: Joi.string().allow('').optional(),
 
   questions: Joi.array().items(Joi.string()).optional(),
-  postedAt: Joi.date().allow("").optional(),
+  postedAt: Joi.date().allow('').optional(),
 });
 
-/**
- * @swagger
- * /api/job/post:
- *   post:
- *     summary: Allows an employer to post a new job
- *     description: Employers can create job postings.
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/JobPosting'
- *     responses:
- *       201:
- *         description: Job posted successfully
- *       400:
- *         description: Validation error
- *       403:
- *         description: Forbidden
- */
 router.post(
   '/api/job/post',
   requireAuthenticated(['employer']),

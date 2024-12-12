@@ -1,0 +1,262 @@
+@baseUrl = http://localhost:4201/api
+
+###
+# -------------------------
+# @name QueryHealth
+GET {{baseUrl}}/health
+Authorization: Bearer {{accessToken}}
+
+###
+# -------------------------
+# @name CmdTemp
+POST {{baseUrl}}/temp
+
+# ==================================
+# ==================================
+# ==================================
+# ==================================
+# ==================================
+
+###
+# -------------------------
+# @name CmdRegister
+POST {{baseUrl}}/auth/register
+
+{
+  "email": "user2@gmail.com",
+  "password": "pass",
+  "role": "employer",
+  "fullName": "User 2"
+}
+
+###
+# -------------------------
+# @name CmdLogin
+POST {{baseUrl}}/auth/login
+
+{
+  "email": "employee2@gmail.com",
+  "password": "pass"
+}
+
+###
+@accessToken = {{CmdLogin.response.body.$.token}}
+# user1: 674f261e2b05a0cf3e0e3b87
+# user2: 674f2676661dab1966200fa9
+@user1 = 674f261e2b05a0cf3e0e3b87
+@user2 = 674f2676661dab1966200fa9
+
+# ==================================
+# ==================================
+# ==================================
+# ==================================
+# ==================================
+
+###
+# -------------------------
+# @name QueryGetConversations
+GET {{baseUrl}}/chat/conversations
+Authorization: Bearer {{accessToken}}
+
+###
+# -------------------------
+# @name CmdResumeConvSingle
+POST {{baseUrl}}/chat/resume-conv-single
+Authorization: Bearer {{accessToken}}
+
+{
+  "receiverId": "675586fdcbfc42693c7971c1"
+}
+
+# ==================================
+# ==================================
+# ==================================
+# ==================================
+# ==================================
+
+###
+# -------------------------
+# @name CmdUploadImage
+POST {{baseUrl}}/upload/image2
+Authorization: Bearer {{accessToken}}
+Content-Type: multipart/form-data; boundary=MfnBoundry
+
+--MfnBoundry
+Content-Disposition: form-data; name="image"; filename="test-image.jpg"
+Content-Type: image/jpeg
+
+< ./test-image.jpg
+--MfnBoundry--
+
+# {
+#   "name": "1733505249083-gzwx6.jpg",
+#   "_id": "675330e14e317d60a5c61f35",
+#   "uploadedAt": "2024-12-06T17:14:09.095Z",
+#   "__v": 0,
+#   "id": "675330e14e317d60a5c61f35"
+# }
+
+# ==================================
+# ==================================
+# ==================================
+# ==================================
+# ==================================
+
+###
+# -------------------------
+# @name QueryMe
+GET {{baseUrl}}/me
+Authorization: Bearer {{accessToken}}
+
+###
+# -------------------------
+# @name QueryCommunity
+GET {{baseUrl}}/community
+  ?searchTerm=user
+Authorization: Bearer {{accessToken}}
+
+###
+# -------------------------
+# @name QueryGetUser
+GET {{baseUrl}}/user/674f261e2b05a0cf3e0e3b87
+
+###
+# -------------------------
+# @name CmdAddFriend
+POST {{baseUrl}}/add-friend
+  # ?checkOnly=true
+Authorization: Bearer {{accessToken}}
+
+{
+  "userId": "674f2676661dab1966200fa9"
+}
+
+###
+# -------------------------
+# @name CmdRemoveFriend
+DELETE {{baseUrl}}/remove-friend
+Authorization: Bearer {{accessToken}}
+
+{
+  "userId": "674f2676661dab1966200fa9"
+}
+
+# ==================================
+# ==================================
+# ==================================
+# ==================================
+# ==================================
+
+###
+# -------------------------
+# @name QueryEmployerPostings
+GET {{baseUrl}}/employer/my-postings
+Authorization: Bearer {{accessToken}}
+
+###
+# -------------------------
+# @name CmdEmployerCreatePosting
+POST {{baseUrl}}/job/post
+Authorization: Bearer {{accessToken}}
+
+{,
+  "title": "Software Automation Engineers needed",
+  "description": "Experts who have the knowledge and ability to design, create, develop and manage machines and systems",
+  "category": "Techonology",
+  "specialism": "Software Engineering",
+  "jobType": "fullTime",
+  "expLevelRequired": "senior",
+  "qualificationsRequired": [],
+  "qualificationsDesired": [],
+  "salaryMode": "monthly",
+  "salary": "16000",
+  "startDate": "2024-12-05T11:49:40.512Z",
+  "endDate": "2024-12-05T11:49:40.512Z",
+  "startTime": "2024-12-05T11:49:40.512Z",
+  "endTime": "2024-12-05T11:49:40.512Z",
+
+  "benefits": [],
+  "workingLanguage": "en-US",
+  "residence": "no",
+  "food": "oneMeal",
+  "transport": "notRequired",
+
+  "companyName": "",
+  "companyUsername": "",
+  "companyDescription": "",
+  "companyWebsite": "",
+  "companyLogoUrl": "",
+  "companyCountry": "",
+  "companyCity": "",
+  "companyArea": "",
+  "companyZip": "",
+  "companyMapAddress": "",
+
+  "questions": [],
+  "postedAt": "{{$datetime iso8601}}"
+}
+
+###
+# -------------------------
+# @name CmdEmployerUpdatePostingActiveStatus
+PATCH {{baseUrl}}/job/6751950cfa37bcf420d2cc38/update-status
+Authorization: Bearer {{accessToken}}
+
+{
+  "isActive": true
+}
+
+###
+# -------------------------
+# @name QueryAllPostings
+GET {{baseUrl}}/job/search
+Authorization: Bearer {{accessToken}}
+
+###
+# -------------------------
+# @name CmdMarkPostingFavourite
+PATCH {{baseUrl}}/mark-posting-favourite
+Authorization: Bearer {{accessToken}}
+
+{
+  "postingId": "6751950cfa37bcf420d2cc38",
+  "isFavourite": true
+}
+
+###
+# -------------------------
+# @name QueryPostingFavourites
+GET {{baseUrl}}/posting-favourites
+Authorization: Bearer {{accessToken}}
+
+###
+# -------------------------
+# @name CmdApplyToPosting
+POST {{baseUrl}}/job/apply
+Authorization: Bearer {{accessToken}}
+
+{
+  "postingId": "6751950cfa37bcf420d2cc38",
+  "answers": []
+}
+
+###
+# -------------------------
+# @name CmdInviteEmployee
+POST {{baseUrl}}/invite-employee
+Authorization: Bearer {{accessToken}}
+
+{
+  "employeeId": "674f261e2b05a0cf3e0e3b87"
+}
+
+###
+# -------------------------
+# @name QueryIsEmployeeInvited
+POST {{baseUrl}}/is-employee-invited
+Authorization: Bearer {{accessToken}}
+
+{
+  "employeeId": "674f261e2b05a0cf3e0e3b87"
+}
+

@@ -1,34 +1,25 @@
-import { createContext } from "react";
 import type { PropsWithChildren } from "react";
 
 import { TopNav, TopNavProps } from "~/components/TopNav/TopNav";
 import { Footer } from "~/components/Footer/Footer";
-import { ViewMode } from "../AllLinks";
 import { LanguageDrawer } from "./LanguageDrawer";
 import { CurrencyDrawer } from "./CurrencyDrawer";
 
-export const ViewModeContext = createContext<ViewMode>("employee");
-
 type AppLayoutProps = PropsWithChildren &
-  Omit<TopNavProps, "viewMode"> & { params: Record<string, string> };
+  TopNavProps;
 
-export function AppLayout({ children, params, ...navProps }: AppLayoutProps) {
-  let userViewMode = params?.["view-mode"];
-
-  let viewMode: ViewMode =
-    userViewMode === "employer" ? "employer" : "employee";
-
+export function AppLayout({ children, ...navProps }: AppLayoutProps) {
   return (
-    <ViewModeContext.Provider value={viewMode}>
+    <>
       <main className="min-h-screen flex flex-col">
-        <TopNav {...navProps} viewMode={viewMode} />
+        <TopNav {...navProps} />
         <div className="flex-1 flex flex-col">{children}</div>
-        <Footer viewMode={viewMode} />
+        <Footer />
       </main>
       <div className="absolute top-0 left-0">
         <LanguageDrawer />
         <CurrencyDrawer />
       </div>
-    </ViewModeContext.Provider>
+    </>
   );
 }

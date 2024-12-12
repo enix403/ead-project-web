@@ -2,7 +2,7 @@ import "react-modern-drawer/dist/index.css";
 
 import Logo from "./assets/logo-big.png";
 import MessageIcon from "./assets/message.svg";
-import ProfileImage from "~/app/assets/profile-1.webp";
+// import ProfileImage from "~/app/assets/profile-1.webp";
 
 import { US } from "country-flag-icons/react/3x2";
 
@@ -23,35 +23,36 @@ import { IconMenu2, IconX } from "@tabler/icons-react";
 import { Button } from "../Button/Button";
 
 import { atom, useAtom, useSetAtom } from "jotai";
-import { AllLinks, ViewMode } from "../AllLinks";
+import { AllLinks } from "../AllLinks";
 
 import { languageDrawerAtom } from "../AppLayout/LanguageDrawer";
 import { currencyDrawerAtom } from "../AppLayout/CurrencyDrawer";
+import { useAuthState } from "~/app/providers/auth-state";
 
 export interface TopNavProps {
   pageTitle?: string;
-  viewMode: ViewMode;
 }
 
 const drawerAtom = atom(false);
 
-function Contents({ pageTitle, viewMode }: TopNavProps) {
+function Contents({ pageTitle }: TopNavProps) {
   const setDrawerOpen = useSetAtom(drawerAtom);
   const setLanguageDrawerOpen = useSetAtom(languageDrawerAtom);
   const setCurrencyDrawerOpen = useSetAtom(currencyDrawerAtom);
+  const { logout } = useAuthState();
 
   let loggedIn = true;
 
   return (
     <>
       <div className="flex justify-between items-center">
-        <Link href={`/${viewMode}`}>
+        <Link href={`/home`}>
           <Image alt="" src={Logo} className="h-7 w-auto lg:h-10" />
         </Link>
         <div className="flex gap-x-1 items-center">
           {loggedIn ? (
             <>
-              <Link href={`/${viewMode}/chat`}>
+              <Link href={`/chat`}>
                 <IconButton variant="text">
                   <MessageIcon className="w-5" />
                 </IconButton>
@@ -60,15 +61,16 @@ function Contents({ pageTitle, viewMode }: TopNavProps) {
               <Menu>
                 <MenuHandler>
                   <button>
-                    <Image
-                      src={ProfileImage}
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src="/profile_empty_gradient.png"
                       alt=""
                       className="w-8 h-8 rounded-full ml-2.5"
                     />
                   </button>
                 </MenuHandler>
                 <MenuList>
-                  <MenuItem>Logout</MenuItem>
+                  <MenuItem onClick={() => logout()}>Logout</MenuItem>
                   <MenuItem
                     onClick={() => setLanguageDrawerOpen(true)}
                     className="flex justify-between items-center"
@@ -88,7 +90,7 @@ function Contents({ pageTitle, viewMode }: TopNavProps) {
               </Menu>
             </>
           ) : (
-            <Link href="/auth" className="hidden ph:block">
+            <Link href="/login" className="hidden ph:block">
               <Button className="!px-4 !py-1.5 text-sm">
                 Register / Login
               </Button>
@@ -113,7 +115,7 @@ function Contents({ pageTitle, viewMode }: TopNavProps) {
             "wl:flex hidden"
           )}
         >
-          <AllLinks viewMode={viewMode} />
+          <AllLinks />
         </div>
         <h1 className="text-2xl font-semibold wl:hidden max-ph:hidden block">
           {pageTitle}
@@ -121,7 +123,7 @@ function Contents({ pageTitle, viewMode }: TopNavProps) {
       </div>
 
       <div className="absolute top-0 left-0">
-        <MobileDrawer loggedIn={loggedIn} viewMode={viewMode} />
+        <MobileDrawer loggedIn={loggedIn} />
       </div>
     </>
   );
@@ -129,10 +131,8 @@ function Contents({ pageTitle, viewMode }: TopNavProps) {
 
 export function MobileDrawer({
   loggedIn,
-  viewMode,
 }: {
   loggedIn: boolean;
-  viewMode: ViewMode;
 }) {
   const [isOpen, setIsOpen] = useAtom(drawerAtom);
 
@@ -159,7 +159,7 @@ export function MobileDrawer({
         </div>
 
         <div className="flex flex-col gap-y-3 mt-8 hover:[&>a]:underline">
-          <AllLinks viewMode={viewMode} />
+          <AllLinks />
         </div>
 
         {!loggedIn && (

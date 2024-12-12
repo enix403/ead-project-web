@@ -8,7 +8,7 @@ import { IconChevronDown } from "@tabler/icons-react";
 export type SelectProps = Omit<HtmlDivProps, "value" | "onChange"> &
   Pick<HtmlSelectProps, "value" | "onChange"> & {
     selectClassName?: string | undefined;
-    selectProps?: Omit<HtmlSelectProps, "value" | "onChange"> | undefined;
+    selectProps?: Omit<HtmlSelectProps, "value"> | undefined;
     variant?: "light" | "outlined";
     icon?: any;
   };
@@ -42,7 +42,10 @@ export function Select({
           ]
         })}
         value={value}
-        onChange={onChange}
+        onChange={(e) => {
+          onChange?.(e);
+          selectProps?.onChange?.(e);
+        }}
       >
         {children}
       </select>

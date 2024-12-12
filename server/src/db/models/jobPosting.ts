@@ -30,7 +30,7 @@ export interface IJobPosting extends Document<Types.ObjectId> {
   companyUsername: string;
   companyDescription?: string;
   companyWebsite?: string;
-  companyLogoUrl?: string;
+  companyLogoImageId?: Types.ObjectId;
   companyCountry?: string;
   companyCity?: string;
   companyArea?: string;
@@ -45,63 +45,93 @@ export interface IJobPosting extends Document<Types.ObjectId> {
   posterId: Types.ObjectId;
 }
 
-const jobPostingSchema = new Schema<IJobPosting>({
-  title: { type: String, required: true },
-  description: String,
-  category: String,
-  specialism: String,
-  jobType: {
-    type: String,
-    enum: ['fullTime', 'partTime', 'internship', 'specificDates'],
-    required: true,
+const jobPostingSchema = new Schema<IJobPosting>(
+  {
+    title: { type: String, required: true },
+    description: String,
+    category: String,
+    specialism: String,
+    jobType: {
+      type: String,
+      enum: ['fullTime', 'partTime', 'internship', 'specificDates'],
+      required: true,
+    },
+
+    expLevelRequired: { type: String, enum: ['entry', 'mid', 'senior'] },
+
+    qualificationsRequired: [String],
+    qualificationsDesired: [String],
+
+    salaryMode: { type: String, enum: ['monthly', 'hourly'] },
+    salary: { type: String, required: true },
+
+    startDate: Date,
+    endDate: Date,
+    startTime: Date,
+    endTime: Date,
+
+    benefits: [String],
+    workingLanguage: String,
+    residence: { type: String, enum: ['yes', 'no', 'allowance'] },
+    food: {
+      type: String,
+      enum: ['yes', 'no', 'oneMeal', 'twoMeal', 'allowance'],
+    },
+    transport: {
+      type: String,
+      enum: ['required', 'notRequired', 'mopedProvided', 'carProvided'],
+    },
+
+    companyName: String,
+    companyUsername: String,
+    companyDescription: String,
+    companyWebsite: String,
+    companyLogoImageId: {
+      type: Schema.Types.ObjectId,
+      ref: 'MediaUpload',
+      required: false,
+    },
+    companyCountry: String,
+    companyCity: String,
+    companyArea: String,
+    companyZip: String,
+    companyMapAddress: String,
+
+    questions: [String],
+
+    postedAt: { type: Date, default: Date.now },
+    expireAt: Date,
+    isActive: { type: Boolean, default: true },
+    posterId: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+    },
   },
-
-  expLevelRequired: { type: String, enum: ['entry', 'mid', 'senior'] },
-
-  qualificationsRequired: [String],
-  qualificationsDesired: [String],
-
-  salaryMode: { type: String, enum: ['monthly', 'hourly'] },
-  salary: { type: String, required: true },
-
-  startDate: Date,
-  endDate: Date,
-  startTime: Date,
-  endTime: Date,
-
-  benefits: [String],
-  workingLanguage: String,
-  residence: { type: String, enum: ['yes', 'no', 'allowance'] },
-  food: {
-    type: String,
-    enum: ['yes', 'no', 'oneMeal', 'twoMeal', 'allowance'],
+  {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   },
-  transport: {
-    type: String,
-    enum: ['required', 'notRequired', 'mopedProvided', 'carProvided'],
-  },
+);
 
-  companyName: String,
-  companyUsername: String,
-  companyDescription: String,
-  companyWebsite: String,
-  companyLogoUrl: String,
-  companyCountry: String,
-  companyCity: String,
-  companyArea: String,
-  companyZip: String,
-  companyMapAddress: String,
+jobPostingSchema.virtual('applications', {
+  ref: 'JobApplication',
+  localField: '_id',
+  foreignField: 'postingId',
+});
 
-  questions: [String],
+jobPostingSchema.virtual('poster', {
+  ref: 'User',
+  localField: 'posterId',
+  foreignField: '_id',
+  justOne: true
+});
 
-  postedAt: { type: Date, default: Date.now },
-  expireAt: Date,
-  isActive: { type: Boolean, default: true },
-  posterId: {
-    type: Schema.Types.ObjectId,
-    ref: 'User',
-    required: true,
-  },
+jobPostingSchema.virtual('companyLogo', {
+  ref: 'MediaUpload',
+  localField: 'companyLogoImageId',
+  foreignField: '_id',
+  justOne: true,
 });
 
 // prettier-ignore

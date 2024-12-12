@@ -1,21 +1,149 @@
 import { Request, Response } from 'express';
-import { Types } from 'mongoose'
 
 import { JobPostingModel } from 'db/models/jobPosting';
 import { JobApplicationModel } from 'db/models/jobApplication';
+import { ApplicationError, NotFound } from 'controllers/core/errors';
+import { reply } from 'controllers/core/app-reply';
 
-// GET /api/job/search'
+const getDateFromFilter = (filter: string): Date | null => {
+  const now = new Date();
+  switch (filter) {
+    case 'lastHour':
+      return new Date(now.getTime() - 60 * 60 * 1000); // 1 hour ago
+    case 'last24Hours':
+      return new Date(now.getTime() - 24 * 60 * 60 * 1000); // 24 hours ago
+    case 'last7Days':
+      return new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000); // 7 days ago
+    case 'all':
+    default:
+      return null;
+  }
+};
+
+// GET /api/job/search
 export async function searchJobController(req: Request, res: Response) {
-  const { title, location, jobType } = req.query;
+  const {
+    category,
+    jobType,
+    datePosted,
+    expLevelRequired,
+    title,
+    desc,
+    specialism,
+    qualificationsRequired,
+    qualificationsDesired,
+    startDate,
+    endDate,
+    startTime,
+    endTime,
+    benefits,
+    workingLanguage,
+    residence,
+    food,
+    transport,
+    posterId,
+  } = req.query;
 
-  // Build filter query based on search parameters
-  const filter: any = {};
-  if (title) filter.title = new RegExp(title as string, 'i');
-  if (location) filter.location = new RegExp(location as string, 'i');
-  if (jobType) filter.jobType = jobType;
+  const filters: any = {};
 
-  const jobs = await JobPostingModel.find(filter);
-  res.json(jobs);
+  // General helper for handling string or array fields
+  const handleStringOrArray = (field: any) =>
+    Array.isArray(field) ? { $in: field } : field;
+
+  // Filter by category
+  if (category) filters.category = category;
+
+  // Filter by jobType
+  if (jobType) filters.jobType = handleStringOrArray(jobType);
+
+  // Filter by expLevelRequired
+  if (expLevelRequired)
+    filters.expLevelRequired = handleStringOrArray(expLevelRequired);
+
+  // Filter by datePosted
+  if (datePosted) {
+    const dateFilters = (
+      Array.isArray(datePosted) ? datePosted : [datePosted]
+    ).map((x) => x.toString());
+
+    const longestDateFilter = dateFilters.includes('all')
+      ? 'all'
+      : dateFilters.reduce((prev, curr) =>
+          getDateFromFilter(prev) && getDateFromFilter(curr)
+            ? getDateFromFilter(prev)! < getDateFromFilter(curr)!
+              ? prev
+              : curr
+            : prev,
+        );
+
+    const dateThreshold = getDateFromFilter(longestDateFilter);
+    if (dateThreshold) filters.postedAt = { $gte: dateThreshold };
+  }
+
+  // Filter by title (partial match)
+  if (title) filters.title = { $regex: title, $options: 'i' };
+
+  // Filter by description (partial match)
+  if (desc) filters.description = { $regex: desc, $options: 'i' };
+
+  // Filter by specialism
+  if (specialism) filters.specialism = specialism;
+
+  // Filter by qualificationsRequired
+  if (qualificationsRequired)
+    filters.qualificationsRequired = handleStringOrArray(
+      qualificationsRequired,
+    );
+
+  // Filter by qualificationsDesired
+  if (qualificationsDesired)
+    filters.qualificationsDesired = handleStringOrArray(qualificationsDesired);
+
+  // Filter by startDate and endDate
+  if (startDate) filters.startDate = { $gte: new Date(startDate as string) };
+  if (endDate) filters.endDate = { $lte: new Date(endDate as string) };
+
+  // Filter by startTime and endTime
+  if (startTime) filters.startTime = { $gte: new Date(startTime as string) };
+  if (endTime) filters.endTime = { $lte: new Date(endTime as string) };
+
+  // Filter by benefits
+  if (benefits) filters.benefits = handleStringOrArray(benefits);
+
+  // Filter by workingLanguage
+  if (workingLanguage)
+    filters.workingLanguage = handleStringOrArray(workingLanguage);
+
+  // Filter by residence
+  if (residence) filters.residence = handleStringOrArray(residence);
+
+  // Filter by food
+  if (food) filters.food = handleStringOrArray(food);
+
+  // Filter by transport
+  if (transport) filters.transport = handleStringOrArray(transport);
+
+  // Filter by posterId
+  if (posterId) filters.posterId = posterId;
+
+  /* -------- */
+
+  // Sorting
+  let sort: any = {};
+  const sortBy = req.query.sort;
+  if (sortBy === 'popularity') {
+    // Sort by ID (descending) as a placeholder for popularity
+    sort = { _id: -1 };
+  } else if (sortBy === 'datePosted') {
+    // Sort by datePosted (recent first)
+    sort = { postedAt: -1 };
+  }
+
+  const postings = await JobPostingModel.find(filters)
+    .sort(sort)
+    .populate('poster');
+
+  return reply(res, postings);
 }
 
 /* ----------------------------------- */
@@ -29,27 +157,45 @@ export async function getJobDetailsController(req: Request, res: Response) {
 
 /* ----------------------------------- */
 
-// POST /api/job/:jobId/apply
+// POST /api/job/apply
 export async function applyJobController(req: Request, res: Response) {
-  const { jobId } = req.params;
+  // await JobApplicationModel.deleteMany({});
+  const { postingId, answers } = req.body;
+  const employeeId = req.user!._id;
 
   // Fetch the job posting to retrieve the job poster's ID
-  const jobPosting = await JobPostingModel.findById(jobId);
-  if (!jobPosting) return res.status(404).json({ message: 'Job not found' });
+  const posting = await JobPostingModel.findById(postingId);
+  if (!posting) throw new NotFound();
+
+  const existingAppl = await JobApplicationModel.findOne({
+    employeeId,
+    postingId,
+  });
+
+  if (existingAppl) {
+    throw new ApplicationError(
+      'Already applied to this job',
+      400,
+      'already_applied',
+    );
+  }
 
   // Create the application with the job poster's ID
   const application = new JobApplicationModel({
-    jobId,
-    employeeId: req.user!._id,
-    jobPosterId: jobPosting.posterId,
+    postingId,
+    employeeId,
+    posterId: posting.posterId,
+    answers,
+    decision: 'waiting',
     appliedAt: new Date(),
-    answers: req.body.answers,
   });
 
   await application.save();
-  res
-    .status(201)
-    .json({ message: 'Application submitted successfully', application });
+
+  return reply(res, {
+    message: 'Application submitted successfully',
+    application,
+  });
 }
 
 /* ----------------------------------- */
@@ -70,7 +216,7 @@ export async function getApplicationDetailsController(
 
   const isAuthorized =
     req.user!._id.equals(application.employeeId) ||
-    req.user!._id.equals(application.jobPosterId); // Simplified check
+    req.user!._id.equals(application.posterId); // Simplified check
 
   if (!isAuthorized) return res.status(403).json({ message: 'Forbidden' });
 
@@ -99,8 +245,7 @@ export async function postJobController(req: Request, res: Response) {
     postedAt: jobData['postedAt'] || new Date(),
     expireAt: undefined, // No expiry for now
     isActive: true,
-    // posterId: req.user!._id,
-    posterId: new Types.ObjectId(),
+    posterId: req.user!._id,
   });
   await job.save();
   res.status(201).json({ message: 'Job posted successfully', job });
@@ -113,7 +258,15 @@ export async function getEmployerPostingsController(
   req: Request,
   res: Response,
 ) {
-  const postings = await JobPostingModel.find({ posterId: req.user!._id });
+  const postings = await JobPostingModel.find({
+    posterId: req.user!._id,
+  }).populate({
+    path: 'applications',
+    populate: {
+      path: 'applicant',
+    },
+  });
+
   res.json(postings);
 }
 
@@ -164,7 +317,7 @@ export async function updateApplicationDecisionController(
   const { decision } = req.body;
 
   const application = await JobApplicationModel.findById(applicationId);
-  if (!application || !application.jobPosterId.equals(req.user!._id)) {
+  if (!application || !application.posterId.equals(req.user!._id)) {
     return res.status(403).json({
       message: 'Forbidden: Not authorized to update this application',
     });
@@ -186,7 +339,7 @@ export async function markApplicationInterestedController(
   const { isInterested } = req.body;
 
   const application = await JobApplicationModel.findById(applicationId);
-  if (!application || !application.jobPosterId.equals(req.user!._id)) {
+  if (!application || !application.posterId.equals(req.user!._id)) {
     return res.status(403).json({
       message: 'Forbidden: Not authorized to update this application',
     });

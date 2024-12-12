@@ -1,4 +1,5 @@
-import ky from "ky";
+import ky, { HTTPError } from "ky";
+import { getAuthState } from "./providers/auth-state";
 
 function unslashStart(str: string) {
   return str.replace(/^\/+/, "");
@@ -14,10 +15,71 @@ if (!API_BASE_URL) {
   throw new Error("Env variable `NEXT_PUBLIC_API_URL` not set");
 }
 
+export class ApiReplyError extends HTTPError {
+  constructor(
+    parent: HTTPError,
+    public readonly errorMessage: string,
+    public readonly errorCode: string
+  ) {
+    super(parent.response, parent.request, parent.options);
+    this.name = "ApiReplyError";
+    this.message = errorMessage;
+  }
+
+  public static check(error: any): error is ApiReplyError {
+    return error instanceof ApiReplyError;
+  }
+
+  public static userMessage(error: any) {
+    if (error instanceof ApiReplyError) {
+      return error.errorMessage;
+    }
+    return "An error occured";
+  }
+}
+
 export const apiConn = ky.extend({
   prefixUrl: unslashEnd(API_BASE_URL),
   timeout: false,
+  hooks: {
+    beforeRequest: [
+      (request) => {
+        let { isLoggedIn, token } = getAuthState();
+        if (isLoggedIn) {
+          request.headers.set("Authorization", `Bearer: ${token}`);
+        }
+        return request;
+      },
+    ],
+    beforeError: [
+      async (error) => {
+        const { response } = error;
+
+        let isApiReplyError = false;
+        let reply: any = null;
+
+        if (response && response.body) {
+          reply = await response.json();
+          if (reply["isApiReplyError"] === true) {
+            isApiReplyError = true;
+          }
+        }
+
+        if (isApiReplyError) {
+          const { errorMessage, errorCode } = reply!;
+          return new ApiReplyError(error, errorMessage, errorCode);
+        }
+
+        return error;
+      },
+    ],
+  },
 });
+
+if (typeof window !== "undefined") {
+  // @ts-ignore
+  window.apiConn = apiConn;
+}
 
 function decl<
   UrlT extends string | ((...args: UrlArgs) => string),
@@ -27,77 +89,105 @@ function decl<
 >({
   url,
   invoke,
-  failMsg,
 }: {
   url: UrlT;
   invoke: (url: UrlT, ...args: FuncArgs) => FuncRet;
-  failMsg?: string;
 }) {
   return async (...args: FuncArgs): Promise<any> => {
     try {
       return await invoke(url, ...args);
     } catch (e) {
-      let msg = failMsg ?? "Request failed";
-      console.log("API-CALL-ERR: " + msg, e);
+      console.log("API-CALL-ERR: Request failed", e);
       throw e;
     }
   };
+}
+
+function toUrl<UrlT extends string | ((...args: any) => string)>(
+  url: UrlT,
+  args: MaybeParameters<UrlT>
+) {
+  let urlString = typeof url === "string" ? url : url(...args);
+  urlString = unslashStart(urlString);
+  return urlString;
 }
 
 type MaybeParameters<T> = T extends (...args: infer R) => any ? R : [];
 
 function jsonDecl<UrlT extends string | ((...args: any) => string)>(
   url: UrlT,
-  opts?: {
-    method?: string;
-    failMsg?: string;
-  }
+  opts?: { method?: string }
 ) {
   return decl({
     url,
     invoke: (url, ...args: MaybeParameters<UrlT>) => {
-      let urlString = typeof url === "string" ? url : url(...args);
-      urlString = unslashStart(urlString);
-      return apiConn(urlString, {
+      return apiConn(toUrl(url, args), {
         method: opts?.method ?? "GET",
       }).json<any>();
     },
-    failMsg: opts?.failMsg,
   });
 }
 
-// const getJob = jsonDecl((jobId: string) => `/api/job/${jobId}`);
-
 function payloadDecl<UrlT extends string | ((...args: any) => string)>(
   url: UrlT,
-  opts?: {
-    method?: string;
-    failMsg?: string;
-  }
+  opts?: { method?: string }
 ) {
   return decl({
     url,
     invoke: (url, payload: any, ...args: MaybeParameters<UrlT>) => {
-      let urlString = typeof url === "string" ? url : url(...args);
-      urlString = unslashStart(urlString);
-      return apiConn(urlString, {
+      return apiConn(toUrl(url, args), {
         method: opts?.method ?? "POST",
         json: payload,
       }).json<any>();
     },
-    failMsg: opts?.failMsg,
   });
 }
 
-// const postJob = payloadDecl((postCat: string) => "/api/job/post");
+function uploadDecl<UrlT extends string | ((...args: any) => string)>(
+  url: UrlT,
+  opts?: {
+    method?: string;
+    key?: string;
+  }
+) {
+  const key = opts?.key ?? "file";
 
-function wq<Q = Record<string, any>>(template: TemplateStringsArray) {
+  return decl({
+    url,
+    invoke: (url, file: File, ...args: MaybeParameters<UrlT>) => {
+      const formData = new FormData();
+      formData.set(key, file);
+
+      return apiConn(toUrl(url, args), {
+        method: opts?.method ?? "POST",
+        body: formData,
+      }).json<any>();
+    },
+  });
+}
+
+/* ------------------------ */
+
+function wq<Q = string | Record<string, any> | URLSearchParams>(
+  template: TemplateStringsArray
+) {
   let url = template.join("");
   return (queryParams?: Q) => {
     let query = "";
+
     if (queryParams) {
-      query = "?" + new URLSearchParams(queryParams).toString();
+      if (typeof queryParams === "string") {
+        query = "?" + queryParams;
+      } else {
+        const urlSearchParams =
+          queryParams instanceof URLSearchParams
+            ? queryParams
+            : new URLSearchParams(queryParams);
+
+        query = "?" + urlSearchParams.toString();
+      }
     }
+
     return url + query;
   };
 }
@@ -107,7 +197,33 @@ function wq<Q = Record<string, any>>(template: TemplateStringsArray) {
 // prettier-ignore
 export const apiRoutes = {
   /* ========================== */
-  /* ======= Job Routes ======= */
+  /* ========== Auth ========== */
+  /* ========================== */
+  login: payloadDecl(`/api/auth/login`),
+  register: payloadDecl(`/api/auth/register`),
+
+  /* ========================== */
+  /* =========== Me =========== */
+  /* ========================== */
+  getMe: jsonDecl(`/api/me`),
+
+  /* ========================= */
+  /* ======= Community ======= */
+  /* ========================= */
+  getCommunity: jsonDecl(wq`/api/community`),
+  getUser: jsonDecl((userId: string) => `/api/user/${userId}`),
+  addFriend: payloadDecl(`/api/add-friend`),
+  isFriend: payloadDecl(`/api/add-friend?checkOnly=true`),
+  removeFriend: payloadDecl(`/api/remove-friend`, { method: "DELETE" }),
+
+  /* ========================= */
+  /* ======= Favourites ====== */
+  /* ========================= */
+  getPostingFavourites: jsonDecl(`/api/posting-favourites`),
+  markPostingFavourite: payloadDecl(`/api/mark-posting-favourite`, { method: "PATCH" }),
+
+  /* ========================== */
+  /* ======== Postings ======== */
   /* ========================== */
   // Queries
   searchJobs: jsonDecl(wq`/api/job/search`),
@@ -116,14 +232,32 @@ export const apiRoutes = {
   getMyApplications: jsonDecl(`/api/employee/my-applications`),
   getMyPostings: jsonDecl(`/api/employer/my-postings`),
   getJobApplicants: jsonDecl((jobId: string) => `/api/job/${jobId}/applicants`),
+  isPostingApplied: jsonDecl((postingId: string) => `/api/is-posting-applied/${postingId}`),
+  isEmployeeInvited: payloadDecl(`/api/is-employee-invited`),
 
   // Mutations
   postJob: payloadDecl(`/api/job/post`),
   deleteJob: payloadDecl((jobId: string) => `/api/job/${jobId}`, { method: "DELETE" }),
-  applyToJob: payloadDecl((jobId: string) => `/api/job/${jobId}/apply`),
+  applyToJob: payloadDecl(`/api/job/apply`),
   updateJobStatus: payloadDecl((jobId: string) => `/api/job/${jobId}/update-status`, { method: "PATCH" }),
   updateApplDecision: payloadDecl((applId: string) => `/api/job/application/${applId}/update-decision`,{ method: "PATCH" }),
   markApplInterested: payloadDecl((applId: string) => `/api/job/application/${applId}/mark-interested`, { method: "PATCH" }),
+  inviteEmployee: payloadDecl(`/api/invite-employee`),
+
+  /* ========================== */
+  /* ========= Uploads ======== */
+  /* ========================== */
+  uploadImage: uploadDecl(`/api/upload/image`, { key: "image" }),
+
+  /* ========================== */
+  /* ========== Chats ========= */
+  /* ========================== */
+  // getChatMessages: jsonDecl((receiverId: string) => `/api/chat/messages/${receiverId}`),
+  // startConversation: payloadDecl(`/api/chat/start-conversation`),
+
+  getConversations: jsonDecl(`/api/chat/conversations`),
+  resumeConversationSingle: payloadDecl(`/api/chat/resume-conv-single`),
+
 } as const;
 
 if (typeof window !== "undefined") {
