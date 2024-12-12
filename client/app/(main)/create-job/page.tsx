@@ -100,12 +100,17 @@ export default function CreateJobPage() {
   }
 
   const selCtrl = useSelectionController();
-  // @ts-ignore
-  window.selCtrl = selCtrl;
+  if (typeof window !== "undefined") {
+    // @ts-ignore
+    window.selCtrl = selCtrl;
+  }
 
   const qsBank = useQuestionsBank();
-  // @ts-ignore
-  window.qsBank = qsBank;
+
+  if (typeof window !== "undefined") {
+    // @ts-ignore
+    window.qsBank = qsBank;
+  }
 
   function onNext() {
     if (isLoading) return;

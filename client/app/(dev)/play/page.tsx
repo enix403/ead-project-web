@@ -8,7 +8,7 @@ import { apiConn } from "~/app/api-routes";
 export default function PlayPage() {
   const { register, getValues } = useForm();
 
-  if (typeof window !== 'undefined') {
+  if (typeof window !== "undefined") {
     // @ts-ignore
     window.getValues = getValues;
     // @ts-ignore
@@ -18,22 +18,23 @@ export default function PlayPage() {
   function handleSubmit(event: FormEvent<HTMLFormElement>): void {
     event.preventDefault();
     const fileList: FileList = getValues().logo;
-    // @ts-ignore
-    // window.fileList = fileList;
     const file = fileList[0];
-    // @ts-ignore
-    window.file = file;
+    if (typeof window !== "undefined") {
+      // @ts-ignore
+      window.file = file;
+    }
     console.log(file);
   }
 
   return (
     <>
       <div className="p-10">
-        <form onSubmit={handleSubmit} className="flex flex-col gap-y-4 items-start">
-          <input {...register('logo')} type="file" />
-          <Button type="submit">
-            Submit
-          </Button>
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col gap-y-4 items-start"
+        >
+          <input {...register("logo")} type="file" />
+          <Button type="submit">Submit</Button>
         </form>
       </div>
     </>
