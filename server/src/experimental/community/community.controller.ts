@@ -23,7 +23,7 @@ router.get(
     }),
   ),
   ah(async (req, res) => {
-    let { searchTerm } = req.query;
+    let { searchTerm, userType } = req.query;
 
     searchTerm = String(searchTerm || '').trim();
 
@@ -38,6 +38,17 @@ router.get(
         ...query,
         fullName: { $regex: new RegExp(searchTerm, 'i') },
       };
+    }
+
+    let role: any = undefined;
+    if (userType === 'employee' || userType === 'individual') {
+      role = 'employee';
+    } else if (userType === 'business') {
+      role = 'employer';
+    }
+
+    if (role != undefined) {
+      query = { ...query, role };
     }
 
     const users = await UserModel.find(query);

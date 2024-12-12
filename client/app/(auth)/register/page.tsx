@@ -5,7 +5,7 @@ import GoogleIcon from "~/app/assets/google.svg";
 
 import Image from "next/image";
 
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { Button } from "~/components/Button/Button";
 import Link from "next/link";
 
@@ -14,6 +14,7 @@ import { useForm, UseFormRegister } from "react-hook-form";
 import toast from "react-hot-toast";
 import { apiRoutes } from "~/app/api-routes";
 import { useAuthState } from "~/app/providers/auth-state";
+import { useRouter } from "next/navigation";
 
 function LoginNote() {
   return (
@@ -62,6 +63,8 @@ function EmployerForm({ register }: { register: UseFormRegister<any> }) {
 }
 
 function RegisterFormContent() {
+  const router = useRouter();
+
   type NewUserRole = "employee" | "employer";
   const [role, setRole] = useState<NewUserRole>("employee");
   const getButtonVariant = (mode: NewUserRole) =>
@@ -71,6 +74,13 @@ function RegisterFormContent() {
   const { register, handleSubmit, reset } = useForm<any>();
 
   const authState = useAuthState();
+  const { isLoggedIn } = authState;
+
+  useLayoutEffect(() => {
+    if (isLoggedIn) {
+      router.push("/home");
+    }
+  }, [router, isLoggedIn]);
 
   function handleRegister(values: any) {
     let { fullName, email, password, confirmPassword } = values;
@@ -100,6 +110,7 @@ function RegisterFormContent() {
       delete payload["dateOfBirth"];
     }
 
+    setLoading(true);
     apiRoutes
       .register(payload)
       .then(({ token, user }) => {
