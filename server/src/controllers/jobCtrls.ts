@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import { Types } from 'mongoose';
 
 import { JobPostingModel } from 'db/models/jobPosting';
 import { JobApplicationModel } from 'db/models/jobApplication';
@@ -23,28 +22,43 @@ const getDateFromFilter = (filter: string): Date | null => {
 
 // GET /api/job/search
 export async function searchJobController(req: Request, res: Response) {
-  const { category, jobType, datePosted, expLevelRequired } = req.query;
+  const {
+    category,
+    jobType,
+    datePosted,
+    expLevelRequired,
+    title,
+    desc,
+    specialism,
+    qualificationsRequired,
+    qualificationsDesired,
+    startDate,
+    endDate,
+    startTime,
+    endTime,
+    benefits,
+    workingLanguage,
+    residence,
+    food,
+    transport,
+    posterId,
+  } = req.query;
 
   const filters: any = {};
 
+  // General helper for handling string or array fields
+  const handleStringOrArray = (field: any) =>
+    Array.isArray(field) ? { $in: field } : field;
+
   // Filter by category
-  if (category) {
-    filters.category = category;
-  }
+  if (category) filters.category = category;
 
-  // Filter by jobType (handle array or string)
-  if (jobType) {
-    const jobTypeFilter = Array.isArray(jobType) ? jobType : [jobType];
-    filters.jobType = { $in: jobTypeFilter };
-  }
+  // Filter by jobType
+  if (jobType) filters.jobType = handleStringOrArray(jobType);
 
-  // Filter by expLevelRequired (handle array or string)
-  if (expLevelRequired) {
-    const expLevelFilter = Array.isArray(expLevelRequired)
-      ? expLevelRequired
-      : [expLevelRequired];
-    filters.expLevelRequired = { $in: expLevelFilter };
-  }
+  // Filter by expLevelRequired
+  if (expLevelRequired)
+    filters.expLevelRequired = handleStringOrArray(expLevelRequired);
 
   // Filter by datePosted
   if (datePosted) {
@@ -63,10 +77,54 @@ export async function searchJobController(req: Request, res: Response) {
         );
 
     const dateThreshold = getDateFromFilter(longestDateFilter);
-    if (dateThreshold) {
-      filters.postedAt = { $gte: dateThreshold };
-    }
+    if (dateThreshold) filters.postedAt = { $gte: dateThreshold };
   }
+
+  // Filter by title (partial match)
+  if (title) filters.title = { $regex: title, $options: 'i' };
+
+  // Filter by description (partial match)
+  if (desc) filters.description = { $regex: desc, $options: 'i' };
+
+  // Filter by specialism
+  if (specialism) filters.specialism = specialism;
+
+  // Filter by qualificationsRequired
+  if (qualificationsRequired)
+    filters.qualificationsRequired = handleStringOrArray(
+      qualificationsRequired,
+    );
+
+  // Filter by qualificationsDesired
+  if (qualificationsDesired)
+    filters.qualificationsDesired = handleStringOrArray(qualificationsDesired);
+
+  // Filter by startDate and endDate
+  if (startDate) filters.startDate = { $gte: new Date(startDate as string) };
+  if (endDate) filters.endDate = { $lte: new Date(endDate as string) };
+
+  // Filter by startTime and endTime
+  if (startTime) filters.startTime = { $gte: new Date(startTime as string) };
+  if (endTime) filters.endTime = { $lte: new Date(endTime as string) };
+
+  // Filter by benefits
+  if (benefits) filters.benefits = handleStringOrArray(benefits);
+
+  // Filter by workingLanguage
+  if (workingLanguage)
+    filters.workingLanguage = handleStringOrArray(workingLanguage);
+
+  // Filter by residence
+  if (residence) filters.residence = handleStringOrArray(residence);
+
+  // Filter by food
+  if (food) filters.food = handleStringOrArray(food);
+
+  // Filter by transport
+  if (transport) filters.transport = handleStringOrArray(transport);
+
+  // Filter by posterId
+  if (posterId) filters.posterId = posterId;
 
   // Query the database
   const jobs = await JobPostingModel.find(filters).populate('poster');
