@@ -4,6 +4,8 @@ import { PropsWithChildren, useLayoutEffect, useRef } from "react";
 import { getAuthState, useAuthState } from "./auth-state";
 import { usePathname, useRouter } from "next/navigation";
 
+const isProtected = (route: string) => ["/login", "/register"].indexOf(route) === -1;
+
 export default function AuthGuard({ children }: PropsWithChildren) {
   const router = useRouter();
   const pathname = usePathname();
@@ -11,7 +13,7 @@ export default function AuthGuard({ children }: PropsWithChildren) {
 
   useLayoutEffect(() => {
     const { isLoggedIn } = getAuthState();
-    if (!isLoggedIn && pathname !== "/login") {
+    if (!isLoggedIn && isProtected(pathname)) {
       router.replace("/login");
     } else if ((isLoggedIn && pathname === "/login") || pathname === "/") {
       router.replace("/home");
