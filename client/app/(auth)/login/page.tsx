@@ -11,7 +11,7 @@ import { apiRoutes } from "~/app/api-routes";
 import { useAuthState } from "~/app/providers/auth-state";
 import { Button } from "~/components/Button/Button";
 
-import { AuthInput, PasswordInput } from "../common";
+import { AuthInput, Note, PasswordInput } from "../common";
 
 function LoginFormContent() {
   const [loading, setLoading] = useState(false);
@@ -48,6 +48,12 @@ function LoginFormContent() {
       <Button type="submit" fullWidth className="mt-6" loading={loading}>
         Login
       </Button>
+
+      <Note
+        label="Don't have an account?"
+        linkLabel="Sign up"
+        linkHref="/register"
+      />
     </form>
   );
 }

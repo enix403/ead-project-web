@@ -1,31 +1,21 @@
 "use client";
 
+import Image from "next/image";
+
+import Link from "next/link";
+import toast from "react-hot-toast";
+import { useEffect, useLayoutEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useForm, UseFormRegister } from "react-hook-form";
+
 import HeroImg from "~/app/assets/auth-hero.jpg";
 import GoogleIcon from "~/app/assets/google.svg";
 
-import Image from "next/image";
-
-import { useEffect, useLayoutEffect, useState } from "react";
 import { Button } from "~/components/Button/Button";
-import Link from "next/link";
-
-import { AuthInput, PasswordInput } from "../common";
-import { useForm, UseFormRegister } from "react-hook-form";
-import toast from "react-hot-toast";
 import { apiRoutes } from "~/app/api-routes";
 import { useAuthState } from "~/app/providers/auth-state";
-import { useRouter } from "next/navigation";
 
-function LoginNote() {
-  return (
-    <p className="mt-4 text-center text-black/60 font-medium">
-      Already have an account?{" "}
-      <Link href="#" className="text-teal underline hover:text-teal-dark tc">
-        Sign in
-      </Link>
-    </p>
-  );
-}
+import { AuthInput, Note, PasswordInput } from "../common";
 
 function CandidateForm({ register }: { register: UseFormRegister<any> }) {
   return (
@@ -182,7 +172,11 @@ function RegisterFormContent() {
           <GoogleIcon className="w-[18px]" />
         </Button> */}
 
-        <LoginNote />
+        <Note
+          label="Already have an account?"
+          linkLabel="Login"
+          linkHref="/login"
+        />
       </form>
     </>
   );

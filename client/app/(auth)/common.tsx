@@ -2,8 +2,9 @@ import { Input, IconButton } from "@material-tailwind/react";
 import { IconEye, IconEyeClosed } from "@tabler/icons-react";
 import { ComponentProps, forwardRef, useState } from "react";
 import { getAuthState } from "../providers/auth-state";
+import Link from "next/link";
 
-if (typeof window !== 'undefined') {
+if (typeof window !== "undefined") {
   (window as any).getAuthState = getAuthState;
 }
 
@@ -39,3 +40,22 @@ export const PasswordInput = forwardRef(
     );
   }
 );
+
+export function Note({
+  label,
+  linkLabel,
+  linkHref,
+}: {
+  label: string;
+  linkLabel: string;
+  linkHref: string;
+}) {
+  return (
+    <p className="mt-4 text-center text-black/60 font-medium">
+      {label}{" "}
+      <Link href={linkHref} className="text-teal underline hover:text-teal-dark tc">
+        {linkLabel}
+      </Link>
+    </p>
+  );
+}
