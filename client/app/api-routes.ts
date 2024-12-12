@@ -168,13 +168,26 @@ function uploadDecl<UrlT extends string | ((...args: any) => string)>(
 
 /* ------------------------ */
 
-function wq<Q = Record<string, any>>(template: TemplateStringsArray) {
+function wq<Q = string | Record<string, any> | URLSearchParams>(
+  template: TemplateStringsArray
+) {
   let url = template.join("");
   return (queryParams?: Q) => {
     let query = "";
+
     if (queryParams) {
-      query = "?" + new URLSearchParams(queryParams).toString();
+      if (typeof queryParams === "string") {
+        query = "?" + queryParams;
+      } else {
+        const urlSearchParams =
+          queryParams instanceof URLSearchParams
+            ? queryParams
+            : new URLSearchParams(queryParams);
+
+        query = "?" + urlSearchParams.toString();
+      }
     }
+
     return url + query;
   };
 }

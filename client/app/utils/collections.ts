@@ -14,7 +14,7 @@ export function mapToKey<T>(arr: T[], key: string) {
   return arr.map((x) => x[key]);
 }
 
-export function toQueryString(obj: any) {
+export function toParams(obj: any) {
   const params = new URLSearchParams();
 
   for (const key in obj) {
@@ -27,5 +27,5 @@ export function toQueryString(obj: any) {
     }
   }
 
-  return params.toString();
+  return params;
 }

@@ -1,20 +1,15 @@
 "use client";
 
 import { produce } from "immer";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Spinner } from "@material-tailwind/react";
 
 import { apiRoutes } from "~/app/api-routes";
 import { PostingCard } from "./PostingCard";
-import { toQueryString } from "~/app/utils/collections";
+import { toParams } from "~/app/utils/collections";
 
 export function HomePostings({ filters }: { filters: any }) {
-
-  useEffect(() => {
-    console.log(toQueryString(filters));
-  }, [filters]);
-
   const favsQuery = useQuery<any[] | null>({
     queryKey: ["getPostingFavourites"],
     queryFn: () => apiRoutes.getPostingFavourites(),
@@ -22,9 +17,15 @@ export function HomePostings({ filters }: { filters: any }) {
     placeholderData: null,
   });
 
+  // useEffect(() => {
+  //   console.log(toParams(filters));
+  // }, [filters]);
+
+  const filterQueryString = useMemo(() => toParams(filters).toString(), [filters]);
+
   const postingsQuery = useQuery<any[]>({
-    queryKey: ["searchJobs"],
-    queryFn: () => apiRoutes.searchJobs(),
+    queryKey: ["searchJobs", filterQueryString],
+    queryFn: () => apiRoutes.searchJobs(filterQueryString),
     initialData: [],
     placeholderData: [],
   });
