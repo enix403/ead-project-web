@@ -47,7 +47,7 @@ export function useRegisterConv() {
 
       setOptimList([newConversation, ...optimList]);
     },
-    [setOptimList]
+    [setOptimList, allList, optimList]
   );
 }
 
@@ -73,6 +73,6 @@ export function useFocusConv() {
       }
       setOptimList(optimList);
     },
-    [setOptimList]
+    [setOptimList, optimListPrev]
   );
 }
