@@ -200,6 +200,7 @@ export const apiRoutes = {
   /* ========== Auth ========== */
   /* ========================== */
   login: payloadDecl(`/api/auth/login`),
+  register: payloadDecl(`/api/auth/register`),
 
   /* ========================== */
   /* =========== Me =========== */

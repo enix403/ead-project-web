@@ -4,6 +4,8 @@ import Joi from 'joi';
 
 export const customJoi = {
   id: () => Joi.string().hex().length(24).required(),
+  optionalString: () => Joi.string().allow("").allow(null),
+  optionalDate: () => Joi.date().allow("").allow(null),
 };
 
 export function validateJoi(schema: Joi.ObjectSchema) {

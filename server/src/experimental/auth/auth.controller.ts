@@ -10,9 +10,22 @@ import { appEnv } from 'config/app-env';
 import { comparePassword, hashPassword } from './hashing';
 import { reply } from 'experimental/app-reply';
 import joi from 'joi';
-import { validateJoi } from 'middleware/validateJoi';
+import { customJoi, validateJoi } from 'middleware/validateJoi';
 
 export const router = express.Router();
+
+function createToken(user: any) {
+  return new Promise<string>((resolve, reject) =>
+    jwt.sign(
+      { uid: user._id.toString() } satisfies AccessTokenClaims,
+      appEnv.JWT_SIGNING_KEY || '',
+      (err: any, token: string) => {
+        if (err) reject(err);
+        else resolve(token);
+      },
+    ),
+  );
+}
 
 router.post(
   '/api/auth/login',
@@ -34,36 +47,11 @@ router.post(
       throw new ApplicationError('Invalid email or password', 401);
     }
 
-    let token = await new Promise<string>((resolve, reject) =>
-      jwt.sign(
-        { uid: user._id.toString() } satisfies AccessTokenClaims,
-        appEnv.JWT_SIGNING_KEY || '',
-        (err: any, token: string) => {
-          if (err) reject(err);
-          else resolve(token);
-        },
-      ),
-    );
+    let token = await createToken(user);
 
     return reply(res, { token, user });
   }),
 );
-
-
-/*
-
-email
-password / confirmPassword
-role
-fullName
-dateOfBirth
-
-companyPhone
-companyPersonName
-companyIndustry
-companyArea
-
-*/
 
 router.post(
   '/api/auth/register',
@@ -76,10 +64,10 @@ router.post(
       fullName: joi.string().required(),
       dateOfBirth: joi.date(),
 
-      companyPhone: joi.string(),
-      companyPersonName: joi.string(),
-      companyIndustry: joi.string(),
-      companyArea: joi.string(),
+      companyPhone: customJoi.optionalString(),
+      companyPersonName: customJoi.optionalString(),
+      companyIndustry: customJoi.optionalString(),
+      companyArea: customJoi.optionalString(),
     }),
   ),
   ah(async (req, res) => {
@@ -90,13 +78,16 @@ router.post(
 
     const passwordHash = await hashPassword(password);
 
-    await UserModel.create({
+    let user = new UserModel({
       ...restData,
       email,
       passwordHash,
       role,
     });
 
-    return reply(res, 'Registered');
+    user = await user.save();
+    const token = await createToken(user);
+
+    return reply(res, { token, user });
   }),
 );

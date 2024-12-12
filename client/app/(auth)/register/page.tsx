@@ -12,6 +12,8 @@ import Link from "next/link";
 import { AuthInput, PasswordInput } from "../common";
 import { useForm, UseFormRegister } from "react-hook-form";
 import toast from "react-hot-toast";
+import { apiRoutes } from "~/app/api-routes";
+import { useAuthState } from "~/app/providers/auth-state";
 
 function LoginNote() {
   return (
@@ -68,6 +70,8 @@ function RegisterFormContent() {
   const [loading, setLoading] = useState(false);
   const { register, handleSubmit, reset } = useForm<any>();
 
+  const authState = useAuthState();
+
   function handleRegister(values: any) {
     let { fullName, email, password, confirmPassword } = values;
 
@@ -91,6 +95,21 @@ function RegisterFormContent() {
     };
 
     delete payload["confirmPassword"];
+
+    if (!payload["dateOfBirth"]) {
+      delete payload["dateOfBirth"];
+    }
+
+    apiRoutes
+      .register(payload)
+      .then(({ token, user }) => {
+        console.log("Registered");
+        authState.login(token, user);
+      })
+      .catch(() => {
+        toast.error("Failed to register");
+        setLoading(false);
+      });
   }
 
   useEffect(() => {
@@ -132,11 +151,11 @@ function RegisterFormContent() {
           <EmployerForm register={register} />
         )}
 
-        <Button type="submit" fullWidth className="mt-6">
+        <Button type="submit" fullWidth className="mt-6" loading={loading}>
           Sign Up
         </Button>
 
-        <div className="flex items-center gap-x-2 my-4">
+        {/* <div className="flex items-center gap-x-2 my-4">
           <div className="h-0.5 w-full bg-gray-line" />
           <p className="font-medium text-gray-prose">or</p>
           <div className="h-0.5 w-full bg-gray-line" />
@@ -150,7 +169,7 @@ function RegisterFormContent() {
         >
           Continue with Google
           <GoogleIcon className="w-[18px]" />
-        </Button>
+        </Button> */}
 
         <LoginNote />
       </form>
