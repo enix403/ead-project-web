@@ -5,12 +5,13 @@ import GoogleIcon from "~/app/assets/google.svg";
 
 import Image from "next/image";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "~/components/Button/Button";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 import { AuthInput, PasswordInput } from "../common";
+import { useForm, UseFormRegister } from "react-hook-form";
 
 function LoginNote() {
   return (
@@ -23,53 +24,20 @@ function LoginNote() {
   );
 }
 
-function EmployerForm() {
-  const router = useRouter();
-
+function CandidateForm({ register }: { register: UseFormRegister<any> }) {
   return (
     <>
+      {/* prettier-ignore */}
       <div className="space-y-4">
-        <AuthInput label="Company Name" />
-        <AuthInput label="Company Address" />
-        <AuthInput label="Contact Person Name" />
-        <AuthInput label="Contact Email" />
-        <AuthInput label="Contact Phone Number" />
-        <AuthInput label="Contact Phone Number" />
-        <AuthInput label="Industry" />
-        <PasswordInput label="Password" />
-        <PasswordInput label="Confirm Password" />
+        <AuthInput {...register("fullName")} label="Your Name" />
+        <AuthInput {...register("dateOfBirth")} label="Date Of Birth" type="date" />
+
+        <AuthInput {...register("email")} label="Email" />
+        <PasswordInput {...register("password")} label="Password" />
+        <PasswordInput {...register("confirmPassword")} label="Confirm Password" />
       </div>
 
-      <Button
-        fullWidth
-        className="mt-6"
-        onClick={() => router.push("/")}
-      >
-        Sign Up
-      </Button>
-      <LoginNote />
-    </>
-  );
-}
-
-function CandidateForm() {
-  const router = useRouter();
-
-  return (
-    <>
-      <div className="space-y-4">
-        <AuthInput label="Your Name" />
-        <AuthInput label="Date Of Birth" type="date" />
-        <AuthInput label="Email" />
-        <PasswordInput label="Password" />
-        <PasswordInput label="Confirm Password" />
-      </div>
-
-      <Button
-        fullWidth
-        className="mt-6"
-        onClick={() => router.push("/proposal")}
-      >
+      <Button type="submit" fullWidth className="mt-6">
         Sign Up
       </Button>
 
@@ -79,9 +47,34 @@ function CandidateForm() {
         <div className="h-0.5 w-full bg-gray-line" />
       </div>
 
-      <Button fullWidth variant="light" className="gap-x-2 mb-4">
+      <Button type="button" fullWidth variant="light" className="gap-x-2 mb-4">
         Continue with Google
         <GoogleIcon className="w-[18px]" />
+      </Button>
+
+      <LoginNote />
+    </>
+  );
+}
+
+function EmployerForm({ register }: { register: UseFormRegister<any> }) {
+  return (
+    <>
+      {/* prettier-ignore */}
+      <div className="space-y-4">
+        <AuthInput {...register("fullName")} label="Company Name" />
+        <AuthInput {...register("companyPhone")} label="Company Phone Number" />
+        <AuthInput {...register("companyPersonName")} label="Company Person Name" />
+        <AuthInput {...register("companyIndustry")} label="Company Industry" />
+        <AuthInput {...register("companyArea")} label="Company Address" />
+
+        <AuthInput {...register("email")} label="Email" />
+        <PasswordInput {...register("password")} label="Password" />
+        <PasswordInput {...register("confirmPassword")} label="Confirm Password" />
+      </div>
+
+      <Button fullWidth className="mt-6">
+        Sign Up
       </Button>
 
       <LoginNote />
@@ -92,10 +85,20 @@ function CandidateForm() {
 function RegisterFormContent() {
   type FormMode = "candidate" | "employer";
   const [currentMode, setCurrentMode] = useState<FormMode>("candidate");
+  const getButtonVariant = (mode: FormMode) =>
+    mode === currentMode ? "filled" : "outlined";
 
-  function getButtonVariant(mode: FormMode) {
-    return mode === currentMode ? "filled" : "outlined";
+  const [loading, setLoading] = useState(false);
+  const { register, handleSubmit, reset } = useForm<any>();
+
+  function handleRegister(values: any) {
+    console.log(values);
+    // TODO: fill role
   }
+
+  useEffect(() => {
+    reset();
+  }, [reset, currentMode]);
 
   return (
     <>
@@ -106,24 +109,32 @@ function RegisterFormContent() {
         Sign up to enjoy the feature of Seasonistas
       </p>
 
-      <div className="flex max-md:mx-auto gap-x-4 max-w-[22rem] md:max-w-[30rem] mt-5 mb-8">
-        <Button
-          className="flex-1"
-          variant={getButtonVariant("candidate")}
-          onClick={() => setCurrentMode("candidate")}
-        >
-          Candidate
-        </Button>
-        <Button
-          className="flex-1"
-          variant={getButtonVariant("employer")}
-          onClick={() => setCurrentMode("employer")}
-        >
-          Employer
-        </Button>
-      </div>
+      <form onSubmit={handleSubmit(handleRegister)}>
+        <div className="flex max-md:mx-auto gap-x-4 max-w-[22rem] md:max-w-[30rem] mt-5 mb-8">
+          <Button
+            type="button"
+            className="flex-1"
+            variant={getButtonVariant("candidate")}
+            onClick={() => setCurrentMode("candidate")}
+          >
+            Candidate
+          </Button>
+          <Button
+            type="button"
+            className="flex-1"
+            variant={getButtonVariant("employer")}
+            onClick={() => setCurrentMode("employer")}
+          >
+            Employer
+          </Button>
+        </div>
 
-      {currentMode === "candidate" ? <CandidateForm /> : <EmployerForm />}
+        {currentMode === "candidate" ? (
+          <CandidateForm register={register} />
+        ) : (
+          <EmployerForm register={register} />
+        )}
+      </form>
     </>
   );
 }

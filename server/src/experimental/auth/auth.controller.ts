@@ -57,6 +57,7 @@ router.post(
       password: joi.string().required(),
       role: joi.string().valid('employer', 'employee').required(),
       fullName: joi.string().required(),
+      dateOfBirth: joi.date(),
     }),
   ),
   ah(async (req, res) => {

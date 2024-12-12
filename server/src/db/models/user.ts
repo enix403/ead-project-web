@@ -31,6 +31,7 @@ export interface IUser extends Document<Types.ObjectId> {
   gender: 'male' | 'female' | 'notSpecified';
   profilePictureUrl?: string;
   bio?: string;
+  dateOfBirth?: Date;
   addressCountry?: string;
   addressCity?: string;
   addressArea?: string;
@@ -39,13 +40,14 @@ export interface IUser extends Document<Types.ObjectId> {
   experiences: IExperience[];
   skills: string[];
 
-  companyName?: string;
   companyPhone?: string;
+  companyPersonName?: string;
+  companyIndustry?: string;
+
   companyCountry?: string;
   companyCity?: string;
   companyArea?: string;
   companyZip?: string;
-  companyIndustry?: string;
 
   isBanned: boolean;
 }
@@ -68,6 +70,7 @@ const userSchema = new Schema<IUser>(
     },
     profilePictureUrl: String,
     bio: String,
+    dateOfBirth: Date,
     addressCountry: String,
     addressCity: String,
     addressArea: String,
@@ -76,13 +79,14 @@ const userSchema = new Schema<IUser>(
     experiences: { type: [experienceSchema], default: [] },
     skills: { type: [String], default: [] },
 
-    companyName: String,
     companyPhone: String,
+    companyPersonName: String,
+    companyIndustry: String,
+
     companyCountry: String,
     companyCity: String,
     companyArea: String,
     companyZip: String,
-    companyIndustry: String,
 
     isBanned: { type: Boolean, default: false },
   },
