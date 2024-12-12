@@ -1,7 +1,7 @@
 import express from 'express';
 import ah from 'express-async-handler';
 
-import { reply } from 'experimental/app-reply';
+import { reply } from 'controllers/core/app-reply';
 import { requireAuthenticated } from 'middleware/authMiddleware';
 import { UserModel } from 'db/models/user';
 import { FriendshipModel } from 'db/models/friendship';

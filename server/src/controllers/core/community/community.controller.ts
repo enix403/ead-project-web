@@ -4,9 +4,9 @@ import joi from 'joi';
 
 import { UserModel } from 'db/models/user';
 import { validateJoi } from 'middleware/validateJoi';
-import { reply } from 'experimental/app-reply';
+import { reply } from 'controllers/core/app-reply';
 import { requireAuthenticated } from 'middleware/authMiddleware';
-import { ApplicationError, NotFound } from 'experimental/errors';
+import { ApplicationError, NotFound } from 'controllers/core/errors';
 import { FriendshipModel } from 'db/models/friendship';
 
 export const router = express.Router();

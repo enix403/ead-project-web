@@ -1,6 +1,6 @@
 import express from 'express';
 import ah from 'express-async-handler';
-import { ApplicationError } from 'experimental/errors';
+import { ApplicationError } from 'controllers/core/errors';
 
 import { UserModel } from 'db/models/user';
 import { AccessTokenClaims } from 'middleware/AccessTokenClaims';
@@ -8,7 +8,7 @@ import jwt from 'jsonwebtoken';
 import { appEnv } from 'config/app-env';
 
 import { comparePassword, hashPassword } from './hashing';
-import { reply } from 'experimental/app-reply';
+import { reply } from 'controllers/core/app-reply';
 import joi from 'joi';
 import { customJoi, validateJoi } from 'middleware/validateJoi';
 

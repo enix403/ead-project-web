@@ -9,10 +9,10 @@ import { connect as connectMongoDB } from 'db/connect';
 import { cyan, green, red, yellow } from 'colorette';
 import { appEnv } from 'config/app-env';
 import { createRootRouter } from 'routes';
-import { ApplicationError } from 'experimental/errors';
+import { ApplicationError } from 'controllers/core/errors';
 
-import { handleChatConnection } from 'experimental/chat/chat.socket';
-import { createSocketServer } from 'experimental/socket-server';;
+import { handleChatConnection } from 'controllers/core/chat/chat.socket';
+import { createSocketServer } from 'controllers/core/socket-server';;
 
 function createApp() {
   const app = express();

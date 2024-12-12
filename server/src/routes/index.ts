@@ -4,13 +4,13 @@ import { router as userRouter } from './userRoutes';
 import { router as jobRouter } from './jobRoutes';
 import { router as statRouter } from './statRoutes';
 
-import { router as authRouter } from 'experimental/auth/auth.controller';
-import { router as healthRouter } from 'experimental/health.controller';
-import { router as communityRouter } from 'experimental/community/community.controller';
-import { router as meRouter } from 'experimental/me/me.controller';
-import { router as postingRouter } from 'experimental/posting/posting.controller';
-import { router as uploadingRouter } from 'experimental/uploading/uploading.controller';
-import { router as chatRouter } from 'experimental/chat/chat.controller';
+import { router as authRouter } from 'controllers/core/auth/auth.controller';
+import { router as healthRouter } from 'controllers/core/health.controller';
+import { router as communityRouter } from 'controllers/core/community/community.controller';
+import { router as meRouter } from 'controllers/core/me/me.controller';
+import { router as postingRouter } from 'controllers/core/posting/posting.controller';
+import { router as uploadingRouter } from 'controllers/core/uploading/uploading.controller';
+import { router as chatRouter } from 'controllers/core/chat/chat.controller';
 
 export function createRootRouter() {
   const router = express.Router();

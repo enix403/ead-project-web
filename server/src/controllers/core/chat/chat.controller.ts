@@ -4,7 +4,7 @@ import Joi from 'joi';
 
 import { ChatMessageModel, ConversationModel } from 'db/models/chat';
 import { customJoi, validateJoi } from 'middleware/validateJoi';
-import { reply } from 'experimental/app-reply';
+import { reply } from 'controllers/core/app-reply';
 import { requireAuthenticated } from 'middleware/authMiddleware';
 import { Types } from 'mongoose';
 

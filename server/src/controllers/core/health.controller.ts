@@ -1,6 +1,6 @@
 import express from 'express';
 import ah from 'express-async-handler';
-import { reply } from 'experimental/app-reply';
+import { reply } from 'controllers/core/app-reply';
 import { JobApplicationModel } from 'db/models/jobApplication';
 import { JobInvitationModel } from 'db/models/jobInvitation';
 import { ChatMessageModel, ConversationModel } from 'db/models/chat';
