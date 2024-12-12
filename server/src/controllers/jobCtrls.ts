@@ -6,18 +6,73 @@ import { JobApplicationModel } from 'db/models/jobApplication';
 import { ApplicationError, NotFound } from 'experimental/errors';
 import { reply } from 'experimental/app-reply';
 
-// GET /api/job/search'
+const getDateFromFilter = (filter: string): Date | null => {
+  const now = new Date();
+  switch (filter) {
+    case 'lastHour':
+      return new Date(now.getTime() - 60 * 60 * 1000); // 1 hour ago
+    case 'last24Hours':
+      return new Date(now.getTime() - 24 * 60 * 60 * 1000); // 24 hours ago
+    case 'last7Days':
+      return new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000); // 7 days ago
+    case 'all':
+    default:
+      return null;
+  }
+};
+
+// GET /api/job/search
 export async function searchJobController(req: Request, res: Response) {
-  const { title, location, jobType } = req.query;
+  const { category, jobType, datePosted, expLevelRequired } = req.query;
 
-  // Build filter query based on search parameters
-  const filter: any = {};
-  if (title) filter.title = new RegExp(title as string, 'i');
-  if (location) filter.location = new RegExp(location as string, 'i');
-  if (jobType) filter.jobType = jobType;
+  const filters: any = {};
 
-  const jobs = await JobPostingModel.find(filter).populate('poster');
-  res.json(jobs);
+  // Filter by category
+  if (category) {
+    filters.category = category;
+  }
+
+  // Filter by jobType (handle array or string)
+  if (jobType) {
+    const jobTypeFilter = Array.isArray(jobType) ? jobType : [jobType];
+    filters.jobType = { $in: jobTypeFilter };
+  }
+
+  // Filter by expLevelRequired (handle array or string)
+  if (expLevelRequired) {
+    const expLevelFilter = Array.isArray(expLevelRequired)
+      ? expLevelRequired
+      : [expLevelRequired];
+    filters.expLevelRequired = { $in: expLevelFilter };
+  }
+
+  // Filter by datePosted
+  if (datePosted) {
+    const dateFilters = (
+      Array.isArray(datePosted) ? datePosted : [datePosted]
+    ).map((x) => x.toString());
+
+    const longestDateFilter = dateFilters.includes('all')
+      ? 'all'
+      : dateFilters.reduce((prev, curr) =>
+          getDateFromFilter(prev) && getDateFromFilter(curr)
+            ? getDateFromFilter(prev)! < getDateFromFilter(curr)!
+              ? prev
+              : curr
+            : prev,
+        );
+
+    const dateThreshold = getDateFromFilter(longestDateFilter);
+    if (dateThreshold) {
+      filters.postedAt = { $gte: dateThreshold };
+    }
+  }
+
+  // Query the database
+  const jobs = await JobPostingModel.find(filters).populate('poster');
+
+  // Return the filtered results
+  return reply(res, jobs);
 }
 
 /* ----------------------------------- */
@@ -47,7 +102,11 @@ export async function applyJobController(req: Request, res: Response) {
   });
 
   if (existingAppl) {
-    throw new ApplicationError('Already applied to this job', 400, "already_applied");
+    throw new ApplicationError(
+      'Already applied to this job',
+      400,
+      'already_applied',
+    );
   }
 
   // Create the application with the job poster's ID

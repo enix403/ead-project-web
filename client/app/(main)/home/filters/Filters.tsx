@@ -209,15 +209,15 @@ export function Filters({
                 <div className="space-y-2.5">
                   <SwitchOption
                     {...register("jobType.fullTime")}
-                    label="Freelancer"
-                  />
-                  <SwitchOption
-                    {...register("jobType.partTime")}
                     label="Full Time"
                   />
                   <SwitchOption
-                    {...register("jobType.internship")}
+                    {...register("jobType.partTime")}
                     label="Part Time"
+                  />
+                  <SwitchOption
+                    {...register("jobType.internship")}
+                    label="internship"
                   />
                   <SwitchOption
                     {...register("jobType.specificDates")}

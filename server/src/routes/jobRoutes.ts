@@ -23,46 +23,8 @@ import {
 
 export const router = express.Router();
 
-const jobSearchSchema = Joi.object({
-  title: Joi.string().optional(),
-  location: Joi.string().optional(),
-  jobType: Joi.string()
-    .valid('fullTime', 'partTime', 'internship', 'specificDates')
-    .optional(),
-});
-
-/**
- * @swagger
- * /api/job/search:
- *   get:
- *     summary: Search for job postings
- *     description: Allows searching for job postings with optional filters.
- *     parameters:
- *       - in: query
- *         name: title
- *         schema:
- *           type: string
- *         description: Filter by job title.
- *       - in: query
- *         name: location
- *         schema:
- *           type: string
- *         description: Filter by job location.
- *       - in: query
- *         name: jobType
- *         schema:
- *           type: string
- *           enum: [fullTime, partTime, internship, specificDates]
- *         description: Filter by job type.
- *     responses:
- *       200:
- *         description: List of jobs matching the filters.
- *       400:
- *         description: Invalid request parameters.
- */
 router.get(
   '/api/job/search',
-  validateJoi(jobSearchSchema),
   searchJobController,
 );
 
