@@ -164,7 +164,7 @@ export default function HomeProposalsPage() {
         </div>
 
         <div className="mt-4 grid wl:grid-cols-2 gap-6">
-          {viewMode === "employer" ? <HomeProfiles /> : <HomePostings />}
+          {viewMode === "employer" ? <HomeProfiles /> : <HomePostings filters={filters} />}
         </div>
         <Button variant="outlined" className="mx-auto mt-8 mb-4" fullRounded>
           Load More
