@@ -135,9 +135,8 @@ function SearchControls({
         <div className="flex items-center gap-x-2.5">
           Sort:
           <Select selectProps={register("sort")}>
-            <option value="bestMatch">Best Match</option>
-            <option value="popularity">Popularity</option>
             <option value="datePosted">Date Posted</option>
+            <option value="popularity">Popularity</option>
           </Select>
         </div>
       </div>

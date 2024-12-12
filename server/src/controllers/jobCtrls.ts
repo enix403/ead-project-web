@@ -126,11 +126,24 @@ export async function searchJobController(req: Request, res: Response) {
   // Filter by posterId
   if (posterId) filters.posterId = posterId;
 
-  // Query the database
-  const jobs = await JobPostingModel.find(filters).populate('poster');
+  /* -------- */
 
-  // Return the filtered results
-  return reply(res, jobs);
+  // Sorting
+  let sort: any = {};
+  const sortBy = req.query.sort;
+  if (sortBy === 'popularity') {
+    // Sort by ID (descending) as a placeholder for popularity
+    sort = { _id: -1 };
+  } else if (sortBy === 'datePosted') {
+    // Sort by datePosted (recent first)
+    sort = { postedAt: -1 };
+  }
+
+  const postings = await JobPostingModel.find(filters)
+    .sort(sort)
+    .populate('poster');
+
+  return reply(res, postings);
 }
 
 /* ----------------------------------- */
