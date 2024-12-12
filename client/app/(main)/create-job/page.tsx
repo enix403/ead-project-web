@@ -203,8 +203,7 @@ export default function CreateJobPage() {
     QuestionsStep,
   ];
 
-  // let StepComponent = steps[pageIndex];
-  let StepComponent = steps[2];
+  let StepComponent = steps[pageIndex];
 
   let progressView = (
     <Stepper
@@ -246,4 +245,4 @@ export default function CreateJobPage() {
   );
 }
 
-export const isDev = !!process && process.env.NODE_ENV === "development";
+const isDev = !!process && process.env.NODE_ENV === "development";
