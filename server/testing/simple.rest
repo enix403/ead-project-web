@@ -35,7 +35,7 @@ POST {{baseUrl}}/auth/register
 POST {{baseUrl}}/auth/login
 
 {
-  "email": "user2@gmail.com",
+  "email": "employee2@gmail.com",
   "password": "pass"
 }
 
@@ -65,7 +65,7 @@ POST {{baseUrl}}/chat/resume-conv-single
 Authorization: Bearer {{accessToken}}
 
 {
-  "receiverId": "{{user2}}"
+  "receiverId": "675586fdcbfc42693c7971c1"
 }
 
 # ==================================

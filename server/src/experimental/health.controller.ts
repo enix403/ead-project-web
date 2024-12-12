@@ -20,8 +20,8 @@ router.get(
 router.post(
   '/api/temp',
   ah(async (req, res) => {
-    await JobApplicationModel.deleteMany({});
-    await JobInvitationModel.deleteMany({});
+    // await JobApplicationModel.deleteMany({});
+    // await JobInvitationModel.deleteMany({});
     await ConversationModel.deleteMany({});
     await ChatMessageModel.deleteMany({});
 

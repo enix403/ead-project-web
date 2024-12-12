@@ -6,6 +6,7 @@ import { ChatMessageModel, ConversationModel } from 'db/models/chat';
 import { customJoi, validateJoi } from 'middleware/validateJoi';
 import { reply } from 'experimental/app-reply';
 import { requireAuthenticated } from 'middleware/authMiddleware';
+import { Types } from 'mongoose';
 
 export const router = express.Router();
 
@@ -37,34 +38,42 @@ router.post(
     const userId = req.user!._id;
     const { receiverId } = req.body;
 
-    let conversation = await ConversationModel.findOne({
-      kind: 'single',
-      participants: { $all: [userId, receiverId] },
-    });
+    // const insertParticipants = [userId, receiverId].sort();
 
-    let fresh = false;
-
-    if (!conversation) {
-      fresh = true;
-
-      conversation = new ConversationModel({
+    // ====
+    const conversation = await ConversationModel.findOneAndUpdate(
+      {
         kind: 'single',
-        participants: [userId, receiverId],
-        creatorId: userId,
-      });
-
-      conversation = await conversation.save();
-    }
+        participants: {
+          $all: [
+            { $elemMatch: { $eq: new Types.ObjectId(userId) } },
+            { $elemMatch: { $eq: new Types.ObjectId(receiverId as string) } },
+          ],
+        }, // Match condition
+      },
+      {
+        $setOnInsert: {
+          kind: 'single',
+          participants: [userId, receiverId].sort(), // Ensure consistent order
+          creatorId: userId,
+        },
+      },
+      {
+        new: true, // Return the updated or newly created document
+        upsert: true, // Create the document if it doesn't exist
+      },
+    );
 
     await conversation.populate({ path: 'participants' });
     const conversationId = conversation._id;
+
+    // ====
 
     const messages = await ChatMessageModel.find({
       conversationId,
     }).sort({ sentAt: 1 });
 
     return reply(res, {
-      fresh,
       conversation,
       messages,
     });
