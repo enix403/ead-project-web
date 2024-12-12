@@ -16,20 +16,19 @@ import {
   useState,
   Children,
   ReactNode,
-  useEffect,
-  useCallback,
 } from "react";
 
 import { RichInput } from "~/components/Input/Input";
 import { Button } from "~/components/Button/Button";
 import { Select } from "~/components/Select/Select";
 
+// app/(main)/create-job/steps/GeneralInfoStep.tsx
+import allJobs from "../../create-job/jobs.json";
+
 import { SwitchOption } from "./SwitchOption";
 import { RangeSlider } from "./RangeSlider";
 import { useViewMode } from "~/app/providers/auth-state";
-import { useForm } from "react-hook-form";
-import { useDebounceCallback } from "usehooks-ts";
-import { FilterController, useFilterController } from "./ctrl";
+import { FilterController } from "./ctrl";
 
 type FilterProps = PropsWithChildren & { label: string };
 
@@ -106,7 +105,7 @@ function FilterList({
 
 export function Filters({
   className,
-  filterCtrl
+  filterCtrl,
 }: {
   className?: string;
   filterCtrl: FilterController;
@@ -142,9 +141,11 @@ export function Filters({
               icon={<IconBriefcase2 size={17} />}
             >
               <option value="">Choose a category</option>
-              <option>one</option>
-              <option>two</option>
-              <option>three</option>
+              {allJobs.map((job, index) => (
+                <option value={allJobs[index].category} key={index}>
+                  {job.category}
+                </option>
+              ))}
             </Select>
           </Filter>
           <Filter label="Job Type">
