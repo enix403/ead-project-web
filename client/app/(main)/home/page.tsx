@@ -145,10 +145,6 @@ export default function HomeProposalsPage() {
   const viewMode = useViewMode();
   const [filters, setFilters] = useState<any>({});
 
-  useEffect(() => {
-    console.log(filters);
-  }, [filters]);
-
   return (
     <AppLayout pageTitle="Proposals">
       <div className="app-container py-8 w-full">

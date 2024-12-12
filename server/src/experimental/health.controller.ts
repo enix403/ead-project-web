@@ -12,6 +12,7 @@ router.get(
   ah(async (req, res) => {
     return reply(res, {
       live: true,
+      query: req.query
     });
   }),
 );

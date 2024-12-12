@@ -7,8 +7,14 @@ import { Spinner } from "@material-tailwind/react";
 
 import { apiRoutes } from "~/app/api-routes";
 import { PostingCard } from "./PostingCard";
+import { toQueryString } from "~/app/utils/collections";
 
 export function HomePostings({ filters }: { filters: any }) {
+
+  useEffect(() => {
+    console.log(toQueryString(filters));
+  }, [filters]);
+
   const favsQuery = useQuery<any[] | null>({
     queryKey: ["getPostingFavourites"],
     queryFn: () => apiRoutes.getPostingFavourites(),
