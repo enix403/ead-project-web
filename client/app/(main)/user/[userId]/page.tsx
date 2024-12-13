@@ -26,6 +26,7 @@ import { reportedCall } from "~/app/utils/promises";
 export default function UserProfile() {
   const { userId } = useParams<{ userId: string }>();
 
+  // TODO: replace with useCurrentUser(userId);
   const [status, setStatus] = useState<"ok" | "loading" | "error">("loading");
   const [user, setUser] = useState<any>(null);
 

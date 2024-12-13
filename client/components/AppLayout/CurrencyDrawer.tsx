@@ -56,7 +56,6 @@ export function CurrencyDrawer() {
           </Typography>
           <Select>
             <option>EUR</option>
-            <option>USD</option>
           </Select>
           <Button onClick={close}>Confirm</Button>
         </div>

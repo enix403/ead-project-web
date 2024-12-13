@@ -28,18 +28,29 @@ import { AllLinks } from "../AllLinks";
 import { languageDrawerAtom } from "../AppLayout/LanguageDrawer";
 import { currencyDrawerAtom } from "../AppLayout/CurrencyDrawer";
 import { useAuthState } from "~/app/providers/auth-state";
+import { usePathname, useRouter } from "next/navigation";
+import { useCurrentUser } from "~/app/hooks/useCurrentUser";
+import { useEffect } from "react";
 
 export interface TopNavProps {
   pageTitle?: string;
 }
 
+function capitalize(str: string | undefined) {
+  return str ? str.charAt(0).toUpperCase() + str.slice(1) : str;
+}
+
 const drawerAtom = atom(false);
 
 function Contents({ pageTitle }: TopNavProps) {
+  const router = useRouter();
   const setDrawerOpen = useSetAtom(drawerAtom);
   const setLanguageDrawerOpen = useSetAtom(languageDrawerAtom);
   const setCurrencyDrawerOpen = useSetAtom(currencyDrawerAtom);
-  const { logout } = useAuthState();
+
+  const { userId, userRole, logout } = useAuthState();
+  // TODO: store user name in store
+  const { user } = useCurrentUser(userId);
 
   let loggedIn = true;
 
@@ -70,7 +81,13 @@ function Contents({ pageTitle }: TopNavProps) {
                   </button>
                 </MenuHandler>
                 <MenuList>
-                  <MenuItem onClick={() => logout()}>Logout</MenuItem>
+                  <div className="px-4 pt-2 pb-4 text-center space-y-2">
+                    <h1 className="text-lg text-black">{user?.fullName}</h1>
+                    <h2 className="text-sm text-gray-line-3/80 font-bold">
+                      {capitalize(user?.role)}
+                    </h2>
+                  </div>
+                  {/* ======= */}
                   <MenuItem
                     onClick={() => setLanguageDrawerOpen(true)}
                     className="flex justify-between items-center"
@@ -86,6 +103,15 @@ function Contents({ pageTitle }: TopNavProps) {
                     <span className="text-xs font-bold">EUR</span>
                   </MenuItem>
                   <MenuItem>Add card</MenuItem>
+                  <MenuItem
+                    onClick={() => {
+                      logout();
+                      router.push("/login");
+                    }}
+                  >
+                    Logout
+                  </MenuItem>
+                  {/* ======= */}
                 </MenuList>
               </Menu>
             </>
@@ -129,12 +155,13 @@ function Contents({ pageTitle }: TopNavProps) {
   );
 }
 
-export function MobileDrawer({
-  loggedIn,
-}: {
-  loggedIn: boolean;
-}) {
+export function MobileDrawer({ loggedIn }: { loggedIn: boolean }) {
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useAtom(drawerAtom);
+
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname, setIsOpen]);
 
   return (
     <>
@@ -145,7 +172,7 @@ export function MobileDrawer({
         overlayOpacity={0.6}
         duration={200}
         lockBackgroundScroll
-        className="!w-[85vw] ph:!w-[300px] p-4"
+        className="!w-[65vw] ph:!w-[300px] p-4"
       >
         <div className="flex justify-between items-center">
           <Image alt="" src={Logo} className="h-7 w-auto lg:h-10" />
@@ -158,7 +185,7 @@ export function MobileDrawer({
           </IconButton>
         </div>
 
-        <div className="flex flex-col gap-y-3 mt-8 hover:[&>a]:underline">
+        <div className="flex flex-col gap-y-3 mt-8 hover:[&>a]:underline text-xl">
           <AllLinks />
         </div>
 
