@@ -26,7 +26,7 @@ export function ContactsListWindow() {
   return (
     <div
       className={clsx(
-        "overflow-y-auto max-h-[80vh] w-1/4 min-w-[16rem]",
+        "overflow-y-auto max-h-[500px] md:max-h-[80vh] md:w-1/4 min-w-[16rem]",
         "bg-white border-r border-gray-300",
         "p-3 pb-20"
       )}
@@ -34,7 +34,26 @@ export function ContactsListWindow() {
       <h1 className="text-2xl font-bold ml-2 mt-2 mb-4">Chats</h1>
       {/* {repeatNode(6, (index) => ( */}
       {conversations.map((conv) => (
-        <Conversation key={conv["_id"]} conversation={conv} />
+        <>
+          <Conversation key={conv["_id"]} conversation={conv} />
+          <Conversation key={conv["_id"]} conversation={conv} />
+          <Conversation key={conv["_id"]} conversation={conv} />
+          <Conversation key={conv["_id"]} conversation={conv} />
+          <Conversation key={conv["_id"]} conversation={conv} />
+          <Conversation key={conv["_id"]} conversation={conv} />
+          <Conversation key={conv["_id"]} conversation={conv} />
+          <Conversation key={conv["_id"]} conversation={conv} />
+          <Conversation key={conv["_id"]} conversation={conv} />
+          <Conversation key={conv["_id"]} conversation={conv} />
+          <Conversation key={conv["_id"]} conversation={conv} />
+          <Conversation key={conv["_id"]} conversation={conv} />
+          <Conversation key={conv["_id"]} conversation={conv} />
+          <Conversation key={conv["_id"]} conversation={conv} />
+          <Conversation key={conv["_id"]} conversation={conv} />
+          <Conversation key={conv["_id"]} conversation={conv} />
+          <Conversation key={conv["_id"]} conversation={conv} />
+          <Conversation key={conv["_id"]} conversation={conv} />
+        </>
       ))}
     </div>
   );
@@ -73,7 +92,7 @@ function Conversation({ conversation }: { conversation: any }) {
       </Badge>
       <div className="flex-1 ml-3">
         <h2 className="text-lg font-semibold">{receiver.fullName}</h2>
-        <p className="text-gray-600">
+        <p className="text-gray-600 max-w-[100px] overflow-hidden text-ellipsis">
           {/* Let's catch up soon. It's been too long! */}
           {conversation["lastMessage"]}
         </p>
