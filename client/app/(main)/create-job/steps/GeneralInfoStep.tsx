@@ -111,7 +111,7 @@ export function GeneralInfoStep({
           <div className="pt-6">
             <div className="flex gap-x-3">
               <Button onClick={onCancel} variant="outlined" fullRounded>
-                Cancel
+                Back
               </Button>
               <Button type="submit" fullRounded>
                 Next

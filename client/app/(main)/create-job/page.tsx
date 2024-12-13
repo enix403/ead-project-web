@@ -15,6 +15,7 @@ import { CompanyInfoStep } from "./steps/CompanyInfoStep";
 import { QuestionsStep } from "./steps/QuestionsStep";
 import { apiRoutes } from "~/app/api-routes";
 import { Button } from "~/components/Button/Button";
+import { isDev } from "~/app/utils/misc";
 
 function useSelectionController() {
   const groupIdToStates = useRef<Record<string, Record<string, boolean>>>(
@@ -92,7 +93,7 @@ export default function CreateJobPage() {
   const router = useRouter();
 
   let [pageIndex, setPageIndex] = useState(0);
-  const { register, getValues } = useForm<any>();
+  const { register, watch, reset, getValues } = useForm<any>();
 
   if (typeof window !== "undefined") {
     // @ts-ignore
@@ -210,6 +211,10 @@ export default function CreateJobPage() {
 
   let StepComponent = steps[pageIndex];
 
+  if (isDev) {
+    StepComponent = CompanyInfoStep;
+  }
+
   let progressView = (
     <Stepper
       activeLineClassName="bg-teal"
@@ -238,6 +243,8 @@ export default function CreateJobPage() {
             onCancel={onCancel}
             progressView={progressView}
             register={register}
+            watch={watch}
+            reset={reset}
             selCtrl={selCtrl}
             qsBank={qsBank}
           />
