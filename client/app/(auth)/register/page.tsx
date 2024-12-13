@@ -107,8 +107,8 @@ function RegisterFormContent() {
         console.log("Registered");
         authState.login(token, user);
       })
-      .catch(() => {
-        toast.error("Failed to register");
+      .catch((err) => {
+        toast.error(err.errorMessage);
         setLoading(false);
       });
   }
