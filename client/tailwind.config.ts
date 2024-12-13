@@ -31,6 +31,7 @@ let config = {
   theme: {
     fontFamily: {
       sans: ["Urbanist", "sans-serif"],
+      body: ["Urbanist", "sans-serif"],
     },
     extend: {
       colors: {

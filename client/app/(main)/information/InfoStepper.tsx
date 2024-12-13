@@ -187,19 +187,29 @@ function InfoStep4() {
 
 export function InfoStepper() {
   return (
-    <Tabs value="A" className="mb-6">
-      <TabsHeader>
-        <Tab value="A">Rights and Responsibilities</Tab>
-        <Tab value="B">Personnel Management</Tab>
-        <Tab value="C">Education and Career</Tab>
-        <Tab value="D">Information and Networking</Tab>
-      </TabsHeader>
-      <TabsBody  className="[&_*]:text-black">
-        <TabPanel value="A"><InfoStep1 /></TabPanel>
-        <TabPanel value="B"><InfoStep2 /></TabPanel>
-        <TabPanel value="C"><InfoStep3 /></TabPanel>
-        <TabPanel value="D"><InfoStep4 /></TabPanel>
-      </TabsBody>
-    </Tabs>
+    <>
+      <Tabs value="A" className="mb-6">
+        <TabsHeader>
+          <Tab value="A">Rights and Responsibilities</Tab>
+          <Tab value="B">Personnel Management</Tab>
+          <Tab value="C">Education and Career</Tab>
+          <Tab value="D">Information and Networking</Tab>
+        </TabsHeader>
+        <TabsBody className="[&_*]:text-black">
+          <TabPanel value="A">
+            <InfoStep1 />
+          </TabPanel>
+          <TabPanel value="B">
+            <InfoStep2 />
+          </TabPanel>
+          <TabPanel value="C">
+            <InfoStep3 />
+          </TabPanel>
+          <TabPanel value="D">
+            <InfoStep4 />
+          </TabPanel>
+        </TabsBody>
+      </Tabs>
+    </>
   );
 }
