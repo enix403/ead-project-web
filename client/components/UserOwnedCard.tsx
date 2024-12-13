@@ -47,6 +47,8 @@ export function UserOwnedCard({
           color="blue-gray"
           withBorder
           className="shrink-0"
+          // NOTE: remove this to show online status
+          invisible
         >
           <Avatar
             size="lg"
@@ -84,7 +86,7 @@ export function UserOwnedCard({
       </header>
 
       <Link
-        href="user"
+        href={`user/${user?.id}`}
         className="text-teal hover:underline font-semibold mt-1"
       >
         {user?.fullName ?? "[n/a]"}
