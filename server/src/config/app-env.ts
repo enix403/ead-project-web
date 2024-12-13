@@ -1,6 +1,6 @@
 import 'dotenv/config';
 
- 
+
 function validateBoolean(x: any): boolean {
   if (typeof x === 'string' && x.toLowerCase() === 'true')
     //
@@ -28,8 +28,11 @@ function getEnv<T>(key: string, fallback?: T): string | T | null {
 }
 
 export const appEnv = {
-  NODE_ENV: getEnv('NODE_ENV', 'development'),
+  NODE_ENV: getEnv('NODE_ENV', 'production'),
   PORT: getEnv('PORT'),
   MONGO_URL: getEnv('MONGO_URL'),
   JWT_SIGNING_KEY: getEnv('JWT_SIGNING_KEY'),
 };
+
+export const isDev = appEnv.NODE_ENV === "development";
+export const isProd = !isDev;

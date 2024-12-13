@@ -1,7 +1,7 @@
 "use client";
 
 import { produce } from "immer";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Spinner } from "@material-tailwind/react";
 
@@ -9,7 +9,13 @@ import { apiRoutes } from "~/app/api-routes";
 import { PostingCard } from "./PostingCard";
 import { toParams } from "~/app/utils/collections";
 
-export function HomePostings({ filters }: { filters: any }) {
+export function HomePostings({
+  filters,
+  activeTab,
+}: {
+  filters: any;
+  activeTab: string;
+}) {
   const favsQuery = useQuery<any[] | null>({
     queryKey: ["getPostingFavourites"],
     queryFn: () => apiRoutes.getPostingFavourites(),
@@ -17,11 +23,10 @@ export function HomePostings({ filters }: { filters: any }) {
     placeholderData: null,
   });
 
-  // useEffect(() => {
-  //   console.log(toParams(filters));
-  // }, [filters]);
-
-  const filterQueryString = useMemo(() => toParams(filters).toString(), [filters]);
+  const filterQueryString = useMemo(
+    () => toParams(filters).toString(),
+    [filters]
+  );
 
   const postingsQuery = useQuery<any[]>({
     queryKey: ["searchJobs", filterQueryString],
@@ -69,6 +74,13 @@ export function HomePostings({ filters }: { filters: any }) {
     console.log(result);
   }
 
+  function filterPosting(posting: any) {
+    const isFavourite = favouriteIds.includes(posting["_id"]);
+    return Boolean(
+      posting["isActive"] && (activeTab === "three" ? isFavourite : true)
+    );
+  }
+
   return (
     <>
       {isLoading ? (
@@ -79,7 +91,7 @@ export function HomePostings({ filters }: { filters: any }) {
       ) : (
         postings.map(
           (posting) =>
-            posting["isActive"] && (
+            filterPosting(posting) && (
               <PostingCard
                 key={posting._id}
                 posting={posting}

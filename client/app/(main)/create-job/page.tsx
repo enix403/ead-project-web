@@ -233,9 +233,6 @@ export default function CreateJobPage() {
     <AppLayout pageTitle="Jobs">
       <div className="flex-1 flex items-start">
         <div className="flex-1 px-7 py-8">
-          {/* {isDev && (
-            <Button onClick={() => postJob()}>DEV: Post Job</Button>
-          )} */}
           <StepComponent
             onNext={onNext}
             onCancel={onCancel}
@@ -249,5 +246,3 @@ export default function CreateJobPage() {
     </AppLayout>
   );
 }
-
-const isDev = !!process && process.env.NODE_ENV === "development";
