@@ -1,0 +1,24 @@
+version: "3"
+
+services:
+  frontend:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://backend:4201
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - "4201:4201"
+    environment:
+      - PORT=4201
+      - MONGO_URL=mongodb+srv://shoaibtube1:GTZTQYeWYkUo7ePE@cluster0.vkz20.mongodb.net/
+      - JWT_SIGNING_KEY=y<*XQuUBop;?aHlA{Dy+uIaejxPOC(K]FND9Y<)A[$8X.=Vm=)/r*mtIaZSYnCNC
