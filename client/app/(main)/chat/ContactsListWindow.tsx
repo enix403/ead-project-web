@@ -4,7 +4,7 @@ import clsx from "clsx";
 import { Badge, Avatar } from "@material-tailwind/react";
 import { useQuery } from "@tanstack/react-query";
 
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
 import { apiRoutes } from "~/app/api-routes";
 import { useAuthState } from "~/app/providers/auth-state";
@@ -26,13 +26,13 @@ export function ContactsListWindow() {
   return (
     <div
       className={clsx(
-        "overflow-y-auto max-h-[80vh] w-1/4 min-w-[16rem]",
+        "overflow-y-auto max-h-[500px] md:max-h-[80vh] md:w-1/4 min-w-[16rem]",
         "bg-white border-r border-gray-300",
         "p-3 pb-20"
       )}
     >
       <h1 className="text-2xl font-bold ml-2 mt-2 mb-4">Chats</h1>
-      {/* {repeatNode(6, (index) => ( */}
+      {conversations.length === 0 && "You have no chats yet"}
       {conversations.map((conv) => (
         <Conversation key={conv["_id"]} conversation={conv} />
       ))}
@@ -42,6 +42,8 @@ export function ContactsListWindow() {
 
 function Conversation({ conversation }: { conversation: any }) {
   const router = useRouter();
+  const params = useParams();
+  const activeReceiverId: string | null = (params.receiverId as any) ?? null;
 
   // assume conversations["kind"] === "single"
 
@@ -52,7 +54,10 @@ function Conversation({ conversation }: { conversation: any }) {
 
   return (
     <button
-      className="flex items-center mb-4 cursor-pointer hover:bg-gray-100 p-2 rounded-md text-left w-full"
+      className={clsx(
+        "flex items-center mb-4 cursor-pointer hover:bg-gray-100 p-2 rounded-md text-left w-full",
+        activeReceiverId === receiverId && "bg-teal/30"
+      )}
       onClick={() => {
         router.push(`/chat/${receiverId}`);
       }}
@@ -73,7 +78,7 @@ function Conversation({ conversation }: { conversation: any }) {
       </Badge>
       <div className="flex-1 ml-3">
         <h2 className="text-lg font-semibold">{receiver.fullName}</h2>
-        <p className="text-gray-600">
+        <p className="text-gray-600 max-w-[100px] overflow-hidden text-ellipsis">
           {/* Let's catch up soon. It's been too long! */}
           {conversation["lastMessage"]}
         </p>

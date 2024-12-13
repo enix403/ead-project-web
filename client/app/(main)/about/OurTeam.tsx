@@ -40,7 +40,7 @@ export function OurTeam() {
         <span className="font-normal">Team</span>
       </h1>
 
-      <div className="grid grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         {repeatNode(12, (index) => (
           <TeamMemberCell key={index} />
         ))}

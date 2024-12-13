@@ -53,6 +53,31 @@ router.post(
   }),
 );
 
+
+function validatePasswordStrength(password: any) {
+  const passwordSchema = joi.string()
+    .min(8)
+    .max(30)
+    .required()
+    .messages({
+      'string.base': 'Password should be a string.',
+      'string.empty': 'Password cannot be empty.',
+      'string.min': 'Password should be at least 8 characters long.',
+      'string.max': 'Password should not exceed 30 characters.',
+      'any.required': 'Password is required.',
+    });
+
+  // Validate the password
+  const { error } = passwordSchema.validate(password);
+
+  // If validation fails, return the first error messages
+  if (error) {
+    return error.details[0].message;
+  }
+
+  return null;
+}
+
 router.post(
   '/api/auth/register',
   validateJoi(
@@ -72,6 +97,9 @@ router.post(
   ),
   ah(async (req, res) => {
     const { email, password, role, ...restData } = req.body;
+
+    const strengthError = validatePasswordStrength(password);
+    if (strengthError) throw new ApplicationError(strengthError);
 
     const existingUser = await UserModel.findOne({ email });
     if (existingUser) throw new ApplicationError('Email already registered');

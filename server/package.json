@@ -6,7 +6,7 @@
     "clean": "rm -rf ./build tsconfig.tsbuildinfo",
     "build": "npm run clean && tsc --outDir build",
     "start": "NODE_PATH=./build node --enable-source-maps build/main.js",
-    "dev": "cross-env NODE_PATH=./src nodemon --watch src src/main.ts",
+    "dev": "cross-env NODE_ENV=development NODE_PATH=./src nodemon --watch src src/main.ts",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write './src/**/*.{ts,tsx,js,json}'",

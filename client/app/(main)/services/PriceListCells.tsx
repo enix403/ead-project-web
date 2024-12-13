@@ -29,7 +29,7 @@ export function Cell({ title, Icon }: { title: string; Icon: any }) {
 export function PriceListCells() {
   const viewMode = useViewMode();
   return (
-    <section className="flex mt-16 gap-4">
+    <section className="flex mt-16 gap-x-4 gap-y-20 flex-col md:flex-row">
       {viewMode === "employer" ? (
         <>
           <Cell title="CV Management" Icon={IconFileInfo} />

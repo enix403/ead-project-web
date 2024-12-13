@@ -8,7 +8,7 @@ export interface ButtonProps extends HtmlButtonProps {
   fullWidth?: boolean;
   fullRounded?: boolean;
   variant?: "outlined" | "filled" | "light" | "text";
-  theme?: "teal" | "white";
+  theme?: "teal" | "white" | "red";
   loading?: boolean;
 }
 
@@ -43,6 +43,7 @@ export function Button({
         className: [
           classes.btn,
           theme === "white" && classes.btn_theme_white,
+          theme === "red" && classes.btn_theme_red,
           fullWidth && "w-full",
           fullRounded && "!rounded-full",
           variantClass,

@@ -56,9 +56,6 @@ export function LanguageDrawer() {
           </Typography>
           <Select>
             <option>English</option>
-            <option>Spanish</option>
-            <option>German</option>
-            <option>French</option>
           </Select>
           <Button onClick={close}>Confirm</Button>
         </div>

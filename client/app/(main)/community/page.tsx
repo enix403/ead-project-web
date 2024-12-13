@@ -13,7 +13,7 @@ import { apiRoutes } from "~/app/api-routes";
 
 import { CommunityItemCard } from "./CommunityItemCard";
 import { useDebounceValue } from "usehooks-ts";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 /* function useFriendsIds() {
   const {
@@ -61,6 +61,8 @@ export default function Community() {
 
   // const isLoading = isCommunityLoading || isFriendsLoading;
 
+  const [roleFilter, setRoleFilter] = useState<string>("");
+
   return (
     <AppLayout>
       <div className="pb-8 pt-3 px-4">
@@ -84,7 +86,7 @@ export default function Community() {
               "flex flex-col md:flex-row gap-x-4 xl:gap-x-12 gap-y-4 mb-8"
             )}
           >
-            <FormLabel inline label="Location" className="flex-1">
+            {/* <FormLabel inline label="Location" className="flex-1">
               <Select className="flex-1">
                 <option>USA</option>
                 <option>Arizona</option>
@@ -98,12 +100,16 @@ export default function Community() {
                 <option>Contract</option>
                 <option>Internship</option>
               </Select>
-            </FormLabel>
+            </FormLabel> */}
             <FormLabel inline label="Search For" className="flex-1">
-              <Select className="flex-1">
-                <option>All</option>
-                <option>Individuals</option>
-                <option>Businesses</option>
+              <Select
+                value={roleFilter}
+                onChange={(event) => setRoleFilter(event.target.value)}
+                className="flex-1"
+              >
+                <option value="">All</option>
+                <option value="employee">Individuals</option>
+                <option value="employer">Businesses</option>
               </Select>
             </FormLabel>
           </div>
@@ -115,9 +121,12 @@ export default function Community() {
                 <span>Loading...</span>
               </div>
             ) : (
-              community.map((user) => (
-                <CommunityItemCard key={user["_id"]} user={user} />
-              ))
+              community.map(
+                (user) =>
+                  (roleFilter ? user.role === roleFilter : true) && (
+                    <CommunityItemCard key={user["_id"]} user={user} />
+                  )
+              )
             )}
           </div>
         </div>

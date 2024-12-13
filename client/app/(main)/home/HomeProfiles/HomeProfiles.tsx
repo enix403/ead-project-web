@@ -9,7 +9,7 @@ const communityApiFilters = {
   userType: "employee",
 };
 
-export function HomeProfiles() {
+export function HomeProfiles({ activeTab }: { activeTab: string }) {
   const communityQuery = useQuery<any[]>({
     queryKey: ["getCommunity", communityApiFilters],
     queryFn: () => apiRoutes.getCommunity(communityApiFilters),

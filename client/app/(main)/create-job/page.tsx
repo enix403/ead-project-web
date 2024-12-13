@@ -15,6 +15,8 @@ import { CompanyInfoStep } from "./steps/CompanyInfoStep";
 import { QuestionsStep } from "./steps/QuestionsStep";
 import { apiRoutes } from "~/app/api-routes";
 import { Button } from "~/components/Button/Button";
+import { isDev } from "~/app/utils/misc";
+import { useAuthState } from "~/app/providers/auth-state";
 
 function useSelectionController() {
   const groupIdToStates = useRef<Record<string, Record<string, boolean>>>(
@@ -92,7 +94,12 @@ export default function CreateJobPage() {
   const router = useRouter();
 
   let [pageIndex, setPageIndex] = useState(0);
-  const { register, getValues } = useForm<any>();
+  const { user } = useAuthState();
+  const { register, watch, reset, getValues } = useForm<any>({
+    defaultValues: {
+      companyName: user?.['companyName'] || undefined,
+    }
+  });
 
   if (typeof window !== "undefined") {
     // @ts-ignore
@@ -210,6 +217,10 @@ export default function CreateJobPage() {
 
   let StepComponent = steps[pageIndex];
 
+  if (isDev) {
+    // StepComponent = CompanyInfoStep;
+  }
+
   let progressView = (
     <Stepper
       activeLineClassName="bg-teal"
@@ -233,14 +244,13 @@ export default function CreateJobPage() {
     <AppLayout pageTitle="Jobs">
       <div className="flex-1 flex items-start">
         <div className="flex-1 px-7 py-8">
-          {/* {isDev && (
-            <Button onClick={() => postJob()}>DEV: Post Job</Button>
-          )} */}
           <StepComponent
             onNext={onNext}
             onCancel={onCancel}
             progressView={progressView}
             register={register}
+            watch={watch}
+            reset={reset}
             selCtrl={selCtrl}
             qsBank={qsBank}
           />
@@ -249,5 +259,3 @@ export default function CreateJobPage() {
     </AppLayout>
   );
 }
-
-const isDev = !!process && process.env.NODE_ENV === "development";
