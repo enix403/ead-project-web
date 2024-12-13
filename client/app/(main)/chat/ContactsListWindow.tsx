@@ -4,7 +4,7 @@ import clsx from "clsx";
 import { Badge, Avatar } from "@material-tailwind/react";
 import { useQuery } from "@tanstack/react-query";
 
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
 import { apiRoutes } from "~/app/api-routes";
 import { useAuthState } from "~/app/providers/auth-state";
@@ -32,28 +32,9 @@ export function ContactsListWindow() {
       )}
     >
       <h1 className="text-2xl font-bold ml-2 mt-2 mb-4">Chats</h1>
-      {/* {repeatNode(6, (index) => ( */}
+      {conversations.length === 0 && "You have no chats yet"}
       {conversations.map((conv) => (
-        <>
-          <Conversation key={conv["_id"]} conversation={conv} />
-          <Conversation key={conv["_id"]} conversation={conv} />
-          <Conversation key={conv["_id"]} conversation={conv} />
-          <Conversation key={conv["_id"]} conversation={conv} />
-          <Conversation key={conv["_id"]} conversation={conv} />
-          <Conversation key={conv["_id"]} conversation={conv} />
-          <Conversation key={conv["_id"]} conversation={conv} />
-          <Conversation key={conv["_id"]} conversation={conv} />
-          <Conversation key={conv["_id"]} conversation={conv} />
-          <Conversation key={conv["_id"]} conversation={conv} />
-          <Conversation key={conv["_id"]} conversation={conv} />
-          <Conversation key={conv["_id"]} conversation={conv} />
-          <Conversation key={conv["_id"]} conversation={conv} />
-          <Conversation key={conv["_id"]} conversation={conv} />
-          <Conversation key={conv["_id"]} conversation={conv} />
-          <Conversation key={conv["_id"]} conversation={conv} />
-          <Conversation key={conv["_id"]} conversation={conv} />
-          <Conversation key={conv["_id"]} conversation={conv} />
-        </>
+        <Conversation key={conv["_id"]} conversation={conv} />
       ))}
     </div>
   );
@@ -61,6 +42,8 @@ export function ContactsListWindow() {
 
 function Conversation({ conversation }: { conversation: any }) {
   const router = useRouter();
+  const params = useParams();
+  const activeReceiverId: string | null = (params.receiverId as any) ?? null;
 
   // assume conversations["kind"] === "single"
 
@@ -71,7 +54,10 @@ function Conversation({ conversation }: { conversation: any }) {
 
   return (
     <button
-      className="flex items-center mb-4 cursor-pointer hover:bg-gray-100 p-2 rounded-md text-left w-full"
+      className={clsx(
+        "flex items-center mb-4 cursor-pointer hover:bg-gray-100 p-2 rounded-md text-left w-full",
+        activeReceiverId === receiverId && "bg-teal/30"
+      )}
       onClick={() => {
         router.push(`/chat/${receiverId}`);
       }}
