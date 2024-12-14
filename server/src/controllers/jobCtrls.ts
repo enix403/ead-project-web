@@ -4,6 +4,10 @@ import { JobPostingModel } from 'db/models/jobPosting';
 import { JobApplicationModel } from 'db/models/jobApplication';
 import { ApplicationError, NotFound } from 'controllers/core/errors';
 import { reply } from 'controllers/core/app-reply';
+import {
+  jobApplicationTemplate,
+  sendMail,
+} from './core/email';
 
 const getDateFromFilter = (filter: string): Date | null => {
   const now = new Date();
@@ -192,7 +196,15 @@ export async function applyJobController(req: Request, res: Response) {
 
   await application.save();
 
-  return reply(res, {
+  // eslint-disable-next-line no-extra-boolean-cast
+  if (Boolean(employeeId) && !Boolean(employeeId))
+    await sendMail(
+      'employer-email@example.com',
+      'New Job Application Received',
+      jobApplicationTemplate('applicantName', 'jobTitle'),
+    );
+
+return reply(res, {
     message: 'Application submitted successfully',
     application,
   });

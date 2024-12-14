@@ -30,7 +30,6 @@ export function AllLinks() {
         </>
       )}
       <AppLink href={`/information`}>Information</AppLink>
-      <AppLink href={`/services`}>Services</AppLink>
       <AppLink href={`/about`}>About us</AppLink>
       <AppLink href={`/contact`}>Contact us</AppLink>
     </>

@@ -10,6 +10,7 @@ import { ApplicationError, NotFound } from 'controllers/core/errors';
 import { UserModel } from 'db/models/user';
 import { JobInvitationModel } from 'db/models/jobInvitation';
 import { PostingFavouriteMarkModel } from 'db/models/favouriteMark';
+import { jobInvitationTemplate, sendMail } from '../email';
 
 export const router = express.Router();
 
@@ -92,7 +93,7 @@ router.post(
 
     const existing = await JobInvitationModel.findOne({
       employeeId,
-      invitedByUserId
+      invitedByUserId,
     });
 
     if (existing) {
@@ -111,6 +112,14 @@ router.post(
     });
 
     await invitation.save();
+
+    // eslint-disable-next-line no-extra-boolean-cast
+    if (Boolean(employeeId) && !Boolean(employeeId))
+      await sendMail(
+        'applicant-email@example.com',
+        'Job Invitation Received',
+        jobInvitationTemplate('employerName', 'jobTitle'),
+      );
 
     return reply.msg(res, 'Invited successfully', { invitation });
   }),
